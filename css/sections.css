@@ -163,6 +163,39 @@
   margin-top: 6px;
 }
 
+/* Liste à coches (sections 01 et 08) */
+.checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.checklist li {
+  position: relative;
+  padding: 12px 14px 12px 46px;
+  background: var(--navy-2);
+  border: 1px solid var(--navy);
+  border-radius: 12px;
+}
+
+.checklist li::before {
+  content: "✓";
+  position: absolute;
+  left: 16px;
+  top: 12px;
+  font-weight: 700;
+  color: var(--green);
+  text-shadow: var(--glow-green);
+}
+
+@media (min-width: 640px) {
+  .checklist {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 /* ---------- Bloc "Contenu à venir" ---------- */
 .placeholder {
   border: 2px dashed var(--navy);

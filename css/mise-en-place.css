@@ -1,0 +1,88 @@
+/* =========================================================
+   SECTION 05 : MISE EN PLACE
+   ========================================================= */
+
+/* ---------- Les 6 étapes ---------- */
+.setup {
+  list-style: none;
+  counter-reset: setup;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.setup li {
+  counter-increment: setup;
+  position: relative;
+  min-height: 62px;
+  padding: 14px 16px 14px 64px;
+  background: var(--navy-2);
+  border: 2px solid var(--navy);
+  border-radius: 12px;
+}
+
+.setup li::before {
+  content: counter(setup);
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--green);
+  color: var(--bg);
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 18px;
+  box-shadow: var(--glow-green);
+}
+
+/* ---------- Le maître du jeu ---------- */
+.gm {
+  margin-top: 24px;
+  border-color: var(--green);
+}
+
+.gm__tasks {
+  margin: 8px 0;
+  padding-left: 22px;
+}
+
+.gm__tasks li + li {
+  margin-top: 4px;
+}
+
+.gm__tasks li::marker {
+  color: var(--green);
+}
+
+.block p.gm__warning {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-left: 4px solid var(--red);
+  border-radius: 6px;
+  background: rgba(215, 25, 32, .12);
+  font-weight: 700;
+}
+
+.block p.gm__note {
+  margin-top: 12px;
+  color: var(--muted);
+}
+
+/* ---------- Tablette / ordinateur ---------- */
+@media (min-width: 640px) {
+  .setup {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .setup {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

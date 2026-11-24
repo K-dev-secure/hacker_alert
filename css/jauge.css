@@ -1,39 +1,247 @@
 /* =========================================================
-   JAUGE D'INTRUSION (10 cases, vert -> orange -> rouge)
+   SECTION 07 : LA JAUGE D'INTRUSION (10 cases, se remplit au scroll)
    ========================================================= */
 
+/* ---------- Conteneur : drapeaux + jauge sur la même grille ---------- */
+.meter {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  column-gap: 4px;
+  row-gap: 10px;
+  margin: 8px 0 12px;
+}
+
+.meter .gauge {
+  grid-column: 1 / -1;
+}
+
+/* ---------- Les 10 cases ---------- */
 .gauge {
   display: grid;
   grid-template-columns: repeat(10, 1fr);
   gap: 4px;
-  margin-top: 8px;
 }
 
 .gauge__cell {
-  aspect-ratio: 1 / 1.6;
-  border-radius: 6px;
-  border: 2px solid var(--navy);
-  background: var(--navy-2);
+  --cell-color: var(--red);
+  aspect-ratio: 1 / 2;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding-bottom: 4px;
+  padding-bottom: 6px;
+  border: 2px solid var(--navy);
+  border-radius: 6px;
+  background: var(--navy-2);
   font-family: var(--font-pixel);
+  font-weight: 700;
   font-size: 16px;
   color: var(--muted);
-  transition: background-color .3s, box-shadow .3s, color .3s, border-color .3s;
+  transition: background-color .3s, box-shadow .3s, color .3s, border-color .3s, transform .3s;
 }
 
+/* Couleur de chaque case : vert, orange, puis rouge dès l'alerte */
+.gauge__cell:nth-child(-n + 2) {
+  --cell-color: var(--green);
+}
+
+.gauge__cell:nth-child(3),
+.gauge__cell:nth-child(4) {
+  --cell-color: var(--orange);
+}
+
+/* Cases repères (5 et 10) marquées même vides */
+.gauge__cell--alert,
+.gauge__cell--end {
+  border-style: dashed;
+  border-color: var(--red);
+}
+
+/* Case allumée */
 .gauge__cell.is-on {
   background: var(--cell-color);
   border-color: var(--cell-color);
-  box-shadow: 0 0 12px var(--cell-color);
+  border-style: solid;
+  box-shadow: 0 0 14px var(--cell-color);
+  color: var(--bg);
+  transform: translateY(-3px);
+}
+
+.gauge__cell--alert.is-on,
+.gauge__cell--end.is-on {
+  color: var(--white);
+}
+
+/* Sans JavaScript : jauge pleine */
+.no-js .gauge__cell {
+  background: var(--cell-color);
+  border-color: var(--cell-color);
   color: var(--bg);
 }
 
-/* Espace entre la jauge et le texte en dessous */
-.gauge + .placeholder {
-  margin-top: 20px;
+/* ---------- Drapeaux RED ALERT et HACKER IS IN ---------- */
+.meter__flag {
+  position: relative;
+  white-space: nowrap;
+  padding: 4px 8px;
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.2;
+  color: var(--muted);
+  background: var(--navy-2);
+  border: 2px solid var(--navy);
+  border-radius: 6px;
+  transition: color .3s, background-color .3s, border-color .3s, box-shadow .3s;
+}
+
+/* Au-dessus de la case 5 */
+.meter__flag--alert {
+  grid-column: 5;
+  justify-self: center;
+}
+
+/* Sous la case 10 */
+.meter__flag--end {
+  grid-column: 10;
+  justify-self: end;
+}
+
+/* Petite flèche vers la case */
+.meter__flag::after {
+  content: "";
+  position: absolute;
+  border: 6px solid transparent;
+}
+
+.meter__flag--alert::after {
+  top: 100%;
+  left: 50%;
+  margin-left: -6px;
+  border-top-color: currentColor;
+}
+
+.meter__flag--end::after {
+  bottom: 100%;
+  right: 10px;
+  border-bottom-color: currentColor;
+}
+
+/* Allumés quand la jauge les atteint */
+.meter.is-alert .meter__flag--alert,
+.meter.is-breached .meter__flag--end,
+.no-js .meter__flag {
+  color: var(--white);
+  background: var(--red);
+  border-color: var(--red);
+  box-shadow: var(--glow-red);
+}
+
+.meter.is-alert .meter__flag--alert::after,
+.meter.is-breached .meter__flag--end::after {
+  color: var(--red);
+}
+
+.meter.is-alert .meter__flag--alert {
+  animation: flag-blink 1s steps(1) infinite;
+}
+
+.meter.is-breached .meter__flag--alert {
+  animation: none;
+}
+
+@keyframes flag-blink {
+  50% {
+    opacity: .55;
+  }
+}
+
+/* ---------- Exemple de calcul ---------- */
+.combo {
+  margin: 20px 0 16px;
+  padding: 18px;
+  background: var(--navy-2);
+  border: 2px solid var(--red);
+  border-radius: 14px;
+  box-shadow: 0 0 18px rgba(215, 25, 32, .2);
+}
+
+.combo__title {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.combo__context {
+  margin: 4px 0 14px;
+  color: var(--muted);
+}
+
+.calc {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.calc__term {
+  min-width: 64px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 10px;
+  border: 2px solid var(--navy);
+  border-radius: 10px;
+  background: var(--bg);
+}
+
+.calc__term b {
+  font-family: var(--font-pixel);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.calc__term small {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.calc__term--total {
+  border-color: var(--red);
+  background: var(--red);
+  box-shadow: var(--glow-red);
+}
+
+.calc__op {
+  font-family: var(--font-pixel);
+  font-size: 22px;
+  color: var(--muted);
+}
+
+.combo__result {
+  margin: 14px 0 0;
+  font-weight: 700;
+  color: var(--red);
+}
+
+/* ---------- Ordinateur : jauge plus grande ---------- */
+@media (min-width: 768px) {
+  .meter,
+  .gauge {
+    column-gap: 8px;
+  }
+
+  .gauge {
+    gap: 8px;
+  }
+
+  .gauge__cell {
+    aspect-ratio: 1 / 1.7;
+    font-size: 24px;
+    border-radius: 10px;
+  }
 }
 
 /* ---------- Très petits écrans ---------- */

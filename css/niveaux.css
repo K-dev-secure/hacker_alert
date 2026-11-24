@@ -1,0 +1,139 @@
+/* =========================================================
+   SECTION 08 : GAGNER, PERDRE, NIVEAUX
+   ========================================================= */
+
+/* ---------- Gagné / Perdu ---------- */
+.outcome-end--win {
+  --end-color: var(--green);
+  border-color: var(--green);
+}
+
+.outcome-end--lose {
+  --end-color: var(--red);
+  border-color: var(--red);
+}
+
+.outcome-end .block__title {
+  color: var(--end-color);
+}
+
+/* Message affiché par l'appli */
+.block p.screen {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--bg);
+  border: 1px solid var(--end-color);
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--end-color);
+  text-align: center;
+}
+
+.block p.score {
+  margin-top: 12px;
+  font-weight: 700;
+}
+
+.score small {
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+/* ---------- Les 3 niveaux : empilés mobile, côte à côte ordinateur ---------- */
+.levels {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.level {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 18px;
+  background: var(--navy-2);
+  border: 3px solid var(--level-color);
+  border-radius: 18px;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--level-color) 30%, transparent);
+}
+
+.level--junior {
+  --level-color: var(--green);
+}
+
+.level--pro {
+  --level-color: var(--orange);
+}
+
+.level--expert {
+  --level-color: var(--red);
+}
+
+.level p {
+  margin: 0;
+}
+
+.level__dot {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.level__name {
+  margin: 0;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.1;
+  color: var(--level-color);
+}
+
+.level__tag {
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  color: var(--muted);
+}
+
+/* Combinaisons de 2 cartes (Expert) */
+.level__combos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.level__combos li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.level__combos b {
+  font-family: var(--font-pixel);
+  color: var(--red);
+}
+
+.level__rules {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.level__rules li::marker {
+  color: var(--red);
+}
+
+/* ---------- Ordinateur ---------- */
+@media (min-width: 900px) {
+  .levels {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

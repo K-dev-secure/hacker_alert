@@ -32,37 +32,9 @@
   margin-top: 24px;
 }
 
-/* ---------- Ce qu'on apprend ---------- */
-.checklist {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 10px;
-}
-
-.checklist li {
-  position: relative;
-  padding: 12px 14px 12px 46px;
-  background: var(--navy-2);
-  border: 1px solid var(--navy);
-  border-radius: 12px;
-}
-
-.checklist li::before {
-  content: "✓";
-  position: absolute;
-  left: 16px;
-  top: 12px;
-  font-weight: 700;
-  color: var(--green);
-  text-shadow: var(--glow-green);
-}
-
 /* ---------- Tablette / ordinateur ---------- */
 @media (min-width: 640px) {
-  .fiche,
-  .checklist {
+  .fiche {
     grid-template-columns: repeat(2, 1fr);
   }
 }

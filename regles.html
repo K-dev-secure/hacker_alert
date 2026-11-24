@@ -20,8 +20,11 @@
 <link rel="stylesheet" href="css/materiel.css">
 <link rel="stylesheet" href="css/attaques.css">
 <link rel="stylesheet" href="css/defenses.css">
+<link rel="stylesheet" href="css/mise-en-place.css">
+<link rel="stylesheet" href="css/tour.css">
 <link rel="stylesheet" href="css/cartes.css">
 <link rel="stylesheet" href="css/jauge.css">
+<link rel="stylesheet" href="css/niveaux.css">
 <link rel="stylesheet" href="css/footer.css">
 </head>
 <body class="no-js">
@@ -339,27 +342,218 @@
 
     <!-- 5 -->
     <section class="section reveal" id="mise-en-place" aria-labelledby="t-mep">
-      <div class="section__head"><span class="section__num">05</span><h2 class="section__title" id="t-mep">Mise en place</h2></div>
-      <div class="placeholder">Contenu à venir</div>
+      <div class="section__head">
+        <span class="section__num">05</span><h2 class="section__title" id="t-mep">Mise en place</h2>
+        <p class="section__sub">1 minute</p>
+      </div>
+
+      <ol class="setup">
+        <li>Lire la carte <strong>"How to play"</strong> à voix haute.</li>
+        <li>Choisir un <strong>maître du jeu</strong> parmi les joueurs.</li>
+        <li>Mélanger les 30 cartes rouges et en piocher <strong>6 au hasard</strong>, face cachée. Les 24 autres ne servent pas.</li>
+        <li>Poser les 12 cartes vertes + "It's safe!" <strong>face visible</strong> au milieu.</li>
+        <li>Scanner le QR code <strong>"Start"</strong> de la boîte et choisir le niveau (Junior, Pro ou Expert).</li>
+        <li>Poser le téléphone au milieu, visible par tous. Appuyer sur <strong>"Start"</strong> : le chrono démarre, la jauge est à 0.</li>
+      </ol>
+
+      <article class="block gm">
+        <h3 class="block__title">Le maître du jeu</h3>
+        <p>Un joueur qui joue aussi avec l'équipe. En plus, il :</p>
+        <ul class="gm__tasks">
+          <li>tient le téléphone et scanne les cartes QR,</li>
+          <li>retourne chaque carte rouge pour lire la réponse,</li>
+          <li>et dit à l'appli si la réponse était bonne, acceptable ou mauvaise.</li>
+        </ul>
+        <p class="gm__warning">Il ne décide JAMAIS de la sanction : c'est l'appli qui calcule.</p>
+        <p class="gm__note">On peut changer de maître du jeu à chaque partie.</p>
+      </article>
     </section>
 
     <!-- 6 -->
     <section class="section reveal" id="tour" aria-labelledby="t-tour">
-      <div class="section__head"><span class="section__num">06</span><h2 class="section__title" id="t-tour">Un tour de jeu</h2></div>
-      <div class="placeholder">Contenu à venir</div>
+      <div class="section__head">
+        <span class="section__num">06</span><h2 class="section__title" id="t-tour">Un tour de jeu</h2>
+        <p class="section__sub">Une partie = 6 tours</p>
+      </div>
+
+      <ol class="timeline" id="timeline">
+        <li class="timeline__step reveal">
+          <h3 class="timeline__title">Piocher</h3>
+          <p>Un joueur retourne la première carte rouge et la lit à voix haute, en anglais.</p>
+          <p class="timeline__aside">Carte QR : le maître du jeu l'ouvre dans l'appli, voir <a href="#application">section 9</a>.</p>
+        </li>
+        <li class="timeline__step reveal">
+          <h3 class="timeline__title">Discuter</h3>
+          <p>L'équipe discute en anglais et se met d'accord sur <strong>UNE</strong> carte verte. Pas de temps limite par tour, seul le chrono global de 10 minutes compte. En cas de désaccord, le maître du jeu tranche.</p>
+        </li>
+        <li class="timeline__step reveal">
+          <h3 class="timeline__title">Jouer</h3>
+          <p>On pose la carte verte sur la carte rouge.</p>
+        </li>
+        <li class="timeline__step reveal">
+          <h3 class="timeline__title">Vérifier</h3>
+          <p>Le maître du jeu retourne la carte rouge et lit la réponse au verso.</p>
+        </li>
+        <li class="timeline__step reveal">
+          <h3 class="timeline__title">Juger</h3>
+          <p>Dans l'appli, il tape le numéro de la carte puis appuie sur :</p>
+          <ul class="verdicts">
+            <li class="verdict verdict--right"><span lang="en">✅ Right defence</span><small>meilleure défense</small></li>
+            <li class="verdict verdict--almost"><span lang="en">🟠 Almost right</span><small>défense acceptable</small></li>
+            <li class="verdict verdict--wrong"><span lang="en">❌ Wrong defence</span><small>autre carte</small></li>
+          </ul>
+        </li>
+        <li class="timeline__step reveal">
+          <h3 class="timeline__title">Sanction</h3>
+          <p>L'appli fait avancer la jauge toute seule et affiche l'explication en anglais.</p>
+        </li>
+        <li class="timeline__step reveal">
+          <h3 class="timeline__title">Ranger</h3>
+          <p>La carte verte jouée est retournée face cachée (sauf "It's safe!" et sauf au niveau Junior). On passe à l'attaque suivante.</p>
+        </li>
+      </ol>
+
+      <h3 class="subhead">Combien avance la jauge</h3>
+      <ul class="moves">
+        <li class="move move--right">
+          <span class="move__label" lang="en">✅ Right</span>
+          <span class="move__cost">0</span>
+          <span class="move__note" lang="en">"Hacker blocked!"</span>
+        </li>
+        <li class="move move--almost">
+          <span class="move__label" lang="en">🟠 Almost</span>
+          <span class="move__cost">+1</span>
+          <span class="move__note">quelle que soit la gravité</span>
+        </li>
+        <li class="move move--wrong">
+          <span class="move__label" lang="en">❌ Wrong</span>
+          <span class="move__cost">+1 / +2 / +3 / +4</span>
+          <span class="move__note">selon la gravité 💀 à 💀💀💀💀</span>
+        </li>
+      </ul>
+
+      <div class="callout callout--green">
+        <p>Dans tous les cas, l'appli montre la meilleure défense et explique pourquoi : <strong>on apprend même en se trompant.</strong></p>
+      </div>
     </section>
 
     <!-- 7 -->
     <section class="section section--red reveal" id="jauge" aria-labelledby="t-jauge">
-      <div class="section__head"><span class="section__num">07</span><h2 class="section__title" id="t-jauge">La jauge d'intrusion</h2></div>
-      <div class="gauge" id="gauge" aria-hidden="true"></div>
-      <div class="placeholder">Contenu à venir</div>
+      <div class="section__head">
+        <span class="section__num">07</span><h2 class="section__title" id="t-jauge">La jauge d'intrusion</h2>
+        <p class="section__sub">0 à 10</p>
+      </div>
+
+      <p class="lead">Elle montre à quel point le hacker est proche de gagner. Elle part de <strong>0</strong>, ne redescend jamais, et s'arrête à <strong>10</strong>.</p>
+
+      <div class="meter" id="meter" aria-hidden="true">
+        <span class="meter__flag meter__flag--alert">RED ALERT</span>
+        <div class="gauge">
+          <div class="gauge__cell">1</div>
+          <div class="gauge__cell">2</div>
+          <div class="gauge__cell">3</div>
+          <div class="gauge__cell">4</div>
+          <div class="gauge__cell gauge__cell--alert">5</div>
+          <div class="gauge__cell">6</div>
+          <div class="gauge__cell">7</div>
+          <div class="gauge__cell">8</div>
+          <div class="gauge__cell">9</div>
+          <div class="gauge__cell gauge__cell--end">10</div>
+        </div>
+        <span class="meter__flag meter__flag--end">HACKER IS IN</span>
+      </div>
+
+      <h3 class="subhead">Deux bonus du hacker <small>(calculés automatiquement)</small></h3>
+      <div class="grid grid--2">
+        <article class="block block--red">
+          <h3 class="block__title">Alerte rouge à 5/10</h3>
+          <p>L'écran passe au rouge, la voix du hacker dit <strong lang="en">"Red alert!"</strong>. À partir de là, chaque erreur ou réponse acceptable coûte <strong>+1 de plus</strong> (une bonne réponse coûte toujours 0).</p>
+        </article>
+        <article class="block block--red">
+          <h3 class="block__title">Même erreur deux fois</h3>
+          <p>Si l'équipe rate deux attaques de la même famille (ex : deux phishing), la deuxième coûte <strong>+1 de plus</strong> (<span lang="en">"The hacker knows your weakness"</span>). Une fausse alerte sur un vrai message ne compte jamais pour ce bonus.</p>
+        </article>
+      </div>
+
+      <div class="combo">
+        <p class="combo__title">Les deux s'additionnent</p>
+        <p class="combo__context">Exemple : jauge à 6, deuxième phishing raté sur une attaque 💀💀</p>
+        <p class="calc">
+          <span class="calc__term"><b>2</b><small>💀💀</small></span>
+          <span class="calc__op">+</span>
+          <span class="calc__term"><b>1</b><small>alerte rouge</small></span>
+          <span class="calc__op">+</span>
+          <span class="calc__term"><b>1</b><small>même erreur</small></span>
+          <span class="calc__op">=</span>
+          <span class="calc__term calc__term--total"><b>+4</b></span>
+        </p>
+        <p class="combo__result">→ la jauge passe à 10 : perdu.</p>
+      </div>
+
+      <div class="callout callout--muted">
+        <p class="callout__title">Si le téléphone ne marche pas</p>
+        <p>On utilise la jauge papier et le maître du jeu applique lui-même le tableau et les bonus.</p>
+      </div>
     </section>
 
     <!-- 8 -->
     <section class="section reveal" id="gagner" aria-labelledby="t-gagner">
       <div class="section__head"><span class="section__num">08</span><h2 class="section__title" id="t-gagner">Gagner, perdre, niveaux</h2></div>
-      <div class="placeholder">Contenu à venir</div>
+
+      <div class="grid grid--2">
+        <article class="block outcome-end outcome-end--win">
+          <h3 class="block__title">Gagné</h3>
+          <p>Les 6 cartes rouges sont jouées, le chrono n'est pas à zéro et la jauge est sous 10 →</p>
+          <p class="screen" lang="en">"Company saved!"</p>
+          <p class="score">Score = 10 − jauge finale <small>(de 1 à 10, 10 = parfait)</small></p>
+        </article>
+        <article class="block outcome-end outcome-end--lose">
+          <h3 class="block__title">Perdu</h3>
+          <p>La jauge atteint 10, <strong>OU</strong> le chrono tombe à zéro avant la fin des 6 attaques →</p>
+          <p class="screen" lang="en">"The hacker is in! – Game over"</p>
+        </article>
+      </div>
+
+      <h3 class="subhead">Les 3 niveaux <small>(chrono de 10 minutes partout)</small></h3>
+      <ul class="levels">
+        <li class="level level--junior">
+          <span class="level__dot" aria-hidden="true">🟢</span>
+          <h3 class="level__name">Junior</h3>
+          <p class="level__tag">Pour une première partie.</p>
+          <p>Cartes vertes réutilisables (on ne les retourne pas).</p>
+        </li>
+        <li class="level level--pro">
+          <span class="level__dot" aria-hidden="true">🟠</span>
+          <h3 class="level__name">Pro</h3>
+          <p class="level__tag">Partie normale.</p>
+          <p>Chaque carte verte ne sert qu'une fois.</p>
+        </li>
+        <li class="level level--expert">
+          <span class="level__dot" aria-hidden="true">🔴</span>
+          <h3 class="level__name">Expert</h3>
+          <p>Une seule utilisation, <strong>ET</strong> certaines attaques demandent 2 cartes vertes :</p>
+          <ul class="level__combos">
+            <li><b>#11</b><span lang="en">2FA + Strong password</span></li>
+            <li><b>#21</b><span lang="en">Call back to check + Alert IT</span></li>
+            <li><b>#30</b><span lang="en">Backup + Alert IT</span></li>
+          </ul>
+          <ul class="level__rules">
+            <li>Les deux bonnes = <strong lang="en">Right</strong></li>
+            <li>Une seule des deux = <strong lang="en">Almost</strong></li>
+            <li>Aucune = <strong lang="en">Wrong</strong></li>
+          </ul>
+          <p>Les deux cartes jouées sont usées.</p>
+        </li>
+      </ul>
+
+      <h3 class="subhead">Pourquoi on peut rejouer</h3>
+      <ul class="checklist">
+        <li>6 attaques tirées parmi 30</li>
+        <li>Les cartes vertes s'usent donc la stratégie change</li>
+        <li>Les QR tirent une situation différente à chaque fois</li>
+        <li>Les vrais messages sont mélangés aux arnaques</li>
+        <li>3 niveaux</li>
+      </ul>
     </section>
 
     <!-- 9 -->
@@ -404,11 +598,19 @@
   var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   var hasIO = "IntersectionObserver" in window;
 
-  /* Couleur selon le niveau 0..10 : vert -> orange -> rouge */
+  /* Couleur selon le niveau 0..10 : vert -> orange -> rouge (alerte rouge à 5) */
   function levelColor(n) {
-    if (n <= 3) return "#5DB870";
-    if (n <= 6) return "#F28C28";
+    if (n <= 2) return "#5DB870";
+    if (n <= 4) return "#F28C28";
     return "#D71920";
+  }
+
+  /* Avancement (0 à 1) d'un élément entre deux lignes de l'écran */
+  function progressBetween(el, startRatio, endRatio) {
+    var vh = window.innerHeight;
+    var top = el.getBoundingClientRect().top;
+    var p = (vh * startRatio - top) / (vh * (startRatio - endRatio));
+    return Math.min(1, Math.max(0, p));
   }
 
   /* ---------- Barre INTRUSION ---------- */
@@ -418,7 +620,6 @@
   var ticking = false;
 
   function updateBar() {
-    ticking = false;
     var doc = document.documentElement;
     var max = doc.scrollHeight - window.innerHeight;
     var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
@@ -428,11 +629,42 @@
     label.textContent = "INTRUSION " + n + "/10";
     bar.setAttribute("aria-valuenow", n);
   }
+
+  /* ---------- Jauge d'intrusion : se remplit au scroll ---------- */
+  var meter = document.getElementById("meter");
+  var cells = meter ? meter.querySelectorAll(".gauge__cell") : [];
+
+  function updateGauge() {
+    if (!meter) return;
+    var n = Math.round(progressBetween(meter, 0.9, 0.35) * 10);
+    cells.forEach(function (c, idx) { c.classList.toggle("is-on", idx < n); });
+    meter.classList.toggle("is-alert", n >= 5);
+    meter.classList.toggle("is-breached", n >= 10);
+  }
+
+  /* ---------- Timeline : la ligne se trace au scroll ---------- */
+  var timeline = document.getElementById("timeline");
+
+  function updateTimeline() {
+    if (!timeline) return;
+    var vh = window.innerHeight;
+    var rect = timeline.getBoundingClientRect();
+    var p = (vh * 0.6 - rect.top) / rect.height;
+    timeline.style.setProperty("--progress", Math.min(1, Math.max(0, p)));
+  }
+
+  /* ---------- Un seul calcul par image ---------- */
+  function onScroll() {
+    ticking = false;
+    updateBar();
+    updateGauge();
+    updateTimeline();
+  }
   window.addEventListener("scroll", function () {
-    if (!ticking) { ticking = true; requestAnimationFrame(updateBar); }
+    if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
   }, { passive: true });
-  window.addEventListener("resize", updateBar);
-  updateBar();
+  window.addEventListener("resize", onScroll);
+  onScroll();
 
   /* ---------- Apparition des sections ---------- */
   var reveals = document.querySelectorAll(".reveal");
@@ -445,34 +677,6 @@
       });
     }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
     reveals.forEach(function (el) { revealIO.observe(el); });
-  }
-
-  /* ---------- Jauge case par case ---------- */
-  var gauge = document.getElementById("gauge");
-  var cells = [];
-  for (var i = 1; i <= 10; i++) {
-    var c = document.createElement("div");
-    c.className = "gauge__cell";
-    c.textContent = i;
-    c.style.setProperty("--cell-color", levelColor(i));
-    gauge.appendChild(c);
-    cells.push(c);
-  }
-  function fillGauge() {
-    if (reduceMotion.matches) {
-      cells.forEach(function (c) { c.classList.add("is-on"); });
-      return;
-    }
-    cells.forEach(function (c, idx) {
-      setTimeout(function () { c.classList.add("is-on"); }, 300 + idx * 180);
-    });
-  }
-  if (!hasIO) { fillGauge(); }
-  else {
-    var gaugeIO = new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) { fillGauge(); gaugeIO.disconnect(); }
-    }, { threshold: 0.6 });
-    gaugeIO.observe(gauge);
   }
 
   /* ---------- Cartes : retournement au toucher ---------- */

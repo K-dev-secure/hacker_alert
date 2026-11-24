@@ -1,0 +1,212 @@
+/* =========================================================
+   SECTION 06 : UN TOUR DE JEU (timeline verticale)
+   ========================================================= */
+
+/* ---------- Timeline ---------- */
+.timeline {
+  --progress: 0;
+  --rail-x: 19px;
+  position: relative;
+  list-style: none;
+  counter-reset: step;
+  padding: 0;
+  margin: 0;
+}
+
+/* Rail gris */
+.timeline::before,
+.timeline::after {
+  content: "";
+  position: absolute;
+  top: 20px;
+  bottom: 20px;
+  left: var(--rail-x);
+  width: 4px;
+  margin-left: -2px;
+  border-radius: 2px;
+}
+
+.timeline::before {
+  background: var(--navy);
+}
+
+/* Remplissage vert qui suit le scroll */
+.timeline::after {
+  background: var(--green);
+  box-shadow: var(--glow-green);
+  transform-origin: top;
+  transform: scaleY(var(--progress));
+}
+
+.timeline__step {
+  counter-increment: step;
+  position: relative;
+  padding: 0 0 28px 58px;
+}
+
+.timeline__step:last-child {
+  padding-bottom: 0;
+}
+
+/* Pastille numérotée */
+.timeline__step::before {
+  content: counter(step);
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 3px solid var(--green);
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--green);
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 18px;
+  transition: background-color .4s, color .4s, box-shadow .4s;
+}
+
+.timeline__step.is-visible::before {
+  background: var(--green);
+  color: var(--bg);
+  box-shadow: var(--glow-green);
+}
+
+/* Les étapes arrivent de la gauche */
+.timeline__step.reveal {
+  transform: translateX(-24px);
+}
+
+.timeline__step.reveal.is-visible {
+  transform: none;
+}
+
+.timeline__title {
+  margin: 4px 0 6px;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.timeline__step p {
+  margin: 0;
+}
+
+.timeline__step p + p {
+  margin-top: 6px;
+}
+
+.timeline__aside {
+  color: var(--muted);
+}
+
+/* ---------- Boutons de l'appli (étape Juger) ---------- */
+.verdicts {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.verdict {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 14px;
+  border: 2px solid var(--verdict-color);
+  border-radius: 12px;
+  background: var(--navy-2);
+}
+
+.verdict span {
+  font-weight: 700;
+}
+
+.verdict small {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.verdict--right {
+  --verdict-color: var(--green);
+}
+
+.verdict--almost {
+  --verdict-color: var(--orange);
+}
+
+.verdict--wrong {
+  --verdict-color: var(--red);
+}
+
+/* ---------- Combien avance la jauge ---------- */
+.moves {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.move {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 18px;
+  background: var(--navy-2);
+  border: 2px solid var(--navy);
+  border-top: 6px solid var(--move-color);
+  border-radius: 12px;
+}
+
+.move--right {
+  --move-color: var(--green);
+}
+
+.move--almost {
+  --move-color: var(--orange);
+}
+
+.move--wrong {
+  --move-color: var(--red);
+}
+
+.move__label {
+  font-weight: 700;
+}
+
+.move__cost {
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: clamp(24px, 7vw, 32px);
+  line-height: 1.1;
+  color: var(--move-color);
+}
+
+.move__note {
+  color: var(--muted);
+}
+
+/* ---------- Ordinateur ---------- */
+@media (min-width: 768px) {
+  .moves {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ---------- Réduire les animations ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .timeline::after {
+    transform: none;
+  }
+
+  .timeline__step.reveal {
+    transform: none;
+  }
+}
