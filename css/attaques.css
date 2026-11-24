@@ -1,0 +1,106 @@
+/* =========================================================
+   SECTION 03 : LES CARTES ROUGES (ATTAQUE)
+   (la carte qui se retourne est dans cartes.css)
+   ========================================================= */
+
+/* ---------- Familles ---------- */
+.families {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.family {
+  padding: 12px 16px;
+  background: var(--navy-2);
+  border: 2px solid var(--navy);
+  border-radius: 12px;
+}
+
+.family b {
+  display: block;
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--red);
+}
+
+.family span {
+  color: var(--muted);
+}
+
+/* ---------- Gravité ---------- */
+.severity {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.severity li {
+  display: grid;
+  grid-template-columns: 5.5em 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--navy-2);
+  border: 2px solid var(--navy);
+  border-radius: 12px;
+}
+
+.severity__skulls {
+  white-space: nowrap;
+  font-size: 16px;
+}
+
+.severity__body {
+  display: flex;
+  flex-direction: column;
+}
+
+.severity__body span {
+  color: var(--muted);
+}
+
+.severity__cost {
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--red);
+  text-shadow: var(--glow-red);
+}
+
+/* ---------- Numéros des cartes QR ---------- */
+.qr-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.qr-list li {
+  padding: 4px 10px;
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  border: 1px solid var(--red);
+  border-radius: 6px;
+}
+
+/* ---------- Tablette / ordinateur ---------- */
+@media (min-width: 640px) {
+  .families {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .families {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

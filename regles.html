@@ -16,6 +16,10 @@
 <link rel="stylesheet" href="css/nav.css">
 <link rel="stylesheet" href="css/hero.css">
 <link rel="stylesheet" href="css/sections.css">
+<link rel="stylesheet" href="css/bref.css">
+<link rel="stylesheet" href="css/materiel.css">
+<link rel="stylesheet" href="css/attaques.css">
+<link rel="stylesheet" href="css/defenses.css">
 <link rel="stylesheet" href="css/cartes.css">
 <link rel="stylesheet" href="css/jauge.css">
 <link rel="stylesheet" href="css/footer.css">
@@ -71,61 +75,266 @@
     <!-- 1 -->
     <section class="section reveal" id="bref" aria-labelledby="t-bref">
       <div class="section__head"><span class="section__num">01</span><h2 class="section__title" id="t-bref">Le jeu en bref</h2></div>
-      <div class="placeholder">Contenu à venir</div>
+
+      <p class="lead">Hacker Alert est un jeu de cartes <strong>coopératif</strong> de <strong>10 minutes</strong> : 3 à 5 joueurs protègent ensemble une entreprise contre un hacker, avec un téléphone qui gère le chrono et la jauge.</p>
+
+      <dl class="fiche">
+        <div class="fiche__item"><dt>Sujet</dt><dd>Cybersécurité</dd></div>
+        <div class="fiche__item"><dt>Joueurs</dt><dd>3 à 5, tous dans la même équipe</dd></div>
+        <div class="fiche__item"><dt>Durée</dt><dd>10 minutes (+ 1 minute de mise en place)</dd></div>
+        <div class="fiche__item"><dt>Public</dt><dd>Tout public, aucune connaissance technique</dd></div>
+        <div class="fiche__item"><dt>Langue</dt><dd>Anglais (cartes, appli, discussions)</dd></div>
+        <div class="fiche__item"><dt>Type</dt><dd>Jeu de cartes papier + web app sur smartphone</dd></div>
+      </dl>
+
+      <div class="grid grid--2 bref__story">
+        <article class="block">
+          <h3 class="block__title">L'histoire</h3>
+          <p>NovaCorp, une entreprise fictive, est attaquée par un hacker. Les joueurs forment son équipe de sécurité. À chaque tour, une attaque arrive (faux mail, fausse facture, clé USB inconnue...) et l'équipe doit choisir le bon réflexe pour la bloquer.</p>
+        </article>
+        <article class="block block--goal">
+          <h3 class="block__title">Le but</h3>
+          <p>Bloquer <strong>6 attaques</strong> avant la fin du chrono, sans que la jauge d'intrusion atteigne <strong>10</strong>.</p>
+        </article>
+      </div>
+
+      <h3 class="subhead">Ce qu'on apprend</h3>
+      <ul class="checklist">
+        <li>Reconnaître une arnaque (faux mail, faux SMS, faux appel, fausse facture)</li>
+        <li>Choisir la bonne protection</li>
+        <li>Savoir quoi faire quand quelque chose cloche</li>
+        <li>Le vocabulaire de la cybersécurité en anglais</li>
+      </ul>
+
+      <div class="callout callout--muted">
+        <p class="callout__title">Ce que le jeu ne fait pas</p>
+        <p>Aucun vrai piratage. L'entreprise, les marques et tous les messages sont faux.</p>
+      </div>
     </section>
 
     <!-- 2 -->
     <section class="section reveal" id="materiel" aria-labelledby="t-materiel">
-      <div class="section__head"><span class="section__num">02</span><h2 class="section__title" id="t-materiel">Le matériel</h2></div>
-      <div class="placeholder">Contenu à venir</div>
+      <div class="section__head">
+        <span class="section__num">02</span><h2 class="section__title" id="t-materiel">Le matériel</h2>
+        <p class="section__sub">44 cartes, ni dé ni plateau</p>
+      </div>
+
+      <ul class="kit">
+        <li class="kit__item kit__item--red">
+          <span class="kit__count">30</span>
+          <div><h3 class="kit__name">Cartes rouges (Attaque)</h3><p class="kit__text">Les attaques du hacker. On en pioche 6 au hasard par partie. 10 ont un QR code.</p></div>
+        </li>
+        <li class="kit__item kit__item--green">
+          <span class="kit__count">12</span>
+          <div><h3 class="kit__name">Cartes vertes (Défense)</h3><p class="kit__text">Les bons réflexes, toujours posées face visible au milieu.</p></div>
+        </li>
+        <li class="kit__item kit__item--green">
+          <span class="kit__count">1</span>
+          <div><h3 class="kit__name">Carte "It's safe!"</h3><p class="kit__text">Pour dire qu'un message est vrai. Toujours disponible.</p></div>
+        </li>
+        <li class="kit__item">
+          <span class="kit__count">1</span>
+          <div><h3 class="kit__name">Carte "How to play"</h3><p class="kit__text">Le résumé des règles.</p></div>
+        </li>
+        <li class="kit__item">
+          <span class="kit__count">1</span>
+          <div><h3 class="kit__name">QR code "Start" sur la boîte</h3><p class="kit__text">Lance l'application.</p></div>
+        </li>
+        <li class="kit__item kit__item--orange">
+          <span class="kit__count">1</span>
+          <div><h3 class="kit__name">Jauge papier (piste 0 à 10 + 1 pion rouge)</h3><p class="kit__text">Secours uniquement, si le téléphone ne marche pas.</p></div>
+        </li>
+        <li class="kit__item">
+          <span class="kit__count">1</span>
+          <div><h3 class="kit__name">Smartphone (fourni par les joueurs)</h3><p class="kit__text">Posé au milieu, pour toute l'équipe.</p></div>
+        </li>
+      </ul>
     </section>
 
     <!-- 3 -->
     <section class="section section--red reveal" id="cartes-rouges" aria-labelledby="t-rouges">
-      <div class="section__head"><span class="section__num">03</span><h2 class="section__title" id="t-rouges">Les cartes rouges</h2></div>
-      <div class="placeholder">Contenu à venir</div>
-      <div class="cards">
-        <!-- Modèle de carte rouge (à remplacer par les vraies cartes) -->
-        <button class="card card--red" type="button" aria-pressed="false" aria-label="Carte rouge modèle, toucher pour retourner">
+      <div class="section__head">
+        <span class="section__num">03</span><h2 class="section__title" id="t-rouges">Les cartes rouges</h2>
+        <p class="section__sub">Attaque · 30 cartes, 5 familles de 6</p>
+      </div>
+
+      <h3 class="subhead">Familles</h3>
+      <ul class="families">
+        <li class="family"><b>Phishing</b><span>Faux mail de la banque, faux SMS de livraison, pièce jointe piégée</span></li>
+        <li class="family"><b>Mots de passe</b><span>"123456", même mot de passe partout, post-it</span></li>
+        <li class="family"><b>Appareils</b><span>Clé USB trouvée, fausse mise à jour, PC laissé ouvert</span></li>
+        <li class="family"><b>Faux humains</b><span>Faux support informatique, faux patron, fausse facture</span></li>
+        <li class="family"><b>Réseau</b><span>Wi-Fi gratuit de la gare, site sans cadenas</span></li>
+      </ul>
+
+      <h3 class="subhead">Recto et verso</h3>
+      <div class="grid grid--2">
+        <article class="block block--red">
+          <h3 class="block__title">Recto</h3>
+          <p>Numéro (#1 à #30), gravité, situation en anglais.</p>
+        </article>
+        <article class="block block--red">
+          <h3 class="block__title">Verso</h3>
+          <p>Meilleure défense, défense acceptable (s'il y en a une), explication courte en anglais.</p>
+        </article>
+      </div>
+
+      <h3 class="subhead">Gravité <small>(combien coûte une erreur)</small></h3>
+      <ul class="severity">
+        <li>
+          <span class="severity__skulls" aria-hidden="true">💀</span>
+          <span class="severity__body"><b>Petite</b><span>Mot de passe un peu faible</span></span>
+          <span class="severity__cost">+1</span>
+        </li>
+        <li>
+          <span class="severity__skulls" aria-hidden="true">💀💀</span>
+          <span class="severity__body"><b>Moyenne</b><span>Clic sur une pub louche</span></span>
+          <span class="severity__cost">+2</span>
+        </li>
+        <li>
+          <span class="severity__skulls" aria-hidden="true">💀💀💀</span>
+          <span class="severity__body"><b>Grave</b><span>Clé USB inconnue branchée</span></span>
+          <span class="severity__cost">+3</span>
+        </li>
+        <li>
+          <span class="severity__skulls" aria-hidden="true">💀💀💀💀</span>
+          <span class="severity__body"><b>Critique</b><span>Mot de passe du patron donné à un faux support</span></span>
+          <span class="severity__cost">+4</span>
+        </li>
+      </ul>
+
+      <div class="callout callout--green">
+        <p class="callout__title">Cartes "vrai message"</p>
+        <p>Certaines cartes rouges décrivent un message légitime (ex : un vrai mail des RH). La bonne réponse est <strong>"It's safe!"</strong>. Les signaler comme une arnaque est une erreur (gravité 💀, +1). Elles obligent à réfléchir au lieu de tout signaler par réflexe.</p>
+      </div>
+
+      <div class="callout callout--red">
+        <p class="callout__title">Cartes QR</p>
+        <p>10 cartes n'ont pas de texte, seulement <strong>"Incoming message! Scan me"</strong> et un QR code. Le scénario s'ouvre dans l'appli (<a href="#application">section 9</a>).</p>
+        <ul class="qr-list" aria-label="Numéros des cartes QR">
+          <li>#1</li><li>#2</li><li>#7</li><li>#8</li><li>#13</li><li>#14</li><li>#19</li><li>#20</li><li>#25</li><li>#26</li>
+        </ul>
+      </div>
+
+      <h3 class="subhead">Exemple</h3>
+      <div class="cards cards--single">
+        <button class="card card--red" type="button" aria-pressed="false" aria-label="Carte rouge numéro 11, gravité critique, toucher pour retourner">
           <span class="card__inner">
             <span class="card__face card__front">
-              <span class="card__top"><span class="card__num">?</span><span class="card__tag">ATTACK</span></span>
-              <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l10 18H2z"/><path d="M12 10v5"/><path d="M12 18h.01"/></svg></span>
-              <span class="card__name">Modèle</span>
-              <span class="card__text">Contenu à venir</span>
+              <span class="card__top"><span class="card__num">#11</span><span class="card__tag">💀💀💀💀</span></span>
+              <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3L20 3"/><path d="M16 7l3 3"/><path d="M18.5 4.5l2 2"/></svg></span>
+              <span class="card__situation" lang="en">The boss's password was stolen in a data leak. Someone is trying to log in to her account right now.</span>
             </span>
             <span class="card__face card__back">
-              <span class="card__name">Verso</span>
-              <span class="card__text">Contenu à venir</span>
+              <span class="card__answer"><span class="card__label">Best</span><span class="card__name" lang="en">Two-factor (2FA)</span></span>
+              <span class="card__answer card__answer--alt"><span class="card__label">Acceptable</span><span class="card__name" lang="en">Strong password</span></span>
             </span>
           </span>
         </button>
       </div>
-      <p class="card__hint">Touchez une carte pour la retourner</p>
+      <p class="card__hint">Touchez la carte pour la retourner</p>
     </section>
 
     <!-- 4 -->
     <section class="section section--green reveal" id="cartes-vertes" aria-labelledby="t-vertes">
-      <div class="section__head"><span class="section__num">04</span><h2 class="section__title" id="t-vertes">Les cartes vertes</h2></div>
-      <div class="placeholder">Contenu à venir</div>
-      <div class="cards">
-        <!-- Modèle de carte verte (à remplacer par les vraies cartes) -->
-        <button class="card card--green" type="button" aria-pressed="false" aria-label="Carte verte modèle, toucher pour retourner">
-          <span class="card__inner">
-            <span class="card__face card__front">
-              <span class="card__top"><span class="card__num">?</span><span class="card__tag">DEFENCE</span></span>
-              <span class="card__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span>
-              <span class="card__name">Modèle</span>
-              <span class="card__text">Contenu à venir</span>
-            </span>
-            <span class="card__face card__back">
-              <span class="card__name">Verso</span>
-              <span class="card__text">Contenu à venir</span>
-            </span>
-          </span>
-        </button>
+      <div class="section__head">
+        <span class="section__num">04</span><h2 class="section__title" id="t-vertes">Les cartes vertes</h2>
+        <p class="section__sub">Défense · 12 cartes + "It's safe!"</p>
       </div>
-      <p class="card__hint">Touchez une carte pour la retourner</p>
+
+      <ul class="defenses">
+        <li class="defense">
+          <span class="defense__num">1</span>
+          <span class="defense__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+          <div class="defense__body"><h3 class="defense__name" lang="en">Check the sender</h3><p class="defense__text">Vérifier qui envoie vraiment le message (faux mail, fausse adresse)</p></div>
+        </li>
+        <li class="defense">
+          <span class="defense__num">2</span>
+          <span class="defense__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4l6 15 2.2-6.3L19.5 10.5z"/><path d="M3 3l18 18"/></svg></span>
+          <div class="defense__body"><h3 class="defense__name" lang="en">Don't click</h3><p class="defense__text">Ne pas cliquer sur le lien ou la pièce jointe</p></div>
+        </li>
+        <li class="defense">
+          <span class="defense__num">3</span>
+          <span class="defense__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M7 10v4M5.3 11l3.4 2M5.3 13l3.4-2"/><path d="M12 10v4M10.3 11l3.4 2M10.3 13l3.4-2"/><path d="M17 10v4M15.3 11l3.4 2M15.3 13l3.4-2"/></svg></span>
+          <div class="defense__body"><h3 class="defense__name" lang="en">Strong password</h3><p class="defense__text">Un mot de passe long et difficile à deviner</p></div>
+        </li>
+        <li class="defense">
+          <span class="defense__num">4</span>
+          <span class="defense__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="16" rx="2"/><circle cx="12" cy="11" r="3.5"/><path d="M12 7.5V9M12 13v1.5M15.5 11H14M10 11H8.5"/><path d="M6 19v2M18 19v2"/></svg></span>
+          <div class="defense__body"><h3 class="defense__name" lang="en">Password manager</h3><p class="defense__text">Un coffre-fort qui retient tous les mots de passe</p></div>
+        </li>
+        <li class="defense">
+          <span class="defense__num">5</span>
+          <span class="defense__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M11 18h2"/><path d="M9.5 10l2 2 3.5-3.5"/></svg></span>
+          <div class="defense__body"><h3 class="defense__name" lang="en">Two-factor (2FA)</h3><p class="defense__text">Un 2e verrou : un code reçu sur le téléphone</p></div>
+        </li>
+        <li class="defense">
+          <span class="defense__num">6</span>
+          <span class="defense__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-2.6-6.4L21 8"/><path d="M21 3v5h-5"/><path d="M12 8v5M9.5 10.5L12 8l2.5 2.5"/></svg></span>
+          <div class="defense__body"><h3 class="defense__name" lang="en">Update</h3><p class="defense__text">Installer les vraies mises à jour</p></div>
+        </li>
+        <li class="defense">
+          <span class="defense__num">7</span>
+          <span class="defense__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span>
+          <div class="defense__body"><h3 class="defense__name" lang="en">Backup</h3><p class="defense__text">Une copie des fichiers, rangée à part (contre le ransomware)</p></div>
+        </li>
+        <li class="defense">
+          <span class="defense__num">8</span>
+          <span class="defense__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><path d="M12 15v2"/></svg></span>
+          <div class="defense__body"><h3 class="defense__name" lang="en">Lock your screen</h3><p class="defense__text">Verrouiller son PC quand on s'en va</p></div>
+        </li>
+        <li class="defense">
+          <span class="defense__num">9</span>
+          <span class="defense__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1z"/></svg></span>
+          <div class="defense__body"><h3 class="defense__name" lang="en">Call back to check</h3><p class="defense__text">Rappeler la personne avec un numéro connu (faux patron, fausse facture)</p></div>
+        </li>
+        <li class="defense">
+          <span class="defense__num">10</span>
+          <span class="defense__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8.8a15 15 0 0 1 20 0"/><path d="M5 12.5a10 10 0 0 1 14 0"/><path d="M8.5 16a5 5 0 0 1 7 0"/><path d="M12 20h.01"/><path d="M3 3l18 18"/></svg></span>
+          <div class="defense__body"><h3 class="defense__name" lang="en">Avoid public Wi-Fi</h3><p class="defense__text">Ne pas travailler sur un Wi-Fi gratuit</p></div>
+        </li>
+        <li class="defense">
+          <span class="defense__num">11</span>
+          <span class="defense__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/><path d="M8.5 11l2 2 3.5-3.5"/></svg></span>
+          <div class="defense__body"><h3 class="defense__name" lang="en">Antivirus scan</h3><p class="defense__text">Faire analyser l'appareil ou le fichier</p></div>
+        </li>
+        <li class="defense">
+          <span class="defense__num">12</span>
+          <span class="defense__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span>
+          <div class="defense__body"><h3 class="defense__name" lang="en">Alert IT</h3><p class="defense__text">Prévenir le service informatique</p></div>
+        </li>
+        <li class="defense defense--safe">
+          <span class="defense__num">+</span>
+          <span class="defense__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-7"/></svg></span>
+          <div class="defense__body"><h3 class="defense__name" lang="en">It's safe!</h3><p class="defense__text">Le message est vrai, on peut continuer</p></div>
+        </li>
+      </ul>
+
+      <h3 class="subhead">Deux règles</h3>
+      <ol class="rules">
+        <li>
+          <strong>Elles ne se piochent JAMAIS.</strong>
+          <p>Les 13 cartes sont posées face visible au milieu dès le début. Tout le monde les voit.</p>
+        </li>
+        <li>
+          <strong>Chacune ne sert qu'UNE fois (niveaux Pro et Expert).</strong>
+          <p>Une carte jouée est retournée face cachée jusqu'à la fin. Seule "It's safe!" reste toujours disponible. Avec 12 défenses pour 6 attaques, il faut garder les bonnes cartes pour plus tard.</p>
+        </li>
+      </ol>
+
+      <h3 class="subhead">Meilleure défense et défense acceptable</h3>
+      <div class="example">
+        <p class="example__card">
+          <span class="example__tag">Exemple · carte rouge <span aria-label="gravité grave">💀💀💀</span></span>
+          <span class="example__situation">"Le comptable reçoit une facture urgente d'un nouveau fournisseur"</span>
+        </p>
+        <ul class="outcome">
+          <li class="outcome--best"><span class="outcome__card" lang="en">Call back to check</span><span class="outcome__verdict">Meilleure</span><span class="outcome__cost">0</span></li>
+          <li class="outcome--ok"><span class="outcome__card" lang="en">Check the sender</span><span class="outcome__verdict">Acceptable</span><span class="outcome__cost">+1</span></li>
+          <li class="outcome--bad"><span class="outcome__card">Autre carte</span><span class="outcome__verdict">Erreur</span><span class="outcome__cost">+3</span></li>
+        </ul>
+        <p class="example__note">Si la meilleure carte est déjà usée, l'équipe peut limiter les dégâts avec la carte acceptable.</p>
+      </div>
     </section>
 
     <!-- 5 -->

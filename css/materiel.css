@@ -1,0 +1,66 @@
+/* =========================================================
+   SECTION 02 : LE MATÉRIEL
+   ========================================================= */
+
+.kit {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.kit__item {
+  --kit-color: var(--white);
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--navy-2);
+  border: 2px solid var(--navy);
+  border-left: 6px solid var(--kit-color);
+  border-radius: 12px;
+}
+
+/* Couleurs selon le type d'objet */
+.kit__item--red {
+  --kit-color: var(--red);
+}
+
+.kit__item--green {
+  --kit-color: var(--green);
+}
+
+.kit__item--orange {
+  --kit-color: var(--orange);
+}
+
+/* Nombre d'exemplaires */
+.kit__count {
+  min-width: 2ch;
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1;
+  text-align: center;
+  color: var(--kit-color);
+}
+
+.kit__name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.kit__text {
+  margin: 2px 0 0;
+  color: var(--muted);
+}
+
+/* ---------- Tablette / ordinateur ---------- */
+@media (min-width: 640px) {
+  .kit {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

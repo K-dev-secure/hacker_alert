@@ -107,7 +107,7 @@
 }
 
 .card__icon svg {
-  width: 56%;
+  width: 40%;
   height: auto;
   filter: drop-shadow(0 0 10px var(--card-color));
 }
@@ -124,6 +124,50 @@
   font-size: 16px;
   color: var(--muted);
   margin: 6px 0 0;
+}
+
+/* Situation en anglais (recto) */
+.card__situation {
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--white);
+}
+
+/* Réponses (verso) */
+.card__back {
+  gap: 12px;
+}
+
+.card__answer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 10px;
+  background: var(--navy-2);
+  border: 2px solid var(--green);
+  border-radius: 12px;
+}
+
+.card__answer--alt {
+  border-color: var(--orange);
+}
+
+.card__label {
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--green);
+}
+
+.card__answer--alt .card__label {
+  color: var(--orange);
+}
+
+/* Une seule carte : centrée */
+.cards--single {
+  grid-template-columns: 1fr;
 }
 
 .card__hint {

@@ -51,6 +51,118 @@
   text-shadow: 0 0 22px rgba(93, 184, 112, .3);
 }
 
+/* ---------- Sous-titre de section ---------- */
+.section__sub {
+  flex-basis: 100%;
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  color: var(--muted);
+}
+
+/* =========================================================
+   CONTENU COMMUN (utilisé dans plusieurs sections)
+   ========================================================= */
+
+/* Phrase d'introduction */
+.lead {
+  font-size: clamp(18px, 4.6vw, 22px);
+  line-height: 1.5;
+  max-width: 60ch;
+  margin: 0 0 24px;
+}
+
+.lead strong {
+  color: var(--green);
+}
+
+/* Petit titre dans une section */
+.subhead {
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: clamp(22px, 6vw, 28px);
+  line-height: 1.2;
+  margin: 40px 0 14px;
+}
+
+.subhead small {
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--muted);
+}
+
+/* Bloc de texte encadré */
+.block {
+  background: var(--navy-2);
+  border: 2px solid var(--navy);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.block__title {
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.2;
+  margin: 0 0 8px;
+}
+
+.block p {
+  margin: 0;
+}
+
+.block--red {
+  border-color: rgba(215, 25, 32, .55);
+}
+
+.block--goal {
+  border-color: var(--green);
+  box-shadow: var(--glow-green);
+}
+
+.block--goal strong {
+  color: var(--green);
+}
+
+/* Encadré avec bande de couleur à gauche */
+.callout {
+  --callout-color: var(--green);
+  margin: 16px 0;
+  padding: 16px 18px;
+  background: var(--navy-2);
+  border: 2px solid var(--navy);
+  border-left: 6px solid var(--callout-color);
+  border-radius: 12px;
+}
+
+.callout--red {
+  --callout-color: var(--red);
+}
+
+.callout--green {
+  --callout-color: var(--green);
+}
+
+.callout--muted {
+  --callout-color: var(--muted);
+}
+
+.callout__title {
+  margin: 0 0 6px;
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--callout-color);
+}
+
+.callout p {
+  margin: 0;
+}
+
+.callout p + p {
+  margin-top: 6px;
+}
+
 /* ---------- Bloc "Contenu à venir" ---------- */
 .placeholder {
   border: 2px dashed var(--navy);

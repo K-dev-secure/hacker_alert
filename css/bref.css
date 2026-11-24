@@ -1,0 +1,74 @@
+/* =========================================================
+   SECTION 01 : LE JEU EN BREF
+   ========================================================= */
+
+/* ---------- Fiche (Sujet, Joueurs, Durée...) ---------- */
+.fiche {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 0;
+}
+
+.fiche__item {
+  background: var(--navy-2);
+  border: 2px solid var(--navy);
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+.fiche dt {
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  color: var(--green);
+}
+
+.fiche dd {
+  margin: 2px 0 0;
+}
+
+/* ---------- L'histoire + Le but ---------- */
+.bref__story {
+  margin-top: 24px;
+}
+
+/* ---------- Ce qu'on apprend ---------- */
+.checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.checklist li {
+  position: relative;
+  padding: 12px 14px 12px 46px;
+  background: var(--navy-2);
+  border: 1px solid var(--navy);
+  border-radius: 12px;
+}
+
+.checklist li::before {
+  content: "✓";
+  position: absolute;
+  left: 16px;
+  top: 12px;
+  font-weight: 700;
+  color: var(--green);
+  text-shadow: var(--glow-green);
+}
+
+/* ---------- Tablette / ordinateur ---------- */
+@media (min-width: 640px) {
+  .fiche,
+  .checklist {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .fiche {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
