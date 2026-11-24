@@ -15,6 +15,9 @@
 <link rel="stylesheet" href="css/app/layout.css">
 <link rel="stylesheet" href="css/app/home.css">
 <link rel="stylesheet" href="css/app/rules.css">
+<link rel="stylesheet" href="css/app/glossary.css">
+<link rel="stylesheet" href="css/app/picker.css">
+<link rel="stylesheet" href="css/app/debrief.css">
 <link rel="stylesheet" href="css/app/hud.css">
 <link rel="stylesheet" href="css/app/pad.css">
 <link rel="stylesheet" href="css/app/result.css">
@@ -53,6 +56,7 @@
   <div class="subtitle" id="subtitle" hidden aria-live="polite">
     <span class="subtitle__who">HACKER</span>
     <span class="subtitle__text"></span>
+    <button class="subtitle__replay" id="subReplay" type="button" data-i18n="voice.replay"></button>
   </div>
 
   <!-- ===== Accueil ===== -->
@@ -92,7 +96,10 @@
       <button class="btn btn--start" type="submit" data-i18n="home.start"></button>
     </form>
 
-    <button class="btn btn--ghost home__rules" type="button" data-open-rules data-i18n="home.rules"></button>
+    <div class="btn-row home__more">
+      <button class="btn btn--ghost" type="button" data-open-rules data-i18n="home.rules"></button>
+      <button class="btn btn--ghost" type="button" data-open-glossary data-i18n="home.glossary"></button>
+    </div>
     <a class="home__practice" href="?c=practice" data-i18n="home.practice"></a>
   </section>
 
@@ -100,8 +107,24 @@
   <section class="screen rules" id="screen-rules" hidden aria-labelledby="rulesTitle">
     <h1 class="rules__title" id="rulesTitle" data-i18n="rules.title"></h1>
     <div class="rules__sheet" data-i18n-html="rules.html"></div>
+    <h2 class="rules__sub" data-i18n="db.reportTitle"></h2>
+    <ul class="report" data-report-list></ul>
+    <button class="btn btn--ghost rules__glossary" type="button" data-open-glossary data-i18n="home.glossary"></button>
     <a class="rules__full" href="regles.html" data-i18n="rules.full"></a>
     <button class="btn btn--primary" id="rulesBack" type="button" data-i18n="back"></button>
+    <p class="rules__credits" data-i18n="credits.voices"></p>
+  </section>
+
+  <!-- ===== Glossaire anglais / français ===== -->
+  <section class="screen glossary" id="screen-glossary" hidden aria-labelledby="gloTitle">
+    <h1 class="glossary__title" id="gloTitle" data-i18n="glo.title"></h1>
+    <p class="glossary__intro" data-i18n="glo.intro"></p>
+    <label class="glossary__search">
+      <span class="glossary__search-label" data-i18n="glo.search"></span>
+      <input type="search" id="gloSearch" autocomplete="off" spellcheck="false">
+    </label>
+    <dl class="glossary__list" id="gloList"></dl>
+    <button class="btn btn--primary" id="gloBack" type="button" data-i18n="back"></button>
   </section>
 
   <!-- ===== Partie : pavé du maître du jeu ===== -->
@@ -126,18 +149,13 @@
         <span class="card-panel__fam" id="cpFam"></span>
         <span class="card-panel__sev" id="cpSev"></span>
       </header>
-      <p class="card-panel__real" id="cpReal" hidden data-i18n="card.real"></p>
       <p class="card-panel__text" id="cpText"></p>
-      <dl class="card-panel__answers">
-        <div class="card-panel__best"><dt data-i18n="card.best"></dt><dd id="cpBest"></dd></div>
-        <div class="card-panel__ok"><dt data-i18n="card.ok"></dt><dd id="cpOk"></dd></div>
-      </dl>
-      <p class="card-panel__expert" id="cpExpert" hidden></p>
-      <div class="verdicts">
-        <button class="verdict verdict--right" id="vRight" type="button"><span data-i18n="v.right"></span><small data-i18n="v.right.sub"></small></button>
-        <button class="verdict verdict--almost" id="vAlmost" type="button"><span data-i18n="v.almost"></span><small data-i18n="v.almost.sub"></small></button>
-        <button class="verdict verdict--wrong" id="vWrong" type="button"><span data-i18n="v.wrong"></span><small id="vWrongSub"></small></button>
-      </div>
+      <button class="hint-btn" id="cpHintBtn" type="button" hidden data-i18n="card.hintBtn"></button>
+      <p class="card-panel__hint" id="cpHint" hidden></p>
+      <p class="picker__title" id="pickTitle"></p>
+      <p class="picker__note" data-i18n="pick.note"></p>
+      <div class="picker" id="picker"></div>
+      <button class="btn btn--primary picker__validate" id="pickValidate" type="button" disabled data-i18n="pick.validate"></button>
       <button class="btn btn--ghost btn--small" id="cpBack" type="button" data-i18n="card.back"></button>
     </article>
 
@@ -150,7 +168,7 @@
       <button class="btn btn--ghost btn--small" id="qrBack" type="button" data-i18n="card.back"></button>
     </article>
 
-    <div class="game__links">
+    <div class="game__links" id="gameLinks">
       <button class="btn btn--link" type="button" data-open-rules data-i18n="game.rules"></button>
       <button class="btn btn--link" id="abandonBtn" type="button" data-i18n="game.abandon"></button>
     </div>
@@ -174,6 +192,10 @@
         <p class="result__best" id="resBest"></p>
         <p class="result__why" id="resWhy"></p>
       </div>
+      <div class="result__rule" id="resRuleBox" hidden>
+        <p class="result__rule-label" data-i18n="res.ruleLabel"></p>
+        <p class="result__rule-text" id="resRule"></p>
+      </div>
       <p class="result__note" id="resNote" hidden></p>
       <button class="btn btn--primary" id="resNext" type="button"></button>
     </div>
@@ -186,9 +208,30 @@
       <h2 class="end__title" id="endTitle"></h2>
       <p class="end__score" id="endScore"></p>
     </div>
+    <!-- Débrief pédagogique -->
+    <div class="debrief__weak" id="dbWeak" hidden>
+      <h3 class="debrief__label" data-i18n="db.weakTitle"></h3>
+      <p class="debrief__weakname" id="dbWeakName"></p>
+      <p class="debrief__rule" id="dbWeakRule"></p>
+      <p class="debrief__home" id="dbWeakHome"></p>
+    </div>
+
     <h3 class="end__recap-title" data-i18n="end.recap"></h3>
     <ol class="end__recap" id="endRecap"></ol>
-    <button class="btn btn--start" id="newGameBtn" type="button" data-i18n="end.new"></button>
+
+    <h3 class="end__recap-title" data-i18n="db.rulesTitle"></h3>
+    <ul class="debrief__rules" id="dbRules"></ul>
+
+    <h3 class="end__recap-title" data-i18n="db.talkTitle"></h3>
+    <ol class="debrief__talk" id="dbTalk"></ol>
+
+    <h3 class="end__recap-title" data-i18n="db.reportTitle"></h3>
+    <ul class="report" data-report-list></ul>
+
+    <div class="btn-row end__buttons">
+      <button class="btn btn--ghost" type="button" data-open-glossary data-i18n="home.glossary"></button>
+      <button class="btn btn--start" id="newGameBtn" type="button" data-i18n="end.new"></button>
+    </div>
   </section>
 
   <!-- ===== Entraînement ===== -->

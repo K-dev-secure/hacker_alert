@@ -121,3 +121,30 @@
   font-size: 15px;
   text-align: left;
 }
+
+/* À retenir : la règle d'or de la famille */
+.result__rule {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border: 2px solid var(--green);
+  border-radius: 12px;
+  background: rgba(93, 184, 112, .1);
+  text-align: left;
+}
+
+.result__rule[hidden] {
+  display: none;
+}
+
+.result__rule-label {
+  margin: 0 0 4px;
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  color: var(--green);
+}
+
+.result__rule-text {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.45;
+}

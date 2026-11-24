@@ -1,0 +1,147 @@
+/* =========================================================
+   APPLI — CHOIX DE LA CARTE VERTE (c'est l'appli qui juge)
+   ========================================================= */
+
+/* Indice (niveau Junior et entraînement) */
+.hint-btn {
+  min-height: 44px;
+  margin: 0 0 10px;
+  padding: 8px 14px;
+  border: 1px dashed var(--orange);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--orange);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.hint-btn[hidden],
+.card-panel__hint[hidden] {
+  display: none;
+}
+
+.card-panel__hint {
+  margin: 0 0 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(242, 140, 40, .12);
+  color: var(--white);
+  font-weight: 600;
+}
+
+/* Titre et consigne */
+.picker__title {
+  margin: 4px 0 2px;
+  font-family: var(--font-title);
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.picker__note {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ---------- Grille des 13 cartes vertes ---------- */
+.picker {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pick {
+  position: relative;
+  min-height: 64px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 10px;
+  border: 2px solid var(--green);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--white);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color .15s, box-shadow .15s, transform .08s;
+}
+
+.pick:active:not(:disabled) {
+  transform: scale(.97);
+}
+
+.pick__main {
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.pick__en {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.2;
+}
+
+/* Carte choisie */
+.pick[aria-pressed="true"] {
+  background: var(--green);
+  color: var(--bg);
+  box-shadow: var(--glow-green);
+}
+
+.pick[aria-pressed="true"] .pick__en {
+  color: var(--bg);
+}
+
+.pick[aria-pressed="true"]::after {
+  content: "✓";
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  font-weight: 700;
+}
+
+/* "It's safe!" : toute la largeur, toujours disponible */
+.pick--safe {
+  grid-column: 1 / -1;
+  border-style: dashed;
+}
+
+/* Carte déjà jouée (Pro / Expert) */
+.pick:disabled {
+  border-color: var(--navy);
+  color: var(--muted);
+  cursor: not-allowed;
+  opacity: .55;
+}
+
+.pick:disabled .pick__main {
+  text-decoration: line-through;
+}
+
+.pick__used {
+  font-size: 12px;
+  font-family: var(--font-pixel);
+  color: var(--muted);
+}
+
+.picker__validate {
+  min-height: 56px;
+  margin-bottom: 10px;
+}
+
+.picker__validate:disabled {
+  opacity: .4;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+@media (min-width: 560px) {
+  .picker {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

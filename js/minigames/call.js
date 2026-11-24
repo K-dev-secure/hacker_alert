@@ -90,7 +90,16 @@ Minigames.register("call", function (root, ctx) {
     }, 300);
     timers.push(typer);
 
-    NovaGame.speak(call.text, { speaker: call.name, pitch: call.voice.pitch, rate: 0.95, noSubtitle: true, channel: "call" });
+    function say() {
+      // Voix enregistrée de l'appel (audio/fr/call-N.mp3), sinon voix du téléphone
+      var audio = NovaGame.audioFile("call-" + ctx.data.CALLS.indexOf(call));
+      NovaGame.speak(call.text, { speaker: call.name, pitch: call.voice.pitch, rate: 0.95, noSubtitle: true, channel: "call", audio: audio });
+    }
+    say();
+    // Réécouter l'appel (le texte reste affiché)
+    var again = el("button", { class: "call__replay", type: "button", text: t("voice.replay") });
+    again.addEventListener("click", say);
+    transcript.after(again);
   });
 
   /* ---------- Décision ---------- */

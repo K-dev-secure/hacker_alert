@@ -170,3 +170,21 @@
   white-space: nowrap;
   font-size: 14px;
 }
+
+/* Fiche des règles + glossaire */
+.home__more {
+  margin-top: 12px;
+}
+
+.home__more .btn {
+  width: 100%;
+}
+
+/* Entraînement : carte rouge au hasard */
+.practice__item--cards {
+  border-color: var(--green);
+}
+
+.practice__item--cards .practice__cards {
+  font-size: 22px;
+}

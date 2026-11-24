@@ -15,6 +15,33 @@ window.NovaI18n = (function () {
     /* =================== FRANÇAIS =================== */
     fr: {
       "fake": "Jeu d'entraînement. Tout est faux : ne tape jamais de vraie information.",
+      "voice.replay": "🔁 Réécouter",
+      "credits.voices": "Voix : Piper (gratuit et libre), voix SIWIS, MLS et VCTK (CC BY 4.0) et « Jenny (Dioco) ».",
+      "home.glossary": "📖 Glossaire FR / EN",
+      "glo.title": "Glossaire anglais / français",
+      "glo.intro": "Les mots de la cybersécurité, en anglais et en français, avec une explication simple.",
+      "glo.search": "Chercher un mot",
+      "glo.placeholder": "ex : phishing, sauvegarde, box...",
+      "glo.empty": "Aucun mot trouvé.",
+      "card.hintBtn": "💡 Besoin d'un indice ?",
+      "pick.title": "Quelle carte verte avez-vous posée ?",
+      "pick.title2": "Expert : cette attaque demande 2 cartes vertes. Touchez les deux.",
+      "pick.note": "Posez d'abord la carte verte sur la table, puis touchez-la ici. Ne retournez pas la carte rouge avant d'avoir validé !",
+      "pick.validate": "Valider",
+      "pick.validateWith": "Valider : {c}",
+      "pick.used": "déjà jouée",
+      "res.played": "Vous avez joué : {c}",
+      "res.acceptable": "Acceptable : {d}",
+      "res.ruleLabel": "⭐ À retenir",
+      "db.weakTitle": "Votre point faible",
+      "db.rulesTitle": "Les règles d'or",
+      "db.talkTitle": "On en parle ?",
+      "db.reportTitle": "Où signaler une arnaque (France)",
+      "pr.redCards": "Une carte rouge au hasard",
+      "desk.a.router": "Box internet",
+      "desk.a.routerPwd": "Box internet avec une étiquette",
+      "ransom.s.support": "Bien vu : c'était une fausse alerte virus. Hacker bloqué !",
+      "ransom.s.supportMissed": "C'était une arnaque : une fausse alerte virus qui veut te faire appeler un faux support.",
       "lang.switch": "EN",
       "lang.aria": "Switch to English",
       "voice.on": "Voix du hacker : activée",
@@ -35,7 +62,7 @@ window.NovaI18n = (function () {
       "home.practice": "Mode entraînement : les mini-jeux, sans chrono ni jauge",
       "confirm.newGame": "Une partie est en cours. En commencer une nouvelle ?",
 
-      "pad.help": "Maître du jeu : tape le numéro de la carte rouge.",
+      "pad.help": "Tape le numéro de la carte rouge que vous venez de lire.",
       "pad.delete": "Effacer",
       "pad.invalid": "Tape un numéro de carte rouge entre 1 et 30.",
       "pad.played": "La carte #{n} a déjà été jouée.",
@@ -74,7 +101,7 @@ window.NovaI18n = (function () {
       "calc.gauge": "Jauge d'intrusion : {a} → {b}/10",
       "calc.practice": "En vraie partie : +{n} (sans les bonus du hacker)",
       "res.best": "Meilleure défense : {d}",
-      "res.noGame": "Aucune partie en cours sur ce téléphone : ce résultat ne compte pas. Conseil : le maître du jeu tape le numéro de la carte QR dans le téléphone de la partie, puis appuie sur Ouvrir.",
+      "res.noGame": "Aucune partie en cours sur ce téléphone : ce résultat ne compte pas. Conseil : tapez le numéro de la carte QR dans le téléphone de la partie, puis appuyez sur Ouvrir.",
       "res.next": "Attaque suivante",
       "res.toEnd": "Voir la fin de la partie",
       "res.backPractice": "Retour à l'entraînement",
@@ -108,21 +135,22 @@ window.NovaI18n = (function () {
         "<p>Bloquer <strong>6 attaques</strong> en <strong>10 minutes</strong>, sans que la jauge d'intrusion atteigne <strong>10</strong>.</p>" +
         "<h3>Un tour</h3>" +
         "<ol><li>Un joueur retourne une carte rouge et la lit à voix haute.</li>" +
-        "<li>L'équipe discute et choisit <strong>UNE</strong> carte verte.</li>" +
-        "<li>On pose la carte verte sur la carte rouge.</li>" +
-        "<li>Le maître du jeu tape le numéro de la carte rouge et lit la réponse.</li>" +
-        "<li>Il appuie sur Bonne, Presque ou Mauvaise : l'appli calcule la sanction.</li>" +
-        "<li>La carte verte jouée est retournée (sauf « It's safe! » et sauf au niveau Junior).</li></ol>" +
+        "<li>L'équipe discute et choisit <strong>UNE</strong> carte verte, puis la pose sur la carte rouge.</li>" +
+        "<li>On tape le numéro de la carte rouge dans l'appli : la situation s'affiche, <strong>sans la réponse</strong>.</li>" +
+        "<li>On touche la carte verte posée, puis <strong>Valider</strong> : <strong>c'est l'appli qui juge</strong> et calcule la sanction.</li>" +
+        "<li>Ensuite seulement, on retourne la carte rouge pour lire l'explication.</li>" +
+        "<li>La carte verte jouée est grisée dans l'appli (sauf « It's safe! » et sauf au niveau Junior).</li></ol>" +
+        "<p><strong>Pas besoin d'arbitre</strong> : n'importe quel joueur peut tenir le téléphone, personne ne peut tricher en appuyant sur « Bonne ».</p>" +
         "<h3>Combien avance la jauge</h3>" +
-        "<ul><li>✅ Bonne défense : <strong>0</strong></li>" +
-        "<li>🟠 Presque (la défense acceptable) : <strong>+1</strong></li>" +
+        "<ul><li>✅ La meilleure défense : <strong>0</strong></li>" +
+        "<li>🟠 La défense acceptable : <strong>+1</strong></li>" +
         "<li>❌ Mauvaise défense : <strong>+1 à +4</strong> selon la gravité (💀 à 💀💀💀💀)</li>" +
         "<li>Vrai message signalé comme une arnaque (fausse alerte) : <strong>+1</strong></li></ul>" +
         "<h3>Les deux bonus du hacker</h3>" +
         "<ul><li><strong>Alerte rouge</strong> : à partir de 5/10, chaque réponse qui n'est pas bonne coûte +1 de plus.</li>" +
         "<li><strong>Même erreur deux fois</strong> : rater une 2e attaque de la même famille coûte +1 de plus (jamais pour une fausse alerte).</li></ul>" +
         "<h3>Les cartes QR</h3>" +
-        "<p>Le maître du jeu tape le numéro de la carte puis appuie sur Ouvrir. L'équipe joue le mini-jeu ensemble : aucune carte verte n'est jouée.</p>" +
+        "<p>On tape le numéro de la carte puis on appuie sur Ouvrir. L'équipe joue le mini-jeu ensemble : aucune carte verte n'est jouée.</p>" +
         "<h3>La fin</h3>" +
         "<ul><li><strong>Gagné</strong> : les 6 attaques sont jouées, la jauge est sous 10 et le chrono n'est pas à zéro. Score = 10 − jauge.</li>" +
         "<li><strong>Perdu</strong> : la jauge atteint 10, ou le chrono tombe à zéro.</li></ul>" +
@@ -189,18 +217,24 @@ window.NovaI18n = (function () {
       "call.s.false": "Fausse alerte : c'était un vrai collègue.",
       "call.s.right": "Bien vu : c'était un vrai collègue.",
 
-      "link.help": "Lis l'adresse lettre par lettre. Vrai site ou fausse copie ?",
-      "link.fake": "Faux site",
-      "link.real": "Vrai site",
-      "link.realTip": "La vraie adresse est {u}.",
+      "link.help.site": "Lis l'adresse lettre par lettre. Vrai site ou fausse copie ?",
+      "link.help.wifi": "Lis le nom du réseau lettre par lettre. Vrai réseau ou piège ?",
+      "link.fake.site": "Faux site",
+      "link.real.site": "Vrai site",
+      "link.fake.wifi": "Faux réseau",
+      "link.real.wifi": "Vrai réseau",
+      "link.thing.site": "site",
+      "link.thing.wifi": "réseau",
+      "link.realTip.site": "La vraie adresse est {u}.",
+      "link.realTip.wifi": "Le vrai réseau s'appelle {u}.",
       "link.wasReal": "Celui-ci était vrai. ",
       "link.readEnd": " Lis toujours la fin de l'adresse avant le premier « / ».",
-      "link.s.timeReal": "Temps écoulé ! C'était le vrai site.",
-      "link.s.timeFake": "Temps écoulé ! C'était un faux site.",
-      "link.s.falseReal": "Fausse alerte : c'était le vrai site.",
-      "link.s.right": "Bien vu : c'était le vrai site.",
-      "link.s.spotted": "Faux site repéré. Hacker bloqué !",
-      "link.s.fooled": "C'était un faux site !",
+      "link.s.timeReal": "Temps écoulé ! C'était le vrai {x}.",
+      "link.s.timeFake": "Temps écoulé ! C'était un faux {x}.",
+      "link.s.falseReal": "Fausse alerte : c'était le vrai {x}.",
+      "link.s.right": "Bien vu : c'était le vrai {x}.",
+      "link.s.spotted": "Faux {x} repéré. Hacker bloqué !",
+      "link.s.fooled": "C'était un faux {x} !",
 
       "desk.help": "Touche chaque erreur de sécurité sur ce bureau. Attention : parfois il n'y en a aucune !",
       "desk.counter": "Trouvées : {f} · Fausses alertes : {a}",
@@ -258,6 +292,33 @@ window.NovaI18n = (function () {
     /* =================== ENGLISH =================== */
     en: {
       "fake": "Training game. Everything here is fake: never type real information.",
+      "voice.replay": "🔁 Listen again",
+      "credits.voices": "Voices: Piper (free and open source), SIWIS, MLS and VCTK voices (CC BY 4.0) and \"Jenny (Dioco)\".",
+      "home.glossary": "📖 Glossary EN / FR",
+      "glo.title": "English / French glossary",
+      "glo.intro": "The words of cybersecurity, in English and in French, with a simple explanation.",
+      "glo.search": "Search a word",
+      "glo.placeholder": "e.g. phishing, backup, router...",
+      "glo.empty": "No word found.",
+      "card.hintBtn": "💡 Need a hint?",
+      "pick.title": "Which green card did you put down?",
+      "pick.title2": "Expert: this attack needs 2 green cards. Tap both.",
+      "pick.note": "First put the green card on the table, then tap it here. Don't turn the red card over before you confirm!",
+      "pick.validate": "Confirm",
+      "pick.validateWith": "Confirm: {c}",
+      "pick.used": "already used",
+      "res.played": "You played: {c}",
+      "res.acceptable": "Acceptable: {d}",
+      "res.ruleLabel": "⭐ Remember",
+      "db.weakTitle": "Your weak point",
+      "db.rulesTitle": "The golden rules",
+      "db.talkTitle": "Let's talk",
+      "db.reportTitle": "Where to report a scam (France)",
+      "pr.redCards": "A random red card",
+      "desk.a.router": "Internet box",
+      "desk.a.routerPwd": "Internet box with a sticker",
+      "ransom.s.support": "Correct: it was a fake virus alert. Hacker blocked!",
+      "ransom.s.supportMissed": "It was a scam: a fake virus alert that wants you to call a fake support.",
       "lang.switch": "FR",
       "lang.aria": "Passer en français",
       "voice.on": "Hacker voice: on",
@@ -278,7 +339,7 @@ window.NovaI18n = (function () {
       "home.practice": "Practice mode: the mini-games, without timer or gauge",
       "confirm.newGame": "A game is in progress. Start a new one?",
 
-      "pad.help": "Game master: type the number of the red card.",
+      "pad.help": "Type the number of the red card you just read.",
       "pad.delete": "Delete",
       "pad.invalid": "Type a red card number between 1 and 30.",
       "pad.played": "Card #{n} has already been played.",
@@ -351,21 +412,22 @@ window.NovaI18n = (function () {
         "<p>Block <strong>6 attacks</strong> in <strong>10 minutes</strong>, before the intrusion gauge reaches <strong>10</strong>.</p>" +
         "<h3>One turn</h3>" +
         "<ol><li>A player turns over a red card and reads it aloud.</li>" +
-        "<li>The team talks and agrees on <strong>ONE</strong> green card.</li>" +
-        "<li>Put the green card on the red card.</li>" +
-        "<li>The game master types the red card number and reads the answer.</li>" +
-        "<li>They press Right, Almost or Wrong: the app calculates the penalty.</li>" +
-        "<li>The green card played is turned face down (except \"It's safe!\" and except in Junior).</li></ol>" +
+        "<li>The team talks, agrees on <strong>ONE</strong> green card and puts it on the red card.</li>" +
+        "<li>Type the red card number in the app: the situation appears, <strong>without the answer</strong>.</li>" +
+        "<li>Tap the green card you played, then <strong>Confirm</strong>: <strong>the app judges</strong> and calculates the penalty.</li>" +
+        "<li>Only then, turn the red card over to read the explanation.</li>" +
+        "<li>The green card played is greyed out in the app (except \"It's safe!\" and except in Junior).</li></ol>" +
+        "<p><strong>No referee needed</strong>: any player can hold the phone, and nobody can cheat by pressing \"Right\".</p>" +
         "<h3>How much the gauge goes up</h3>" +
-        "<ul><li>✅ Right defence: <strong>0</strong></li>" +
-        "<li>🟠 Almost right (acceptable defence): <strong>+1</strong></li>" +
+        "<ul><li>✅ The best defence: <strong>0</strong></li>" +
+        "<li>🟠 The acceptable defence: <strong>+1</strong></li>" +
         "<li>❌ Wrong defence: <strong>+1 to +4</strong> depending on severity (💀 to 💀💀💀💀)</li>" +
         "<li>A real message reported as a scam (false alarm): <strong>+1</strong></li></ul>" +
         "<h3>The hacker's two bonuses</h3>" +
         "<ul><li><strong>Red alert</strong>: from 5/10, each answer that is not Right costs +1 more.</li>" +
         "<li><strong>Same mistake twice</strong>: missing a 2nd attack of the same family costs +1 more (never for a false alarm).</li></ul>" +
         "<h3>QR cards</h3>" +
-        "<p>The game master types the card number then presses Open. The team plays the mini-game together: no green card is played.</p>" +
+        "<p>Type the card number then press Open. The team plays the mini-game together: no green card is played.</p>" +
         "<h3>The end</h3>" +
         "<ul><li><strong>Won</strong>: the 6 attacks are played, the gauge is under 10 and the timer is not at zero. Score = 10 − gauge.</li>" +
         "<li><strong>Lost</strong>: the gauge reaches 10, or the timer reaches zero.</li></ul>" +
@@ -432,18 +494,24 @@ window.NovaI18n = (function () {
       "call.s.false": "False alarm: it was a real colleague.",
       "call.s.right": "Correct: it was a real colleague.",
 
-      "link.help": "Read the address letter by letter. Real website or fake copy?",
-      "link.fake": "Fake website",
-      "link.real": "Real website",
-      "link.realTip": "The real address is {u}.",
+      "link.help.site": "Read the address letter by letter. Real website or fake copy?",
+      "link.help.wifi": "Read the network name letter by letter. Real network or trap?",
+      "link.fake.site": "Fake website",
+      "link.real.site": "Real website",
+      "link.fake.wifi": "Fake network",
+      "link.real.wifi": "Real network",
+      "link.thing.site": "website",
+      "link.thing.wifi": "network",
+      "link.realTip.site": "The real address is {u}.",
+      "link.realTip.wifi": "The real network is called {u}.",
       "link.wasReal": "This one was real. ",
       "link.readEnd": " Always read the end of the address before the first \"/\".",
-      "link.s.timeReal": "Time's up! It was the real website.",
-      "link.s.timeFake": "Time's up! It was a fake website.",
-      "link.s.falseReal": "False alarm: it was the real website.",
-      "link.s.right": "Correct: it was the real website.",
-      "link.s.spotted": "Fake website spotted. Hacker blocked!",
-      "link.s.fooled": "It was a fake website!",
+      "link.s.timeReal": "Time's up! It was the real {x}.",
+      "link.s.timeFake": "Time's up! It was a fake {x}.",
+      "link.s.falseReal": "False alarm: it was the real {x}.",
+      "link.s.right": "Correct: it was the real {x}.",
+      "link.s.spotted": "Fake {x} spotted. Hacker blocked!",
+      "link.s.fooled": "It was a fake {x}!",
 
       "desk.help": "Tap every security mistake on this desk. Careful: sometimes there is none!",
       "desk.counter": "Found: {f} · False alarms: {a}",

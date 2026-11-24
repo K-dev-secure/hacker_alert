@@ -67,6 +67,19 @@ Minigames.register("desk", function (root, ctx) {
       "<text x='261' y='56' font-size='9' fill='#3A2F00' font-family='Arial, sans-serif'>" + t("desk.svg.pwd") + "</text>" +
       "<text x='261' y='70' font-size='9' fill='#3A2F00' font-family='Arial, sans-serif' font-weight='bold'>Nova2026!</text></g>") : "") +
 
+    /* box / routeur sur l'étagère : mot de passe Wi-Fi collé dessus (erreur) ou rien */
+    "<rect x='306' y='84' width='90' height='5' fill='#5E4A38'/>" +
+    item("router", t(has("router") ? "desk.a.routerPwd" : "desk.a.router"), [306, 28, 90, 58],
+      "<path d='M326 64l-6-26M372 64l6-26' stroke='#A9B4C4' stroke-width='3' stroke-linecap='round'/>" +
+      "<rect x='314' y='62' width='72' height='22' rx='5' fill='#E6EAF0'/>" +
+      "<circle cx='324' cy='73' r='2.5' fill='#5DB870'/><circle cx='333' cy='73' r='2.5' fill='#5DB870'/><circle cx='342' cy='73' r='2.5' fill='#F28C28'/>" +
+      "<text x='366' y='76' font-size='7' fill='#1D2A3D' text-anchor='middle' font-weight='bold' font-family='Arial, sans-serif'>NovaBox</text>" +
+      (has("router")
+        ? "<g transform='rotate(-6 360 50)'><rect x='334' y='38' width='54' height='22' fill='#FFD84D'/>" +
+          "<text x='361' y='47' font-size='6.5' fill='#3A2F00' text-anchor='middle' font-family='Arial, sans-serif'>Wi-Fi :</text>" +
+          "<text x='361' y='56' font-size='7' fill='#3A2F00' text-anchor='middle' font-weight='bold' font-family='Arial, sans-serif'>Nova1234</text></g>"
+        : "")) +
+
     /* imprimante + document confidentiel (erreur) */
     item("doc", t(has("doc") ? "desk.a.printerDoc" : "desk.a.printer"), [318, 96, 78, 80],
       (has("doc")

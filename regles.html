@@ -352,7 +352,7 @@
 
       <ol class="setup">
         <li>Lire la carte <strong>"How to play"</strong> à voix haute.</li>
-        <li>Choisir un <strong>maître du jeu</strong> parmi les joueurs.</li>
+        <li>Choisir un <strong>maître du jeu</strong> parmi les joueurs : c'est lui qui tient le téléphone. Ce n'est pas un arbitre, c'est l'appli qui juge.</li>
         <li>Mélanger les 30 cartes rouges et en piocher <strong>6 au hasard</strong>, face cachée. Les 24 autres ne servent pas.</li>
         <li>Poser les 12 cartes vertes + "It's safe!" <strong>face visible</strong> au milieu.</li>
         <li>Scanner le QR code <strong>"Start"</strong> de la boîte et choisir le niveau (Junior, Pro ou Expert).</li>
@@ -363,11 +363,11 @@
         <h3 class="block__title">Le maître du jeu</h3>
         <p>Un joueur qui joue aussi avec l'équipe. En plus, il :</p>
         <ul class="gm__tasks">
-          <li>tient le téléphone et scanne les cartes QR,</li>
-          <li>retourne chaque carte rouge pour lire la réponse,</li>
-          <li>et dit à l'appli si la réponse était bonne, acceptable ou mauvaise.</li>
+          <li>tient le téléphone et tape le numéro de chaque carte rouge,</li>
+          <li>touche dans l'appli la carte verte choisie par l'équipe, puis « Valider »,</li>
+          <li>et tranche si l'équipe ne se met pas d'accord.</li>
         </ul>
-        <p class="gm__warning">Il ne décide JAMAIS de la sanction : c'est l'appli qui calcule.</p>
+        <p class="gm__warning">Il ne juge JAMAIS les réponses : c'est l'appli qui compare avec la bonne réponse et calcule la sanction. Personne ne peut tricher.</p>
         <p class="gm__note">On peut changer de maître du jeu à chaque partie.</p>
       </article>
     </section>
@@ -383,7 +383,7 @@
         <li class="timeline__step reveal">
           <h3 class="timeline__title">Piocher</h3>
           <p>Un joueur retourne la première carte rouge et la lit à voix haute, en anglais.</p>
-          <p class="timeline__aside">Carte QR : le maître du jeu l'ouvre dans l'appli, voir <a href="#application">section 9</a>.</p>
+          <p class="timeline__aside">Carte QR : on tape son numéro dans l'appli puis « Ouvrir », voir <a href="#application">section 9</a>.</p>
         </li>
         <li class="timeline__step reveal">
           <h3 class="timeline__title">Discuter</h3>
@@ -391,28 +391,28 @@
         </li>
         <li class="timeline__step reveal">
           <h3 class="timeline__title">Jouer</h3>
-          <p>On pose la carte verte sur la carte rouge.</p>
+          <p>On pose la carte verte sur la carte rouge. <strong>On ne retourne pas encore la carte rouge</strong> : la réponse est au verso.</p>
         </li>
         <li class="timeline__step reveal">
-          <h3 class="timeline__title">Vérifier</h3>
-          <p>Le maître du jeu retourne la carte rouge et lit la réponse au verso.</p>
+          <h3 class="timeline__title">Taper</h3>
+          <p>Le maître du jeu tape le numéro de la carte rouge dans l'appli. La situation s'affiche, <strong>sans la réponse</strong>.</p>
         </li>
         <li class="timeline__step reveal">
           <h3 class="timeline__title">Juger</h3>
-          <p>Dans l'appli, il tape le numéro de la carte puis appuie sur :</p>
+          <p>Il touche la carte verte posée, puis « Valider ». <strong>C'est l'appli qui juge</strong> :</p>
           <ul class="verdicts">
-            <li class="verdict verdict--right"><span lang="en">✅ Right defence</span><small>meilleure défense</small></li>
-            <li class="verdict verdict--almost"><span lang="en">🟠 Almost right</span><small>défense acceptable</small></li>
-            <li class="verdict verdict--wrong"><span lang="en">❌ Wrong defence</span><small>autre carte</small></li>
+            <li class="verdict verdict--right"><span lang="en">✅ Right defence</span><small>la meilleure défense</small></li>
+            <li class="verdict verdict--almost"><span lang="en">🟠 Almost right</span><small>la défense acceptable</small></li>
+            <li class="verdict verdict--wrong"><span lang="en">❌ Wrong defence</span><small>une autre carte</small></li>
           </ul>
         </li>
         <li class="timeline__step reveal">
           <h3 class="timeline__title">Sanction</h3>
-          <p>L'appli fait avancer la jauge toute seule et affiche l'explication en anglais.</p>
+          <p>L'appli fait avancer la jauge toute seule et affiche la bonne réponse, l'explication et la règle d'or à retenir. On peut alors retourner la carte rouge.</p>
         </li>
         <li class="timeline__step reveal">
           <h3 class="timeline__title">Ranger</h3>
-          <p>La carte verte jouée est retournée face cachée (sauf "It's safe!" et sauf au niveau Junior). On passe à l'attaque suivante.</p>
+          <p>La carte verte jouée est retournée face cachée (sauf "It's safe!" et sauf au niveau Junior) : l'appli la grise aussi. On passe à l'attaque suivante.</p>
         </li>
       </ol>
 
@@ -586,11 +586,11 @@
             <p class="phone__counter" lang="en">Attack <b>2/6</b></p>
             <div class="phone__pad">
               <p class="phone__card" lang="en">Card <b>#11</b> · 💀💀💀💀</p>
-              <p class="phone__answer" lang="en">Best: Two-factor (2FA)<br>Acceptable: Strong password</p>
+              <p class="phone__answer">Quelle carte verte avez-vous posée ?</p>
               <div class="phone__buttons" lang="en">
-                <span class="phone__btn phone__btn--right">Right</span>
-                <span class="phone__btn phone__btn--almost">Almost</span>
-                <span class="phone__btn phone__btn--wrong">Wrong</span>
+                <span class="phone__btn phone__btn--right">2FA ✓</span>
+                <span class="phone__btn phone__btn--almost">Update</span>
+                <span class="phone__btn phone__btn--wrong">Valider</span>
               </div>
             </div>
           </div>
@@ -602,10 +602,12 @@
             <li>Le chrono de 10 minutes</li>
             <li>La jauge 0 à 10</li>
             <li>Le compteur d'attaques (x/6)</li>
-            <li>Le pavé du maître du jeu : il tape le numéro de la carte, l'appli affiche la situation, la gravité, la meilleure défense et l'acceptable, puis il appuie sur <span lang="en">Right / Almost / Wrong</span> ; <span lang="en">Almost</span> est grisé si la carte n'a pas de défense acceptable</li>
-            <li>La voix du hacker en anglais toutes les 2 minutes</li>
+            <li>Le pavé : on tape le numéro de la carte, l'appli affiche la situation et la gravité <strong>sans la réponse</strong>, on touche la carte verte jouée puis « Valider » ; l'appli juge toute seule et grise les cartes vertes déjà jouées</li>
+            <li>Après chaque attaque : la bonne réponse, l'explication et une règle d'or à retenir</li>
+            <li>La voix du hacker toutes les 2 minutes et les voix des appels, enregistrées (en français ou en anglais), avec sous-titres et bouton « Réécouter »</li>
             <li>L'écran rouge à 5/10 et qui clignote dans les 30 dernières secondes</li>
-            <li>L'écran de fin avec le score</li>
+            <li>L'écran de fin avec le score et un débrief : le point faible de l'équipe, les règles d'or, des questions pour en parler et où signaler une arnaque en France</li>
+            <li>Un glossaire anglais / français, une fiche des règles et un mode entraînement</li>
           </ul>
         </div>
       </div>
@@ -613,7 +615,7 @@
       <h3 class="subhead">Les cartes QR</h3>
       <div class="grid grid--2">
         <article class="block">
-          <p>Pas de carte verte jouée ni usée, le maître du jeu n'appuie sur aucun bouton. L'équipe joue un <strong>mini-jeu</strong> ensemble, l'appli applique la sanction.</p>
+          <p>Pas de carte verte jouée ni usée. L'équipe joue un <strong>mini-jeu</strong> ensemble, l'appli juge et applique la sanction.</p>
           <p class="app__draw">Chaque scan tire au hasard une attaque <strong>OU</strong> une situation normale : signaler une situation normale = fausse alerte.</p>
         </article>
         <article class="block">
@@ -676,7 +678,7 @@
 
       <div class="callout callout--green">
         <p class="callout__title">Conseil</p>
-        <p>Le plus sûr est que le maître du jeu tape le numéro de la carte QR dans l'appli puis appuie sur <strong lang="en">"Open"</strong> (la jauge et le chrono restent dans le même navigateur).</p>
+        <p>Le plus sûr est de taper le numéro de la carte QR dans l'appli puis d'appuyer sur <strong>« Ouvrir »</strong> (la jauge et le chrono restent dans le même navigateur).</p>
       </div>
     </section>
 
@@ -688,6 +690,10 @@
         <details class="faq__item">
           <summary>L'équipe ne se met pas d'accord</summary>
           <p>Le maître du jeu tranche.</p>
+        </details>
+        <details class="faq__item">
+          <summary>On a touché la mauvaise carte verte dans l'appli</summary>
+          <p>Avant de valider, le bouton affiche la carte choisie : vérifiez-le. Une fois validé, on ne peut plus annuler, sinon on pourrait tricher en essayant toutes les cartes.</p>
         </details>
         <details class="faq__item">
           <summary>La meilleure carte verte est déjà usée</summary>

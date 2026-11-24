@@ -13,7 +13,7 @@ window.NOVA_DATA = (function () {
     phishing: "Phishing",
     passwords: "Passwords",
     devices: "Devices",
-    humans: "Fake people",
+    humans: "Social engineering",
     network: "Network"
   };
 
@@ -178,7 +178,44 @@ window.NOVA_DATA = (function () {
       subject: ["Maintenance on Saturday"],
       body: ["The servers will be updated on Saturday from 8 to 10 am. You don't need to do anything. Reminder: IT will never ask for your password."],
       link: null,
-      why: "This one is real: the right address, no link, nothing to do. Real IT messages look like this." }
+      why: "This one is real: the right address, no link, nothing to do. Real IT messages look like this." },
+    /* Nouveau : faux mail du fournisseur internet (box / routeur) */
+    { kind: "email", scam: true, fam: "phishing",
+      fromName: "NovaBox Support", from: { t: "support@novabox-assistance.net", sus: true },
+      subject: [{ t: "Last warning", sus: true }, ": your internet will be cut"],
+      body: ["Your router has a security problem. ", { t: "Your connection will be cut tonight", sus: true }, ". To avoid this, ",
+             { t: "enter your Wi-Fi password and your card number", sus: true }, " on our page."],
+      link: { label: "Fix my router", href: "http://novabox-assistance.net/fix", scam: true },
+      why: "Your internet provider never asks for your Wi-Fi password or your card number by email. Go to your real customer account yourself." },
+    /* Nouveau : appli à installer hors du store officiel */
+    { kind: "sms", scam: true, fam: "phishing",
+      fromName: "+44 7700 900318", from: null, subject: null,
+      body: ["ParcelGo: your parcel cannot be tracked. ", { t: "Install our new app", sus: true }, " ", { t: "(not on the store)", sus: true }, " to follow it: "],
+      link: { label: "parcelgo-tracker.apk", href: "https://parcelgo-tracker.info/parcelgo-tracker.apk", scam: true },
+      why: "Only install apps from the official store (Google Play, App Store). An app sent by text message can spy on your phone." },
+    /* Nouveau : chantage à la webcam (arnaque de masse) */
+    { kind: "email", scam: true, fam: "phishing",
+      fromName: "Anonymous", from: { t: "hacker-anonymous@freemail.example", sus: true },
+      subject: [{ t: "I know your password", sus: true }],
+      body: ["I hacked your computer and ", { t: "recorded you with your webcam", sus: true }, ". ",
+             { t: "Pay 500 € in bitcoin within 48 hours", sus: true }, " or I send the video to all your contacts."],
+      link: null,
+      why: "This is a mass scam sent to thousands of people: there is no video. Don't answer, don't pay, report it (in France: signal-spam.fr)." },
+    /* Nouveau : quiz qui récupère les réponses aux questions secrètes (vie privée) */
+    { kind: "email", scam: true, fam: "humans",
+      fromName: "FunQuiz", from: { t: "quiz@funquiz-games.example", sus: true },
+      subject: ["What is your hacker name? 😎"],
+      body: ["Find your hacker name in 10 seconds! Just give us ", { t: "your date of birth", sus: true }, ", ",
+             { t: "your pet's name", sus: true }, " and ", { t: "your mother's maiden name", sus: true }, "."],
+      link: { label: "Play now", href: "https://funquiz-games.example/hacker-name", scam: true },
+      why: "These answers are often the secret questions used to reset your passwords. Never share them in a quiz or on social networks." },
+    /* Nouveau : vrai message de la banque */
+    { kind: "email", scam: false, fam: "phishing",
+      fromName: "Bluestone Bank", from: { t: "info@bluestonebank.com" },
+      subject: ["Your monthly statement is ready"],
+      body: ["Your statement for March is available in your Bluestone Bank app. Reminder: we will never ask for your password or your codes by email or phone."],
+      link: null,
+      why: "This one is real: the real bank address, no link, nothing to type, and it reminds you of the right reflex." }
   ];
 
   /* ---------- Password request (#7, #8) ---------- */
@@ -191,7 +228,15 @@ window.NOVA_DATA = (function () {
       why: "Never send your password, to anyone. The address is not novacorp.com and the deadline is there to scare you." },
     { real: false, fromName: "NovaMail Security", from: "admin@novamail-security.net", subject: "Mailbox 99% full",
       text: "Your mailbox is 99% full and will stop working. Confirm your password below to get 10 GB more for free.",
-      why: "Free storage in exchange for your password is a trap. The address is not novacorp.com: report it." }
+      why: "Free storage in exchange for your password is a trap. The address is not novacorp.com: report it." },
+    /* Nouveau : vrai mail, changer le mot de passe d'usine du routeur */
+    { real: true, fromName: "NovaCorp IT", from: "it@novacorp.com", subject: "Router password: please change it",
+      text: "The office router still uses its factory password (admin). Please choose a new strong password for it today. There is no link: open the router settings with the IT team.",
+      why: "This one is real: the right address, no link, and changing a factory password is a very good reflex. Do the same with your box at home." },
+    /* Nouveau : faux mail qui demande le mot de passe du routeur */
+    { real: false, fromName: "NovaBox", from: "admin@novabox-router.net", subject: "Router check",
+      text: "We are checking all routers today. Reply with your router admin password so we can update it for you.",
+      why: "Nobody needs your router password. A real provider updates the router without asking for it." }
   ];
 
   /* Mots de passe très courants (moins de 12 caractères = cassés tout de suite) */
@@ -218,28 +263,60 @@ window.NOVA_DATA = (function () {
       why: "This one is real: an internal number, a normal message, nothing asked." },
     { scam: false, fam: "humans", name: "NovaCorp Reception", number: "Internal ext. 1000", voice: { pitch: 1.3 },
       text: "Hello, this is the reception desk. Your visitor, Mr Lopez, has arrived for your ten o'clock meeting. He is waiting for you in the hall.",
-      why: "This one is real: the reception's internal number, and nothing secret or urgent is asked." }
+      why: "This one is real: the reception's internal number, and nothing secret or urgent is asked." },
+    /* Nouveau : faux technicien de la box */
+    { scam: true, fam: "humans", name: "NovaBox Technician", number: "+44 20 7946 0412", voice: { pitch: 1 },
+      text: "Hello, I'm a technician from NovaBox, your internet provider. Your router is sending viruses on the network. I need your router password so I can fix it from here. It will only take a minute.",
+      why: "Your provider never asks for your router password on the phone. Hang up and call the number on your real contract." },
+    /* Nouveau : faux conseiller bancaire (le nom affiché peut être imité) */
+    { scam: true, fam: "humans", name: "Bluestone Bank", number: "+44 20 7946 0777", voice: { pitch: 0.95 },
+      text: "Hello, this is the fraud department of Bluestone Bank. Someone is trying to use your card right now. To cancel the payment, please read me the code you just received by text message.",
+      why: "This is the fake bank advisor scam: the code they want is the one that confirms THEIR payment. The name on the screen can be faked. A bank never asks for your codes: hang up and call the number on your card." },
+    /* Nouveau : vrai collègue, simple information */
+    { scam: false, fam: "humans", name: "Lea · NovaCorp IT", number: "Internal ext. 2031", voice: { pitch: 1.15 },
+      text: "Hi, it's Lea from IT. Just so you know, we will restart the office router at six pm for an update. The internet will be cut for five minutes. You have nothing to do.",
+      why: "This one is real: an internal number, information only, nothing asked." }
   ];
 
   /* ---------- Safe or fake link? (#25, #26) ---------- */
+  /* kind : "site" (adresse web), "qr" (adresse ouverte par un QR code), "wifi" (nom de réseau)
+     context : phrase affichée au-dessus · extra : conseil ajouté à l'explication */
   var LINKS = [
-    { real: "https://hr.novacorp.com/payslip",
+    { kind: "site", real: "https://hr.novacorp.com/payslip",
       fakes: [
         { url: "https://hr.novac0rp.com/payslip", tip: "Look closely: \"novac0rp\" uses a zero instead of the letter o." },
         { url: "https://novacorp.com.hr-portal.net/payslip", tip: "The real website is the end of the address: here it is hr-portal.net, not novacorp.com." },
         { url: "http://hr-novacorp.com/payslip", tip: "\"hr-novacorp.com\" is a different website, and it uses http without the s." }
       ] },
-    { real: "https://www.bluestonebank.com/login",
+    { kind: "site", real: "https://www.bluestonebank.com/login",
       fakes: [
         { url: "https://www.bluest0nebank.com/login", tip: "\"bluest0nebank\" uses a zero instead of the letter o." },
         { url: "https://bluestonebank.com.secure-login.info", tip: "The real website is the end of the address: secure-login.info, not bluestonebank.com." },
         { url: "http://www.bluestone-bank.com/login", tip: "\"bluestone-bank.com\" has a dash: it is another website. And http has no s." }
       ] },
-    { real: "https://cloud.novacorp.com/share/q3-report",
+    { kind: "site", real: "https://cloud.novacorp.com/share/q3-report",
       fakes: [
         { url: "https://cloud.novacorp.co/share/q3-report", tip: "\".co\" is not \".com\": one missing letter, a different website." },
         { url: "https://cloud-novacorp.com/share/q3-report", tip: "\"cloud-novacorp.com\" with a dash is not novacorp.com." },
         { url: "https://cloud.novaccorp.com/share/q3-report", tip: "\"novaccorp\" has two c's: a copy of the real name." }
+      ] },
+    /* Nouveau : QR code piégé collé sur un horodateur ("quishing") */
+    { kind: "qr", real: "https://pay.novacity-parking.com/zone-12",
+      context: "You scanned a QR code stuck on a parking meter. It opens this address:",
+      extra: "A fake QR code can be a sticker stuck on top of the real one: always read the address before you pay.",
+      fakes: [
+        { url: "https://pay-novacity-parking.com/zone-12", tip: "\"pay-novacity-parking.com\" with a dash is another website." },
+        { url: "https://novacity-parking.pay-now.info/zone-12", tip: "The real website is the end of the address: pay-now.info, not novacity-parking.com." },
+        { url: "http://pay.novacity-parklng.com/zone-12", tip: "\"parklng\" uses an l instead of an i, and http has no s." }
+      ] },
+    /* Nouveau : faux réseau Wi-Fi "jumeau" */
+    { kind: "wifi", real: "NovaCorp-Guest",
+      context: "At the NovaCorp office, you want to use the guest Wi-Fi. Is this the right network?",
+      extra: "Ask reception for the exact name of the guest network and its password. A real guest network always has a password.",
+      fakes: [
+        { url: "NovaCorp-Guest-FREE", tip: "A company never adds \"FREE\" to its network name: it is a trap network created by someone nearby." },
+        { url: "N0vaCorp-Guest", tip: "\"N0vaCorp\" uses a zero instead of the letter o." },
+        { url: "NovaCorp Guest (open)", tip: "An open network has no password: anyone can spy on it. The real guest network asks for a password." }
       ] }
   ];
 
@@ -254,19 +331,28 @@ window.NOVA_DATA = (function () {
       session: "A session left open: \"Accounting — logged in\"",
       badge:   "A badge left on the desk",
       code:    "A 2FA code visible on a phone",
-      doc:     "A \"CONFIDENTIAL\" document left on the printer"
+      doc:     "A \"CONFIDENTIAL\" document left on the printer",
+      router:  "The Wi-Fi password stuck on the router"
     }
   };
 
   /* ---------- Strange screen (#14) ---------- */
   var RANSOM = {
     attackChance: 0.55,
+    supportChance: 0.4,   /* parmi les attaques : fausse alerte virus (sinon ransomware) */
+    support: {
+      title: "⚠ SECURITY ALERT",
+      text: "Your computer is infected with 5 viruses! Do not turn it off. Call the support now on +44 20 7946 0999 to remove them.",
+      why: "Fake virus alerts want you to call them and give them access to your computer. Never call the number: close the page (or restart) and alert IT."
+    },
     amounts: ["2 bitcoins", "50,000 €", "3 bitcoins"],
     normals: [
       { title: "NovaCorp IT · Security update",
         text: "Installing the security update announced by email on Monday. Your computer will restart at the end. Questions? Call IT on ext. 2000." },
       { title: "NovaCorp Backup",
-        text: "Weekly backup of your files in progress. You can keep working." }
+        text: "Weekly backup of your files in progress. You can keep working." },
+      { title: "NovaCorp IT · Router update",
+        text: "The office router is being updated. The internet may be slow for 5 minutes. You have nothing to do." }
     ],
     steps: [
       "Unplug the computer from the network",
@@ -290,7 +376,88 @@ window.NOVA_DATA = (function () {
     lose: "The hacker is in. Game over."
   };
 
+  /* =========================================================
+     PÉDAGOGIE : règle d'or, "et chez toi ?" et indice par famille
+     ========================================================= */
+  var FAMILY_INFO = {
+    phishing: {
+      rule: "Before you click, check who is writing and what they want. Urgent + link + request = trap.",
+      home: "At home: same reflex for your personal emails and texts. Never pay or type a code from a link you did not ask for.",
+      hint: "Look at the sender's address and at what the message asks you to do."
+    },
+    passwords: {
+      rule: "One account = one long password, and two-factor authentication wherever you can.",
+      home: "At home: change the factory password of your box, use a password manager and turn on 2FA on your email.",
+      hint: "Think about how a hacker could guess, read or reuse this password."
+    },
+    devices: {
+      rule: "Lock it, update it, back it up, and never plug in something you don't know.",
+      home: "At home: turn on automatic updates, lock your phone with a code and keep a copy of your photos somewhere else.",
+      hint: "Think about what someone could do with this device if you are not there."
+    },
+    humans: {
+      rule: "Urgent, secret, money or codes: stop, and check with a number you already know.",
+      home: "At home: fake bank advisors call too. Hang up and call the number on the back of your card yourself.",
+      hint: "Who is really asking? How could you check without using their own phone number or link?"
+    },
+    network: {
+      rule: "Check the address and the network before you type anything. No padlock, no personal data.",
+      home: "At home: protect your Wi-Fi with a strong password (WPA2 or WPA3) and give visitors a guest network.",
+      hint: "Look carefully at the address or the network name: is it really the official one?"
+    }
+  };
+
+  /* ---------- Glossaire anglais / français ---------- */
+  var GLOSSARY = [
+    { en: "Phishing", fr: "Hameçonnage", def: "A fake message (email, text, website) that tries to steal your passwords, codes or money." },
+    { en: "Smishing", fr: "Hameçonnage par SMS", def: "Phishing by text message (SMS)." },
+    { en: "Vishing", fr: "Arnaque par téléphone", def: "Phishing by phone call: a fake advisor, technician or boss." },
+    { en: "Quishing", fr: "Arnaque par QR code", def: "A fake QR code that opens a trap website." },
+    { en: "Scam", fr: "Arnaque", def: "A trick to steal money or information." },
+    { en: "Sender", fr: "Expéditeur", def: "The person or address that sends a message." },
+    { en: "Attachment", fr: "Pièce jointe", def: "A file sent with an email. A \".exe\" file is a program." },
+    { en: "Link", fr: "Lien", def: "Text you click to open a website. Press and hold it to see the real address." },
+    { en: "Password", fr: "Mot de passe", def: "A secret word to open an account. Long is better than complicated." },
+    { en: "Password manager", fr: "Gestionnaire de mots de passe", def: "A safe app that remembers all your passwords for you." },
+    { en: "Two-factor authentication (2FA)", fr: "Double authentification", def: "A second lock: a code on your phone, in addition to the password." },
+    { en: "Data leak", fr: "Fuite de données", def: "When stolen information (emails, passwords) ends up online." },
+    { en: "Update", fr: "Mise à jour", def: "A new version that repairs security holes." },
+    { en: "Backup", fr: "Sauvegarde", def: "A copy of your files, kept somewhere else." },
+    { en: "Ransomware", fr: "Rançongiciel", def: "A virus that locks your files and asks for money." },
+    { en: "Malware", fr: "Logiciel malveillant", def: "Any program made to harm: virus, spyware, ransomware..." },
+    { en: "Antivirus", fr: "Antivirus", def: "A program that finds and removes malware." },
+    { en: "Router / box", fr: "Routeur / box", def: "The device that gives internet and Wi-Fi to your home or office." },
+    { en: "Wi-Fi network", fr: "Réseau Wi-Fi", def: "A wireless connection. An open network (no password) is not safe." },
+    { en: "Guest network", fr: "Réseau invité", def: "A separate Wi-Fi for visitors, so they can't see your devices." },
+    { en: "Firewall", fr: "Pare-feu", def: "A filter that blocks unwanted connections." },
+    { en: "Padlock / HTTPS", fr: "Cadenas / HTTPS", def: "Shows that the connection to a website is encrypted (protected)." },
+    { en: "Encrypted", fr: "Chiffré", def: "Turned into a secret code that only the right person can read." },
+    { en: "Social engineering", fr: "Ingénierie sociale", def: "Tricking people (not computers): fake boss, fake support, pressure, flattery..." },
+    { en: "Lock your screen", fr: "Verrouiller l'écran", def: "Close your session when you leave: Windows + L." },
+    { en: "Hacker", fr: "Pirate informatique", def: "Someone who gets into systems without permission." },
+    { en: "To report", fr: "Signaler", def: "To tell IT or an official website about a scam." },
+    { en: "Fake / Real", fr: "Faux / Vrai", def: "The key question of the whole game!" }
+  ];
+
+  /* ---------- Où signaler, en France ---------- */
+  var REPORT = [
+    { name: "17cyber.gouv.fr", url: "https://17cyber.gouv.fr", what: "Official help if you are a victim of a cyberattack (France)." },
+    { name: "cybermalveillance.gouv.fr", url: "https://www.cybermalveillance.gouv.fr", what: "Advice and help for victims, guides to protect yourself." },
+    { name: "33700", url: null, what: "Forward a scam text message or call for free (France)." },
+    { name: "signal-spam.fr", url: "https://www.signal-spam.fr", what: "Report a scam email." },
+    { name: "haveibeenpwned.com", url: "https://haveibeenpwned.com", what: "Check if your email address appeared in a data leak." },
+    { name: "Your bank", url: null, what: "Card stolen or fake payment: call the number on the back of your card at once." }
+  ];
+
+  /* ---------- Questions pour le débrief ---------- */
+  var DISCUSS = [
+    "Which attack surprised you the most? Why?",
+    "Have you ever received a message or a call like this? What did you do?",
+    "Which reflex will you use from tonight, at home?"
+  ];
+
   return {
+    FAMILY_INFO: FAMILY_INFO, GLOSSARY: GLOSSARY, REPORT: REPORT, DISCUSS: DISCUSS,
     /* Nom d'une défense à afficher (en français : nom FR + nom imprimé sur la carte) */
     defence: function (name) { return name; },
     FAMILIES: FAMILIES, DEFENCES: DEFENCES, CARDS: CARDS, MINIGAMES: MINIGAMES,

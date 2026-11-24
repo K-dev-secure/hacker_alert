@@ -23,10 +23,36 @@ window.NovaAudio = (function () {
   var speakTimer = null;
   var currentChannel = null;
 
+  /* Lecteur des fichiers de voix (audio/fr/*.mp3, audio/en/*.mp3).
+     Un seul lecteur pour toute l'appli : une fois débloqué par un toucher,
+     il peut jouer les phrases suivantes (obligatoire sur iPhone). */
+  var player = typeof Audio !== "undefined" ? new Audio() : null;
+  if (player) player.preload = "auto";
+  var playerToken = 0;
+
+  /* Un tout petit son muet (fabriqué ici, aucun fichier) pour débloquer le lecteur */
+  function silentUrl() {
+    var n = 400, buf = new ArrayBuffer(44 + n), v = new DataView(buf);
+    function str(o, s) { for (var i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); }
+    str(0, "RIFF"); v.setUint32(4, 36 + n, true); str(8, "WAVEfmt ");
+    v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, 8000, true); v.setUint32(28, 8000, true); v.setUint16(32, 1, true); v.setUint16(34, 8, true);
+    str(36, "data"); v.setUint32(40, n, true);
+    for (var i = 0; i < n; i++) v.setUint8(44 + i, 128);
+    return URL.createObjectURL(new Blob([buf], { type: "audio/wav" }));
+  }
+
   /* ---------- Premier toucher : on débloque la voix et le son ---------- */
   function unlock() {
     if (unlocked) return;
     unlocked = true;
+    if (player) {
+      try {
+        player.src = silentUrl();
+        var p = player.play();
+        if (p && p.then) p.then(function () { player.pause(); }).catch(function () { /* rien */ });
+      } catch (e) { /* rien */ }
+    }
     // Une phrase vide et muette : obligatoire sur iPhone pour pouvoir parler plus tard
     if (synth) {
       try {
@@ -53,26 +79,20 @@ window.NovaAudio = (function () {
   }
 
   /* ---------- Voix ----------
-     opts : { lang, voice, pitch, rate, channel ("hacker" | "call"), onEnd }
+     opts : { audio (fichier mp3), lang, voice, pitch, rate, channel ("hacker" | "call"), onEnd }
+     1. Si un fichier de voix existe (opts.audio), on le joue : voix enregistrée, claire.
+     2. Sinon, ou si le fichier ne se lit pas (pas de réseau...), voix du téléphone.
      Renvoie true si la voix a été lancée. */
   function speak(text, opts) {
     opts = opts || {};
     var channel = opts.channel || "hacker";
-    if (!synth || !canPlay()) return false;
+    if (!canPlay()) return false;
     if (channel === "hacker" && callActive) return false;   // on ne parle pas par-dessus un appel
     if (channel === "hacker" && document.hidden) return false;
 
-    clearTimeout(speakTimer);
-    try {
-      synth.cancel();                    // la nouvelle voix remplace l'ancienne
-      if (synth.paused) synth.resume();  // Chrome peut rester en pause après un changement d'onglet
-    } catch (e) { /* rien */ }
+    stop();   // la nouvelle voix remplace l'ancienne
+    currentChannel = channel;
 
-    var u = new SpeechSynthesisUtterance(text);
-    u.lang = opts.lang || "fr-FR";
-    u.rate = opts.rate || 0.9;
-    u.pitch = opts.pitch != null ? opts.pitch : 0.6;
-    if (opts.voice) u.voice = opts.voice;
     var done = false;
     var finish = function () {
       if (done) return;
@@ -80,20 +100,61 @@ window.NovaAudio = (function () {
       if (currentChannel === channel) currentChannel = null;
       if (opts.onEnd) opts.onEnd();
     };
+
+    if (opts.audio && player) {
+      var token = ++playerToken;
+      var fallback = function () {
+        if (token !== playerToken || done) return;   // une autre voix a pris la place
+        speakSynth(text, opts, channel, finish);
+      };
+      player.onended = function () { if (token === playerToken) finish(); };
+      player.onerror = fallback;
+      try {
+        player.src = opts.audio;
+        player.currentTime = 0;
+        var p = player.play();
+        if (p && p.catch) p.catch(fallback);
+      } catch (e) { fallback(); }
+      return true;
+    }
+    if (!synth) return false;
+    speakSynth(text, opts, channel, finish);
+    return true;
+  }
+
+  /* Voix de synthèse du téléphone (si pas de fichier de voix) */
+  function speakSynth(text, opts, channel, finish) {
+    if (!synth) { finish(); return; }
+    try {
+      synth.cancel();
+      if (synth.paused) synth.resume();  // Chrome peut rester en pause après un changement d'onglet
+    } catch (e) { /* rien */ }
+
+    var u = new SpeechSynthesisUtterance(text);
+    u.lang = opts.lang || "fr-FR";
+    // Voix du hacker : un peu grave mais claire (0.6 rendait la voix difficile à comprendre)
+    u.rate = opts.rate || 0.92;
+    u.pitch = opts.pitch != null ? opts.pitch : 0.8;
+    if (opts.voice) u.voice = opts.voice;
     u.onend = finish;
     u.onerror = finish;
 
-    currentChannel = channel;
     // Petit délai : Chrome perd parfois une voix lancée juste après cancel()
+    clearTimeout(speakTimer);
     speakTimer = setTimeout(function () {
       try { synth.speak(u); } catch (e) { finish(); }
     }, 60);
-    return true;
   }
 
   function stop() {
     clearTimeout(speakTimer);
     currentChannel = null;
+    playerToken++;   // annule une éventuelle voix de secours en attente
+    if (player) {
+      player.onended = null;
+      player.onerror = null;
+      try { player.pause(); } catch (e) { /* rien */ }
+    }
     if (synth) { try { synth.cancel(); } catch (e) { /* rien */ } }
   }
 

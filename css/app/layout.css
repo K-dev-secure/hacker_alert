@@ -294,3 +294,18 @@ body.app.is-final::before {
     grid-template-columns: 1fr 1fr;
   }
 }
+
+/* Bouton "Réécouter" dans les sous-titres */
+.subtitle__replay {
+  min-height: 40px;
+  margin-top: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--red);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--white);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}

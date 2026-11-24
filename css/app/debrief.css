@@ -1,0 +1,142 @@
+/* =========================================================
+   APPLI — DÉBRIEF PÉDAGOGIQUE (fin de partie, fiche des règles)
+   ========================================================= */
+
+/* Point faible */
+.debrief__weak {
+  margin: 0 0 20px;
+  padding: 16px;
+  border: 2px solid var(--orange);
+  border-radius: 14px;
+  background: var(--navy-2);
+}
+
+.debrief__weak[hidden] {
+  display: none;
+}
+
+.debrief__label {
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-size: 15px;
+  color: var(--orange);
+}
+
+.debrief__weakname {
+  margin: 4px 0 8px;
+  font-family: var(--font-title);
+  font-size: 24px;
+}
+
+.debrief__rule,
+.debrief__home {
+  margin: 6px 0 0;
+  line-height: 1.45;
+}
+
+.debrief__rule {
+  font-weight: 700;
+}
+
+/* Leçon sous une attaque ratée */
+.end__lesson {
+  grid-column: 1 / -1;
+  margin: 6px 0 0;
+  padding-top: 8px;
+  border-top: 1px dashed var(--navy);
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.end__lesson strong {
+  color: var(--green);
+}
+
+/* Règles d'or */
+.debrief__rules {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: grid;
+  gap: 8px;
+}
+
+.debrief__ruleitem {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border-left: 4px solid var(--green);
+  border-radius: 10px;
+  background: var(--navy-2);
+}
+
+.debrief__ruleitem strong {
+  color: var(--green);
+}
+
+.debrief__homeline {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* Questions pour discuter */
+.debrief__talk {
+  margin: 0 0 20px;
+  padding-left: 24px;
+  display: grid;
+  gap: 6px;
+}
+
+.debrief__talk li::marker {
+  color: var(--green);
+  font-weight: 700;
+}
+
+/* Où signaler */
+.report {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: grid;
+  gap: 8px;
+}
+
+.report__item {
+  display: grid;
+  gap: 2px;
+  padding: 10px 14px;
+  border: 1px solid var(--navy);
+  border-radius: 10px;
+  background: var(--navy-2);
+}
+
+.report__name {
+  font-weight: 700;
+  color: var(--white);
+}
+
+a.report__name {
+  color: var(--green);
+}
+
+.report__what {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.end__buttons {
+  margin-top: 8px;
+}
+
+.rules__sub {
+  margin: 20px 0 10px;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 22px;
+}
+
+.rules__glossary {
+  width: 100%;
+  margin-bottom: 8px;
+}

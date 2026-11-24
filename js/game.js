@@ -54,6 +54,7 @@ window.NovaGame = (function () {
       gauge: 0,
       attacks: [],          // { card, label, fam, verdict, falseAlarm, cost, detail }
       missedFamilies: [],   // familles déjà ratées (bonus "même erreur")
+      usedGreen: [],        // cartes vertes déjà jouées (Pro et Expert)
       voiceDone: [],        // phrases chronométrées déjà dites
       alertDone: false,
       status: "playing",    // playing | won | lost
@@ -132,8 +133,19 @@ window.NovaGame = (function () {
       fam: attack.fam,
       verdict: attack.verdict,
       falseAlarm: !!attack.falseAlarm,
-      cost: p.total
+      cost: p.total,
+      played: attack.played || null,   // carte(s) verte(s) jouée(s)
+      best: attack.best || null,       // meilleure défense (pour le débrief)
+      lesson: attack.lesson || null    // explication (pour le débrief)
     });
+
+    // Cartes vertes usées (sauf au niveau Junior, et sauf "It's safe!" toujours disponible)
+    if (state.level !== "junior" && attack.played) {
+      if (!state.usedGreen) state.usedGreen = [];
+      attack.played.forEach(function (name) {
+        if (name !== "It's safe!" && state.usedGreen.indexOf(name) < 0) state.usedGreen.push(name);
+      });
+    }
 
     var crossedAlert = before < 5 && state.gauge >= 5;
     checkEnd();
@@ -174,10 +186,39 @@ window.NovaGame = (function () {
     return D.defence(card.best);
   }
 
-  /* Le bouton Almost est-il possible ? */
-  function almostAllowed(card, level) {
-    if (level === "expert" && card.expert) return true;
-    return !!card.ok;
+  /* Combien de cartes vertes faut-il poser ? (2 pour #11, #21, #30 au niveau Expert) */
+  function picksNeeded(card, level) {
+    return level === "expert" && card.expert ? 2 : 1;
+  }
+
+  /* ---------- L'appli juge toute seule ----------
+     picks : noms des cartes vertes posées par l'équipe.
+     Renvoie { verdict, falseAlarm }. */
+  function judgeCard(card, level, picks) {
+    picks = picks || [];
+    // Carte "vrai message" : seule "It's safe!" est juste ; toute autre carte = fausse alerte
+    if (card.real) {
+      return picks.indexOf("It's safe!") >= 0 && picks.length === 1
+        ? { verdict: "right", falseAlarm: false }
+        : { verdict: "wrong", falseAlarm: true };
+    }
+    // Expert, attaque à 2 cartes : les 2 = Right, une seule des 2 = Almost, aucune = Wrong
+    if (level === "expert" && card.expert) {
+      var good = card.expert.filter(function (name) { return picks.indexOf(name) >= 0; }).length;
+      if (good === 2) return { verdict: "right", falseAlarm: false };
+      if (good === 1) return { verdict: "almost", falseAlarm: false };
+      return { verdict: "wrong", falseAlarm: false };
+    }
+    var pick = picks[0];
+    if (pick === card.best) return { verdict: "right", falseAlarm: false };
+    if (card.ok && pick === card.ok) return { verdict: "almost", falseAlarm: false };
+    return { verdict: "wrong", falseAlarm: false };
+  }
+
+  /* Carte verte déjà jouée ? ("It's safe!" reste toujours disponible) */
+  function greenUsed(name) {
+    if (!state || state.level === "junior" || name === "It's safe!") return false;
+    return (state.usedGreen || []).indexOf(name) >= 0;
   }
 
   /* ---------- Voix (synthèse du navigateur) + sous-titres ---------- */
@@ -196,24 +237,41 @@ window.NovaGame = (function () {
   /* Voix dans la langue de l'appli : fr-FR en français, en-GB en anglais */
   var SPEECH_LANG = window.NovaI18n && window.NovaI18n.lang === "fr" ? "fr-FR" : "en-GB";
 
+  /* Choisit la voix la plus naturelle du téléphone :
+     les voix "Natural", "Neural", "Online", "Google", "Premium", "Enhanced" sont bien plus claires. */
+  var GOOD_VOICE = /natural|neural|online|google|premium|enhanced|siri|amélie|amelie|thomas|denise|henri|eloise|daniel|libby|sonia|ryan/i;
+  function voiceScore(v) {
+    var score = 0;
+    if (new RegExp("^" + SPEECH_LANG.replace("-", "[-_]"), "i").test(v.lang)) score += 10;
+    else if (new RegExp("^" + SPEECH_LANG.slice(0, 2), "i").test(v.lang)) score += 5;
+    else return -1;
+    if (GOOD_VOICE.test(v.name)) score += 4;
+    if (/compact|espeak/i.test(v.name)) score -= 3;
+    if (v.localService === false) score += 1;   // voix en ligne : souvent plus naturelle
+    return score;
+  }
   function pickVoice() {
     if (!("speechSynthesis" in window)) return null;
     var voices = window.speechSynthesis.getVoices() || [];
-    var exact = new RegExp("^" + SPEECH_LANG.replace("-", "[-_]"), "i");
-    var same = voices.filter(function (v) { return exact.test(v.lang); });
-    if (same.length) return same[0];
-    var prefix = new RegExp("^" + SPEECH_LANG.slice(0, 2), "i");
-    var close = voices.filter(function (v) { return prefix.test(v.lang); });
-    return close.length ? close[0] : null;
+    var best = null, bestScore = -1;
+    voices.forEach(function (v) {
+      var sc = voiceScore(v);
+      if (sc > bestScore) { best = v; bestScore = sc; }
+    });
+    return best;
   }
 
   /* Parle (voix gérée par js/audio.js) et affiche le sous-titre.
      opts : speaker (nom affiché), channel ("hacker" par défaut, ou "call"),
             pitch, rate, noSubtitle, onEnd */
+  var lastSpeech = null;   // pour le bouton "Réécouter"
+
   function speak(text, opts) {
     opts = opts || {};
+    lastSpeech = { text: text, opts: opts };
     if (!opts.noSubtitle) showSubtitle(opts.speaker || "HACKER", text, opts.subtitleMs);
     var started = voiceOn() && window.NovaAudio.speak(text, {
+      audio: opts.audio || null,
       lang: SPEECH_LANG,
       voice: pickVoice(),
       pitch: opts.pitch,
@@ -228,6 +286,16 @@ window.NovaGame = (function () {
 
   function stopSpeaking() {
     window.NovaAudio.stop();
+  }
+
+  /* Réécouter la dernière phrase (le bouton est un toucher : le son est autorisé) */
+  function replay() {
+    if (!lastSpeech) return;
+    var o = {};
+    Object.keys(lastSpeech.opts).forEach(function (k) { o[k] = lastSpeech.opts[k]; });
+    o.onEnd = null;
+    if (o.channel === "call") o.noSubtitle = true;
+    speak(lastSpeech.text, o);
   }
 
   function showSubtitle(speaker, text, ms) {
@@ -252,6 +320,20 @@ window.NovaGame = (function () {
   }
 
   /* Phrases chronométrées : à 2, 4, 6 et 8 minutes. Renvoie la phrase à dire, ou null. */
+  /* ---------- Fichiers de voix enregistrés (audio/fr ou audio/en) ----------
+     Générés gratuitement avec Piper (voir tools/). Clés : hacker-start,
+     hacker-timed-0..3, hacker-alert, hacker-win, hacker-lose, call-0..7 */
+  var AUDIO_LANG = window.NovaI18n && window.NovaI18n.lang === "en" ? "en" : "fr";
+  function audioFile(key) {
+    return "audio/" + AUDIO_LANG + "/" + key + ".mp3";
+  }
+
+  /* Phrase du hacker avec sa voix enregistrée */
+  function speakLine(key, text) {
+    return speak(text, { audio: audioFile(key) });
+  }
+
+  /* Phrases chronométrées : renvoie { key, text } ou null */
   function dueHackerLine() {
     if (!isPlaying()) return null;
     var elapsed = elapsedSeconds();
@@ -261,7 +343,7 @@ window.NovaGame = (function () {
         state.voiceDone.push(i);
         save();
         // Après un rechargement tardif, on ne rejoue pas une vieille phrase
-        if (elapsed - at <= 15) return D.HACKER.timed[i];
+        if (elapsed - at <= 15) return { key: "hacker-timed-" + i, text: D.HACKER.timed[i] };
       }
     }
     return null;
@@ -281,8 +363,9 @@ window.NovaGame = (function () {
     remainingSeconds: remainingSeconds, elapsedSeconds: elapsedSeconds,
     isPlaying: isPlaying, cardPlayed: cardPlayed,
     penalty: penalty, applyAttack: applyAttack, checkEnd: checkEnd, score: score,
-    findCard: findCard, bestFor: bestFor, almostAllowed: almostAllowed,
-    voiceOn: voiceOn, setVoice: setVoice, speak: speak, stopSpeaking: stopSpeaking,
+    findCard: findCard, bestFor: bestFor, picksNeeded: picksNeeded, judgeCard: judgeCard, greenUsed: greenUsed,
+    voiceOn: voiceOn, setVoice: setVoice, speak: speak, stopSpeaking: stopSpeaking, replay: replay,
+    audioFile: audioFile, speakLine: speakLine,
     showSubtitle: showSubtitle, hideSubtitle: hideSubtitle,
     dueHackerLine: dueHackerLine, markAlertSpoken: markAlertSpoken
   };

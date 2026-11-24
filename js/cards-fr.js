@@ -178,6 +178,7 @@
      "« novaccorp » a deux c : une copie du vrai nom."]
   ];
   FR.LINKS.forEach(function (set, i) {
+    if (!LT[i]) return;   // les séries 4 et 5 (QR code, Wi-Fi) sont traduites plus bas
     set.fakes.forEach(function (f, j) { f.tip = LT[i][j]; });
   });
 
@@ -220,6 +221,167 @@
     win: "Non ! Vous m'avez arrêté... cette fois.",
     lose: "Le hacker est entré. Partie terminée."
   };
+
+  /* =========================================================
+     NOUVELLES NOTIONS (box, téléphone, QR piégé, vie privée...)
+     ========================================================= */
+
+  /* ---------- Repère le piège : messages 5 à 9 ---------- */
+  T[5].fromName = "Assistance NovaBox";
+  T[5].subject = [{ t: "Dernier avertissement", sus: true }, " : votre internet va être coupé"];
+  T[5].body = ["Votre box a un problème de sécurité. ", { t: "Votre connexion sera coupée ce soir", sus: true }, ". Pour l'éviter, ",
+               { t: "saisissez votre mot de passe Wi-Fi et votre numéro de carte", sus: true }, " sur notre page."];
+  T[5].link.label = "Réparer ma box";
+  T[5].why = "Ton fournisseur internet ne demande jamais ton mot de passe Wi-Fi ni ta carte bancaire par mail. Va toi-même sur ton vrai espace client.";
+
+  T[6].body = ["ParcelGo : votre colis ne peut pas être suivi. ", { t: "Installez notre nouvelle appli", sus: true }, " ",
+               { t: "(hors store)", sus: true }, " pour le suivre : "];
+  T[6].why = "N'installe des applis que depuis le store officiel (Google Play, App Store). Une appli envoyée par SMS peut espionner ton téléphone.";
+
+  T[7].fromName = "Anonyme";
+  T[7].subject = [{ t: "Je connais ton mot de passe", sus: true }];
+  T[7].body = ["J'ai piraté ton ordinateur et ", { t: "je t'ai filmé avec ta webcam", sus: true }, ". ",
+               { t: "Paie 500 € en bitcoin sous 48 heures", sus: true }, " ou j'envoie la vidéo à tous tes contacts."];
+  T[7].why = "C'est une arnaque envoyée à des milliers de personnes : il n'y a aucune vidéo. Ne réponds pas, ne paie pas, signale-la (en France : signal-spam.fr).";
+
+  T[8].subject = ["Quel est ton nom de hacker ? 😎"];
+  T[8].body = ["Trouve ton nom de hacker en 10 secondes ! Donne-nous juste ", { t: "ta date de naissance", sus: true }, ", ",
+               { t: "le nom de ton animal", sus: true }, " et ", { t: "le nom de jeune fille de ta mère", sus: true }, "."];
+  T[8].link.label = "Jouer maintenant";
+  T[8].why = "Ces réponses sont souvent les questions secrètes qui servent à récupérer tes mots de passe. Ne les donne jamais dans un quiz ni sur les réseaux sociaux.";
+
+  T[9].subject = ["Votre relevé mensuel est disponible"];
+  T[9].body = ["Votre relevé de mars est disponible dans votre appli Bluestone Bank. Rappel : nous ne vous demanderons jamais votre mot de passe ni vos codes par mail ou par téléphone."];
+  T[9].why = "Celui-ci est vrai : la vraie adresse de la banque, aucun lien, rien à saisir, et il rappelle le bon réflexe.";
+
+  /* ---------- Demande de mot de passe : la box / le routeur ---------- */
+  P[3].fromName = "Informatique NovaCorp";
+  P[3].subject = "Mot de passe du routeur : merci de le changer";
+  P[3].text = "Le routeur du bureau utilise encore son mot de passe d'usine (admin). Merci de lui choisir aujourd'hui un nouveau mot de passe solide. Il n'y a pas de lien : ouvrez les réglages du routeur avec l'équipe informatique.";
+  P[3].why = "Celui-ci est vrai : la bonne adresse, aucun lien, et changer un mot de passe d'usine est un très bon réflexe. Fais pareil avec ta box à la maison.";
+  P[4].subject = "Vérification du routeur";
+  P[4].text = "Nous vérifions tous les routeurs aujourd'hui. Répondez avec le mot de passe administrateur de votre routeur pour que nous le mettions à jour.";
+  P[4].why = "Personne n'a besoin du mot de passe de ton routeur. Un vrai fournisseur met la box à jour sans le demander.";
+
+  /* ---------- Appel entrant : box, faux conseiller bancaire, vraie collègue ---------- */
+  C[5].name = "Technicien NovaBox";
+  C[5].text = "Bonjour, je suis technicien chez NovaBox, votre fournisseur internet. Votre box envoie des virus sur le réseau. J'ai besoin du mot de passe de votre box pour la réparer à distance. Ça ne prendra qu'une minute.";
+  C[5].why = "Ton fournisseur ne te demande jamais le mot de passe de ta box au téléphone. Raccroche et appelle le numéro inscrit sur ton vrai contrat.";
+  C[6].text = "Bonjour, ici le service des fraudes de Bluestone Bank. Quelqu'un essaie d'utiliser votre carte en ce moment. Pour annuler le paiement, lisez-moi le code que vous venez de recevoir par SMS.";
+  C[6].why = "C'est l'arnaque au faux conseiller bancaire : le code demandé est celui qui valide LEUR paiement. Le nom affiché à l'écran peut être imité. Une banque ne demande jamais tes codes : raccroche et appelle le numéro au dos de ta carte.";
+  C[7].name = "Léa · Informatique NovaCorp";
+  C[7].number = "Poste interne 2031";
+  C[7].text = "Salut, c'est Léa de l'informatique. Pour info, on redémarre le routeur du bureau à dix-huit heures pour une mise à jour. Internet sera coupé cinq minutes. Tu n'as rien à faire.";
+  C[7].why = "Celui-ci est vrai : un numéro interne, une simple information, rien n'est demandé.";
+
+  /* ---------- Vrai ou faux site ? : QR code piégé et faux Wi-Fi ---------- */
+  var L = FR.LINKS;
+  L[3].context = "Tu as scanné un QR code collé sur un horodateur. Il ouvre cette adresse :";
+  L[3].extra = "Un faux QR code peut être un autocollant posé par-dessus le vrai : lis toujours l'adresse avant de payer.";
+  L[3].fakes[0].tip = "« pay-novacity-parking.com » avec un tiret est un autre site.";
+  L[3].fakes[1].tip = "Le vrai site, c'est la fin de l'adresse : pay-now.info, pas novacity-parking.com.";
+  L[3].fakes[2].tip = "« parklng » utilise un l au lieu d'un i, et http n'a pas de s.";
+  L[4].context = "Au bureau NovaCorp, tu veux utiliser le Wi-Fi invité. Est-ce le bon réseau ?";
+  L[4].extra = "Demande à l'accueil le nom exact du réseau invité et son mot de passe. Un vrai réseau invité a toujours un mot de passe.";
+  L[4].fakes[0].tip = "Une entreprise n'ajoute jamais « FREE » au nom de son réseau : c'est un réseau piège créé par quelqu'un à côté.";
+  L[4].fakes[1].tip = "« N0vaCorp » utilise un zéro au lieu de la lettre o.";
+  L[4].fakes[2].tip = "Un réseau ouvert n'a pas de mot de passe : n'importe qui peut l'espionner. Le vrai réseau invité demande un mot de passe.";
+
+  /* ---------- Bureau : la box avec le mot de passe Wi-Fi collé dessus ---------- */
+  FR.DESK.errors.router = "le mot de passe Wi-Fi collé sur la box";
+
+  /* ---------- Écran bizarre : fausse alerte virus + mise à jour du routeur ---------- */
+  FR.RANSOM.support = {
+    title: "⚠ ALERTE DE SÉCURITÉ",
+    text: "Votre ordinateur est infecté par 5 virus ! Ne l'éteignez pas. Appelez tout de suite le support au +44 20 7946 0999 pour les supprimer.",
+    why: "Les fausses alertes virus veulent que tu les appelles pour prendre le contrôle de ton ordinateur. N'appelle jamais ce numéro : ferme la page (ou redémarre) et préviens l'informatique."
+  };
+  FR.RANSOM.normals.push({
+    title: "Informatique NovaCorp · Mise à jour du routeur",
+    text: "Le routeur du bureau est en cours de mise à jour. Internet peut être lent pendant 5 minutes. Vous n'avez rien à faire."
+  });
+
+  /* =========================================================
+     PÉDAGOGIE EN FRANÇAIS
+     ========================================================= */
+  FR.FAMILIES.humans = "Faux humains (ingénierie sociale)";
+
+  FR.FAMILY_INFO = {
+    phishing: {
+      rule: "Avant de cliquer, regarde qui écrit et ce qu'on te demande. Urgent + lien + demande = piège.",
+      home: "Chez toi : même réflexe pour tes mails et SMS perso. Ne paie jamais et ne tape jamais un code depuis un lien que tu n'as pas demandé.",
+      hint: "Regarde l'adresse de l'expéditeur et ce que le message te demande de faire."
+    },
+    passwords: {
+      rule: "Un compte = un mot de passe long, et la double authentification partout où c'est possible.",
+      home: "Chez toi : change le mot de passe d'usine de ta box, utilise un gestionnaire de mots de passe et active la double authentification sur ta messagerie.",
+      hint: "Demande-toi comment un hacker pourrait deviner, lire ou réutiliser ce mot de passe."
+    },
+    devices: {
+      rule: "Verrouille, mets à jour, sauvegarde, et ne branche jamais ce que tu ne connais pas.",
+      home: "Chez toi : active les mises à jour automatiques, verrouille ton téléphone avec un code et garde une copie de tes photos ailleurs.",
+      hint: "Demande-toi ce que quelqu'un pourrait faire avec cet appareil quand tu n'es pas là."
+    },
+    humans: {
+      rule: "Urgent, secret, argent ou code : stop, et vérifie avec un numéro que tu connais déjà.",
+      home: "Chez toi : les faux conseillers bancaires appellent aussi. Raccroche et rappelle toi-même le numéro au dos de ta carte.",
+      hint: "Qui demande vraiment ? Comment vérifier sans utiliser son numéro ou son lien à lui ?"
+    },
+    network: {
+      rule: "Vérifie l'adresse et le réseau avant de taper quoi que ce soit. Pas de cadenas, pas de données perso.",
+      home: "Chez toi : protège ton Wi-Fi avec un mot de passe solide (WPA2 ou WPA3) et donne un réseau invité aux visiteurs.",
+      hint: "Regarde bien l'adresse ou le nom du réseau : est-ce vraiment l'officiel ?"
+    }
+  };
+
+  var GLOSS_FR = [
+    "Un faux message (mail, SMS, site) qui essaie de voler tes mots de passe, tes codes ou ton argent.",
+    "Du phishing par SMS.",
+    "Du phishing par téléphone : faux conseiller, faux technicien ou faux patron.",
+    "Un faux QR code qui ouvre un site piège.",
+    "Une ruse pour voler de l'argent ou des informations.",
+    "La personne ou l'adresse qui envoie un message.",
+    "Un fichier envoyé avec un mail. Un fichier « .exe » est un programme.",
+    "Un texte sur lequel on clique pour ouvrir un site. Reste appuyé dessus pour voir la vraie adresse.",
+    "Un mot secret pour ouvrir un compte. Long vaut mieux que compliqué.",
+    "Une appli coffre-fort qui retient tous tes mots de passe pour toi.",
+    "Un deuxième verrou : un code sur ton téléphone, en plus du mot de passe.",
+    "Quand des informations volées (mails, mots de passe) se retrouvent sur internet.",
+    "Une nouvelle version qui répare des failles de sécurité.",
+    "Une copie de tes fichiers, rangée ailleurs.",
+    "Un virus qui bloque tes fichiers et demande de l'argent.",
+    "Tout programme fait pour nuire : virus, logiciel espion, rançongiciel...",
+    "Un programme qui trouve et supprime les logiciels malveillants.",
+    "L'appareil qui donne internet et le Wi-Fi à la maison ou au bureau.",
+    "Une connexion sans fil. Un réseau ouvert (sans mot de passe) n'est pas sûr.",
+    "Un Wi-Fi séparé pour les visiteurs, pour qu'ils ne voient pas tes appareils.",
+    "Un filtre qui bloque les connexions non voulues.",
+    "Montre que la connexion au site est chiffrée (protégée).",
+    "Transformé en code secret que seule la bonne personne peut lire.",
+    "Piéger des personnes (pas des ordinateurs) : faux patron, faux support, pression, flatterie...",
+    "Fermer sa session quand on part : Windows + L.",
+    "Quelqu'un qui entre dans des systèmes sans autorisation.",
+    "Prévenir l'informatique ou un site officiel d'une arnaque.",
+    "La grande question de tout le jeu !"
+  ];
+  FR.GLOSSARY.forEach(function (g, i) { if (GLOSS_FR[i]) g.def = GLOSS_FR[i]; });
+
+  var REPORT_FR = [
+    "Aide officielle si tu es victime d'une cyberattaque.",
+    "Conseils et aide aux victimes, guides pour se protéger.",
+    "Transférer gratuitement un SMS ou un appel d'arnaque.",
+    "Signaler un mail d'arnaque.",
+    "Vérifier si ton adresse mail a fuité sur internet.",
+    "Carte volée ou faux paiement : appelle tout de suite le numéro au dos de ta carte."
+  ];
+  FR.REPORT.forEach(function (r, i) { if (REPORT_FR[i]) r.what = REPORT_FR[i]; });
+  FR.REPORT[5].name = "Ta banque";
+
+  FR.DISCUSS = [
+    "Quelle attaque vous a le plus surpris ? Pourquoi ?",
+    "Avez-vous déjà reçu un message ou un appel comme ça ? Qu'avez-vous fait ?",
+    "Quel réflexe allez-vous appliquer dès ce soir, chez vous ?"
+  ];
 
   window.NOVA_DATA = FR;
 })();

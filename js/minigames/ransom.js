@@ -10,12 +10,20 @@ Minigames.register("ransom", function (root, ctx) {
   var t = ctx.t;
   var R = ctx.data.RANSOM;
   var isAttack = Math.random() < R.attackChance;
+  // Parmi les attaques : fausse alerte virus (faux support) ou ransomware
+  var isSupport = isAttack && R.support && Math.random() < R.supportChance;
   var timers = [];
   var decided = false;
 
   /* ---------- L'écran qui apparaît ---------- */
   var screen;
-  if (isAttack) {
+  if (isSupport) {
+    screen = el("div", { class: "ransom__screen ransom__screen--support" }, [
+      el("p", { class: "ransom__ptitle", text: R.support.title }),
+      el("p", { class: "ransom__text", text: R.support.text }),
+      el("p", { class: "ransom__phone", text: "☎ +44 20 7946 0999" })
+    ]);
+  } else if (isAttack) {
     var clock = el("p", { class: "ransom__clock", text: "47:59:59" });
     screen = el("div", { class: "ransom__screen ransom__screen--attack" }, [
       el("p", { class: "ransom__skull", "aria-hidden": "true", text: "☠" }),
@@ -63,13 +71,20 @@ Minigames.register("ransom", function (root, ctx) {
       ctx.done({ verdict: "wrong", falseAlarm: true, summary: t("ransom.s.false"), why: t("ransom.why.false") });
       return;
     }
+    if (isSupport) {
+      decided = true;
+      ctx.done({ verdict: "right", summary: t("ransom.s.support"), why: R.support.why });
+      return;
+    }
     showOrder();
   });
 
   normalBtn.addEventListener("click", function () {
     if (decided) return;
     decided = true;
-    if (isAttack) {
+    if (isSupport) {
+      ctx.done({ verdict: "wrong", summary: t("ransom.s.supportMissed"), why: R.support.why });
+    } else if (isAttack) {
       var steps = R.steps.map(function (s) { return s.charAt(0).toLowerCase() + s.slice(1); }).join(", ");
       ctx.done({ verdict: "wrong", summary: t("ransom.s.missed"), why: t("ransom.why.missed", { steps: steps }) });
     } else {

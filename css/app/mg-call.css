@@ -111,3 +111,17 @@
   height: 26px;
   display: block;
 }
+
+/* Réécouter l'appel */
+.call__replay {
+  min-height: 44px;
+  margin-top: 10px;
+  padding: 6px 14px;
+  border: 1px solid var(--navy);
+  border-radius: 22px;
+  background: transparent;
+  color: var(--white);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
