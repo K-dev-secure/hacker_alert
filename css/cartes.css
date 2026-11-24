@@ -1,0 +1,159 @@
+/* =========================================================
+   CARTES À JOUER (rouges = attaques, vertes = défenses)
+   ========================================================= */
+
+.cards {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  justify-items: center;
+  margin-top: 20px;
+}
+
+.card {
+  width: 100%;
+  max-width: 260px;
+  aspect-ratio: 5 / 7;
+  perspective: 1000px;
+  border: 0;
+  padding: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Retournement ---------- */
+.card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .6s cubic-bezier(.3, .7, .3, 1);
+}
+
+.card.is-flipped .card__inner {
+  transform: rotateY(180deg);
+}
+
+/* ---------- Faces (recto / verso) ---------- */
+.card__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 18px;
+  border: 6px solid var(--card-color);
+  background: var(--navy-2);
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  overflow: hidden;
+}
+
+.card__back {
+  transform: rotateY(180deg);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: repeating-linear-gradient(45deg, var(--navy-2) 0 10px, var(--navy) 10px 20px);
+}
+
+/* ---------- Couleurs ---------- */
+.card--red {
+  --card-color: var(--red);
+}
+
+.card--green {
+  --card-color: var(--green);
+}
+
+.card--red .card__face {
+  box-shadow: var(--glow-red);
+}
+
+.card--green .card__face {
+  box-shadow: var(--glow-green);
+}
+
+/* ---------- Contenu de la carte ---------- */
+.card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card__num {
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--card-color);
+}
+
+.card__tag {
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.card__icon {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--card-color);
+}
+
+.card__icon svg {
+  width: 56%;
+  height: auto;
+  filter: drop-shadow(0 0 10px var(--card-color));
+}
+
+.card__name {
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.card__text {
+  font-size: 16px;
+  color: var(--muted);
+  margin: 6px 0 0;
+}
+
+.card__hint {
+  margin-top: 10px;
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ---------- Réduire les animations : pas de 3D ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .card__inner {
+    transform-style: flat;
+  }
+
+  .card.is-flipped .card__inner {
+    transform: none;
+  }
+
+  .card__back {
+    transform: none;
+    visibility: hidden;
+  }
+
+  .card.is-flipped .card__front {
+    visibility: hidden;
+  }
+
+  .card.is-flipped .card__back {
+    visibility: visible;
+  }
+}

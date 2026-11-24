@@ -1,0 +1,44 @@
+/* =========================================================
+   JAUGE D'INTRUSION (10 cases, vert -> orange -> rouge)
+   ========================================================= */
+
+.gauge {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.gauge__cell {
+  aspect-ratio: 1 / 1.6;
+  border-radius: 6px;
+  border: 2px solid var(--navy);
+  background: var(--navy-2);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 4px;
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  color: var(--muted);
+  transition: background-color .3s, box-shadow .3s, color .3s, border-color .3s;
+}
+
+.gauge__cell.is-on {
+  background: var(--cell-color);
+  border-color: var(--cell-color);
+  box-shadow: 0 0 12px var(--cell-color);
+  color: var(--bg);
+}
+
+/* Espace entre la jauge et le texte en dessous */
+.gauge + .placeholder {
+  margin-top: 20px;
+}
+
+/* ---------- Très petits écrans ---------- */
+@media (max-width: 359px) {
+  .gauge__cell {
+    font-size: 12px;
+  }
+}

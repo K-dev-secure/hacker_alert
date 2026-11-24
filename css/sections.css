@@ -1,0 +1,86 @@
+/* =========================================================
+   SECTIONS (titres numérotés, variantes rouge / verte)
+   ========================================================= */
+
+.section {
+  padding: 64px 0;
+  border-top: 1px solid rgba(29, 42, 61, .7);
+}
+
+.section__head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.section__num {
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  color: var(--bg);
+  background: var(--green);
+  padding: 2px 8px;
+  border-radius: 4px;
+  box-shadow: var(--glow-green);
+}
+
+.section__title {
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: clamp(30px, 8vw, 48px);
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: .3px;
+}
+
+/* ---------- Variante rouge ---------- */
+.section--red .section__num {
+  background: var(--red);
+  color: var(--white);
+  box-shadow: var(--glow-red);
+}
+
+.section--red .section__title {
+  color: var(--white);
+  text-shadow: 0 0 22px rgba(215, 25, 32, .35);
+}
+
+/* ---------- Variante verte ---------- */
+.section--green .section__title {
+  text-shadow: 0 0 22px rgba(93, 184, 112, .3);
+}
+
+/* ---------- Bloc "Contenu à venir" ---------- */
+.placeholder {
+  border: 2px dashed var(--navy);
+  border-radius: 14px;
+  padding: 20px;
+  color: var(--muted);
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  text-align: center;
+}
+
+.placeholder::before {
+  content: "> ";
+  color: var(--green);
+}
+
+.placeholder::after {
+  content: "_";
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ---------- Ordinateur ---------- */
+@media (min-width: 768px) {
+  .section {
+    padding: 88px 0;
+  }
+}

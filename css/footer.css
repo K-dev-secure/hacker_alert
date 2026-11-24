@@ -1,0 +1,50 @@
+/* =========================================================
+   PIED DE PAGE (l'équipe)
+   ========================================================= */
+
+.footer {
+  padding: 48px 0 64px;
+  border-top: 2px solid var(--navy);
+  text-align: center;
+  color: var(--muted);
+}
+
+.footer__brand {
+  font-family: var(--font-title);
+  font-size: 32px;
+  color: var(--white);
+  margin: 0;
+}
+
+.footer__brand span {
+  font-family: var(--font-pixel);
+  color: var(--red);
+  font-size: 24px;
+  margin-left: 6px;
+}
+
+.footer__team {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.footer__team li {
+  border: 1px solid var(--navy);
+  border-radius: 999px;
+  padding: 8px 16px;
+  color: var(--white);
+  background: var(--navy-2);
+}
+
+.footer__event {
+  font-family: var(--font-pixel);
+  color: var(--green);
+  text-shadow: var(--glow-green);
+  font-size: 16px;
+  margin: 0;
+}

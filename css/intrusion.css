@@ -1,0 +1,63 @@
+/* =========================================================
+   BARRE INTRUSION (progression de lecture, en haut)
+   ========================================================= */
+
+.intrusion {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--bar-h);
+  z-index: 50;
+  background: rgba(11, 15, 23, .96);
+  border-bottom: 1px solid var(--navy);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 var(--gutter);
+}
+
+.intrusion__label {
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  white-space: nowrap;
+  color: var(--level-color, var(--green));
+  transition: color .3s;
+  min-width: 13ch;
+}
+
+.intrusion__track {
+  flex: 1;
+  height: 12px;
+  border-radius: 6px;
+  background: var(--navy-2);
+  border: 1px solid var(--navy);
+  overflow: hidden;
+  position: relative;
+}
+
+.intrusion__fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left;
+  transform: scaleX(0);
+  background: var(--level-color, var(--green));
+  box-shadow: 0 0 12px var(--level-color, var(--green));
+  transition: transform .15s linear, background-color .3s;
+}
+
+.intrusion__ticks {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  pointer-events: none;
+}
+
+.intrusion__ticks span {
+  border-right: 2px solid var(--bg);
+}
+
+.intrusion__ticks span:last-child {
+  border-right: 0;
+}
