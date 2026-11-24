@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NovaCorp Security</title>
+<meta name="description" content="Appli du jeu Hacker Alert, le jeu de cartes coopératif de cybersécurité. Jeu d'entraînement : tout est faux.">
+<meta name="theme-color" content="#0B0F17">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lilita+One&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
+<!-- Styles : variables communes avec regles.html, puis un fichier par partie de l'appli -->
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/app/layout.css">
+<link rel="stylesheet" href="css/app/home.css">
+<link rel="stylesheet" href="css/app/rules.css">
+<link rel="stylesheet" href="css/app/hud.css">
+<link rel="stylesheet" href="css/app/pad.css">
+<link rel="stylesheet" href="css/app/result.css">
+<link rel="stylesheet" href="css/app/end.css">
+<link rel="stylesheet" href="css/app/minigames.css">
+<link rel="stylesheet" href="css/app/mg-trap.css">
+<link rel="stylesheet" href="css/app/mg-password.css">
+<link rel="stylesheet" href="css/app/mg-call.css">
+<link rel="stylesheet" href="css/app/mg-link.css">
+<link rel="stylesheet" href="css/app/mg-desk.css">
+<link rel="stylesheet" href="css/app/mg-ransom.css">
+</head>
+<body class="app">
+
+<!-- Barre du haut -->
+<header class="topbar">
+  <a class="topbar__brand" href="./"><img src="logo.png" alt="" width="32" height="32"><span class="topbar__name">NovaCorp Security</span></a>
+  <span class="topbar__level" id="levelChip" hidden></span>
+  <button class="topbar__lang" id="langBtn" type="button" data-i18n="lang.switch" data-i18n-aria="lang.aria">EN</button>
+  <button class="topbar__voice" id="voiceBtn" type="button" aria-pressed="true">🔊</button>
+</header>
+
+<!-- Chrono, jauge, compteur (pendant une partie) -->
+<div class="hud" id="hud" hidden>
+  <p class="hud__timer" id="hudTimer" role="timer" data-i18n-aria="hud.time">10:00</p>
+  <div class="hud__gauge">
+    <p class="hud__label" id="hudLabel">INTRUSION 0/10</p>
+    <div class="hud__cells" id="hudCells" aria-hidden="true"></div>
+  </div>
+  <p class="hud__count"><span data-i18n="hud.attack">Attaque</span> <b id="hudCount">0/6</b></p>
+</div>
+
+<main class="screens">
+
+  <!-- Sous-titres de la voix (dans la page : ne cachent jamais les boutons) -->
+  <div class="subtitle" id="subtitle" hidden aria-live="polite">
+    <span class="subtitle__who">HACKER</span>
+    <span class="subtitle__text"></span>
+  </div>
+
+  <!-- ===== Accueil ===== -->
+  <section class="screen home" id="screen-home" hidden aria-labelledby="homeTitle">
+    <img class="home__logo" src="logo.png" alt="Hacker Alert" width="920" height="920">
+    <h1 class="home__title" id="homeTitle">NovaCorp Security</h1>
+    <p class="home__intro" data-i18n="home.intro"></p>
+    <p class="fake-banner" data-i18n="fake"></p>
+
+    <div class="home__resume" id="resumeBox" hidden>
+      <p data-i18n="home.resume"></p>
+      <div class="btn-row">
+        <button class="btn btn--primary" id="resumeBtn" type="button" data-i18n="home.continue"></button>
+        <button class="btn btn--ghost" id="discardBtn" type="button" data-i18n="home.new"></button>
+      </div>
+    </div>
+
+    <form class="levels" id="levelForm">
+      <fieldset>
+        <legend class="levels__legend" data-i18n="home.level"></legend>
+        <label class="level-opt level-opt--junior">
+          <input type="radio" name="level" value="junior">
+          <span class="level-opt__name">🟢 Junior</span>
+          <span class="level-opt__text" data-i18n="lvl.junior"></span>
+        </label>
+        <label class="level-opt level-opt--pro">
+          <input type="radio" name="level" value="pro" checked>
+          <span class="level-opt__name">🟠 Pro</span>
+          <span class="level-opt__text" data-i18n="lvl.pro"></span>
+        </label>
+        <label class="level-opt level-opt--expert">
+          <input type="radio" name="level" value="expert">
+          <span class="level-opt__name">🔴 Expert</span>
+          <span class="level-opt__text" data-i18n="lvl.expert"></span>
+        </label>
+      </fieldset>
+      <button class="btn btn--start" type="submit" data-i18n="home.start"></button>
+    </form>
+
+    <button class="btn btn--ghost home__rules" type="button" data-open-rules data-i18n="home.rules"></button>
+    <a class="home__practice" href="?c=practice" data-i18n="home.practice"></a>
+  </section>
+
+  <!-- ===== Fiche des règles ===== -->
+  <section class="screen rules" id="screen-rules" hidden aria-labelledby="rulesTitle">
+    <h1 class="rules__title" id="rulesTitle" data-i18n="rules.title"></h1>
+    <div class="rules__sheet" data-i18n-html="rules.html"></div>
+    <a class="rules__full" href="regles.html" data-i18n="rules.full"></a>
+    <button class="btn btn--primary" id="rulesBack" type="button" data-i18n="back"></button>
+  </section>
+
+  <!-- ===== Partie : pavé du maître du jeu ===== -->
+  <section class="screen game" id="screen-game" hidden>
+    <div class="pad" id="pad">
+      <p class="pad__help" data-i18n="pad.help"></p>
+      <p class="pad__display" id="padDisplay" aria-live="polite"><span class="pad__hash">#</span><span id="padNumber">—</span></p>
+      <p class="pad__msg" id="padMsg" role="status"></p>
+      <div class="pad__keys" id="padKeys">
+        <button type="button" data-key="1">1</button><button type="button" data-key="2">2</button><button type="button" data-key="3">3</button>
+        <button type="button" data-key="4">4</button><button type="button" data-key="5">5</button><button type="button" data-key="6">6</button>
+        <button type="button" data-key="7">7</button><button type="button" data-key="8">8</button><button type="button" data-key="9">9</button>
+        <button type="button" data-key="del" data-i18n-aria="pad.delete">⌫</button><button type="button" data-key="0">0</button>
+        <button type="button" data-key="ok" class="pad__ok">OK</button>
+      </div>
+    </div>
+
+    <!-- Carte affichée -->
+    <article class="card-panel" id="cardPanel" hidden aria-live="polite">
+      <header class="card-panel__head">
+        <span class="card-panel__num" id="cpNum">#0</span>
+        <span class="card-panel__fam" id="cpFam"></span>
+        <span class="card-panel__sev" id="cpSev"></span>
+      </header>
+      <p class="card-panel__real" id="cpReal" hidden data-i18n="card.real"></p>
+      <p class="card-panel__text" id="cpText"></p>
+      <dl class="card-panel__answers">
+        <div class="card-panel__best"><dt data-i18n="card.best"></dt><dd id="cpBest"></dd></div>
+        <div class="card-panel__ok"><dt data-i18n="card.ok"></dt><dd id="cpOk"></dd></div>
+      </dl>
+      <p class="card-panel__expert" id="cpExpert" hidden></p>
+      <div class="verdicts">
+        <button class="verdict verdict--right" id="vRight" type="button"><span data-i18n="v.right"></span><small data-i18n="v.right.sub"></small></button>
+        <button class="verdict verdict--almost" id="vAlmost" type="button"><span data-i18n="v.almost"></span><small data-i18n="v.almost.sub"></small></button>
+        <button class="verdict verdict--wrong" id="vWrong" type="button"><span data-i18n="v.wrong"></span><small id="vWrongSub"></small></button>
+      </div>
+      <button class="btn btn--ghost btn--small" id="cpBack" type="button" data-i18n="card.back"></button>
+    </article>
+
+    <!-- Carte QR -->
+    <article class="qr-panel" id="qrPanel" hidden aria-live="polite">
+      <p class="qr-panel__tag" data-i18n="qr.tag"></p>
+      <h2 class="qr-panel__name" id="qrName"></h2>
+      <p class="qr-panel__text" data-i18n="qr.text"></p>
+      <button class="btn btn--primary" id="qrOpen" type="button" data-i18n="qr.open"></button>
+      <button class="btn btn--ghost btn--small" id="qrBack" type="button" data-i18n="card.back"></button>
+    </article>
+
+    <div class="game__links">
+      <button class="btn btn--link" type="button" data-open-rules data-i18n="game.rules"></button>
+      <button class="btn btn--link" id="abandonBtn" type="button" data-i18n="game.abandon"></button>
+    </div>
+  </section>
+
+  <!-- ===== Mini-jeu ===== -->
+  <section class="screen minigame" id="screen-minigame" hidden>
+    <p class="fake-banner" data-i18n="fake"></p>
+    <div class="mg" id="mgRoot"></div>
+  </section>
+
+  <!-- ===== Résultat d'une attaque ===== -->
+  <section class="screen result" id="screen-result" hidden aria-live="assertive" aria-labelledby="resTitle">
+    <div class="result__box" id="resBox">
+      <p class="result__icon" id="resIcon" aria-hidden="true"></p>
+      <h2 class="result__title" id="resTitle"></h2>
+      <p class="result__summary" id="resSummary"></p>
+      <ul class="result__calc" id="resCalc"></ul>
+      <p class="result__gauge" id="resGauge"></p>
+      <div class="result__learn">
+        <p class="result__best" id="resBest"></p>
+        <p class="result__why" id="resWhy"></p>
+      </div>
+      <p class="result__note" id="resNote" hidden></p>
+      <button class="btn btn--primary" id="resNext" type="button"></button>
+    </div>
+  </section>
+
+  <!-- ===== Fin de partie ===== -->
+  <section class="screen end" id="screen-end" hidden aria-labelledby="endTitle">
+    <div class="end__screen" id="endScreen">
+      <p class="end__big" id="endBig" data-text=""></p>
+      <h2 class="end__title" id="endTitle"></h2>
+      <p class="end__score" id="endScore"></p>
+    </div>
+    <h3 class="end__recap-title" data-i18n="end.recap"></h3>
+    <ol class="end__recap" id="endRecap"></ol>
+    <button class="btn btn--start" id="newGameBtn" type="button" data-i18n="end.new"></button>
+  </section>
+
+  <!-- ===== Entraînement ===== -->
+  <section class="screen practice" id="screen-practice" hidden aria-labelledby="practiceTitle">
+    <h1 class="practice__title" id="practiceTitle" data-i18n="pr.title"></h1>
+    <p class="practice__intro" data-i18n="pr.intro"></p>
+    <p class="fake-banner" data-i18n="fake"></p>
+    <ul class="practice__list" id="practiceList"></ul>
+    <a class="btn btn--ghost" href="./" data-i18n="back.home"></a>
+  </section>
+</main>
+
+<script src="js/i18n.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/cards-fr.js"></script>
+<script src="js/game.js"></script>
+<script src="js/minigames/common.js"></script>
+<script src="js/minigames/trap.js"></script>
+<script src="js/minigames/password.js"></script>
+<script src="js/minigames/call.js"></script>
+<script src="js/minigames/link.js"></script>
+<script src="js/minigames/desk.js"></script>
+<script src="js/minigames/ransom.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+/* =========================================================
+   MINI-JEU MESSY DESK — bureau dessiné en SVG
+   ========================================================= */
+
+.desk__title {
+  margin: 0 0 8px;
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.desk {
+  border: 2px solid var(--navy);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #17223A;
+}
+
+.desk__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Objets touchables */
+.desk__item {
+  cursor: pointer;
+  outline: none;
+}
+
+.desk__hit {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 3;
+}
+
+.desk__item:focus-visible .desk__hit {
+  stroke: var(--white);
+  stroke-dasharray: 4 3;
+}
+
+/* Erreur trouvée */
+.desk__item.is-found .desk__hit {
+  fill: rgba(93, 184, 112, .18);
+  stroke: var(--green);
+}
+
+/* Fausse alerte */
+.desk__item.is-false .desk__hit {
+  stroke: var(--orange);
+  stroke-dasharray: 6 4;
+}
+
+/* Erreur oubliée (montrée à la fin) */
+.desk__item.is-missed .desk__hit {
+  fill: rgba(215, 25, 32, .2);
+  stroke: var(--red-text);
+}
+
+.desk__counter {
+  margin: 10px 0 0;
+  font-weight: 600;
+  text-align: center;
+}

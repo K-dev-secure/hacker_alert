@@ -1,0 +1,151 @@
+/* =========================================================
+   MINI-JEU STRANGE SCREEN — ransomware ou vrai message
+   ========================================================= */
+
+.ransom__screen {
+  padding: 22px 16px;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.ransom__screen p {
+  margin: 0;
+}
+
+/* ---------- Ransomware ---------- */
+.ransom__screen--attack {
+  background: #8E0E13;
+  border: 3px solid #E0262D;
+  color: var(--white);
+  box-shadow: var(--glow-red);
+}
+
+.ransom__skull {
+  font-size: 48px;
+  line-height: 1;
+}
+
+.ransom__title {
+  margin-top: 6px !important;
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: clamp(20px, 6vw, 28px);
+  line-height: 1.2;
+}
+
+.ransom__text {
+  margin-top: 10px !important;
+  line-height: 1.5;
+}
+
+.ransom__clock {
+  margin-top: 12px !important;
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 32px;
+}
+
+.ransom__small {
+  margin-top: 6px !important;
+  font-size: 14px;
+}
+
+/* ---------- Vrai message NovaCorp ---------- */
+.ransom__screen--normal {
+  background: #F4F6FA;
+  color: #1A2230;
+  text-align: left;
+}
+
+.ransom__wtitle {
+  font-weight: 700;
+  font-size: 18px;
+  color: #1F5FA0;
+}
+
+.ransom__progress {
+  height: 12px;
+  margin-top: 14px;
+  border-radius: 6px;
+  background: #D5DBE5;
+  overflow: hidden;
+}
+
+.ransom__progress-fill {
+  display: block;
+  height: 100%;
+  background: #1F6FB2;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.ransom__pct {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+  color: #3A4558;
+  text-align: right;
+}
+
+/* ---------- Remettre les actions dans l'ordre ---------- */
+.order {
+  margin-top: 18px;
+  padding: 16px;
+  border: 2px solid var(--red);
+  border-radius: 14px;
+  background: var(--navy-2);
+}
+
+.order__title {
+  margin: 0 0 6px;
+  font-family: var(--font-title);
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.order__choices {
+  display: grid;
+  gap: 8px;
+}
+
+.order__choice {
+  min-height: 52px;
+  padding: 10px 14px;
+  border: 2px solid var(--navy);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--white);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.order__choice:disabled {
+  opacity: .3;
+  cursor: default;
+}
+
+.order__list {
+  margin: 14px 0 0;
+  padding-left: 26px;
+  display: grid;
+  gap: 6px;
+}
+
+.order__list li {
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(93, 184, 112, .12);
+  font-weight: 600;
+}
+
+.order__list li::marker {
+  font-weight: 700;
+  color: var(--green);
+}
+
+.order__list li.is-empty {
+  background: none;
+  color: var(--muted);
+}

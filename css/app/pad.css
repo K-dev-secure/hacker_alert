@@ -1,0 +1,260 @@
+/* =========================================================
+   APPLI — PAVÉ DU MAÎTRE DU JEU, CARTE AFFICHÉE, CARTE QR
+   ========================================================= */
+
+/* ---------- Pavé numérique ---------- */
+.pad[hidden],
+.card-panel[hidden],
+.qr-panel[hidden] {
+  display: none;
+}
+
+.pad__help {
+  margin: 0 0 8px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.pad__display {
+  margin: 0;
+  padding: 10px;
+  border: 2px solid var(--navy);
+  border-radius: 14px;
+  background: var(--navy-2);
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 1.1;
+  text-align: center;
+  color: var(--white);
+}
+
+.pad__hash {
+  color: var(--red-text);
+}
+
+.pad__msg {
+  min-height: 24px;
+  margin: 6px 0;
+  color: var(--orange);
+  font-weight: 600;
+  text-align: center;
+}
+
+.pad__keys {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.pad__keys button {
+  min-height: 60px;
+  border: 2px solid var(--navy);
+  border-radius: 14px;
+  background: var(--navy-2);
+  color: var(--white);
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 26px;
+  cursor: pointer;
+  transition: transform .08s, background-color .15s;
+}
+
+.pad__keys button:active {
+  transform: scale(.95);
+  background: var(--navy);
+}
+
+.pad__keys .pad__ok {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--bg);
+}
+
+/* ---------- Carte rouge affichée ---------- */
+.card-panel {
+  padding: 16px;
+  border: 4px solid var(--red);
+  border-radius: 18px;
+  background: var(--navy-2);
+  box-shadow: var(--glow-red);
+}
+
+.card-panel__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.card-panel__num {
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--red-text);
+}
+
+.card-panel__fam {
+  padding: 2px 8px;
+  border: 1px solid var(--navy);
+  border-radius: 6px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.card-panel__sev {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.card-panel__real {
+  margin: 10px 0 0;
+  padding: 4px 10px;
+  display: inline-block;
+  border-radius: 6px;
+  background: rgba(93, 184, 112, .15);
+  color: var(--green);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.card-panel__real[hidden] {
+  display: none;
+}
+
+.card-panel__text {
+  margin: 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.card-panel__answers {
+  margin: 0 0 12px;
+  display: grid;
+  gap: 6px;
+}
+
+.card-panel__answers div {
+  display: grid;
+  grid-template-columns: 7.5em 1fr;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--bg);
+}
+
+.card-panel__answers dt {
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  padding-top: 2px;
+}
+
+.card-panel__answers dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.card-panel__best dt {
+  color: var(--green);
+}
+
+.card-panel__ok dt {
+  color: var(--orange);
+}
+
+.card-panel__expert {
+  margin: 0 0 12px;
+  font-size: 15px;
+  color: var(--red-text);
+  font-weight: 600;
+}
+
+/* ---------- Boutons Right / Almost / Wrong ---------- */
+.verdicts {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.verdict {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 60px;
+  padding: 10px 16px;
+  border: 2px solid var(--v);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--v) 14%, var(--navy-2));
+  color: var(--white);
+  font: inherit;
+  font-weight: 700;
+  font-size: 18px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.verdict small {
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.verdict--right {
+  --v: var(--green);
+}
+
+.verdict--almost {
+  --v: var(--orange);
+}
+
+.verdict--wrong {
+  --v: var(--red);
+}
+
+/* Almost grisé : pas de défense acceptable */
+.verdict:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+.card-panel .btn--ghost,
+.qr-panel .btn--ghost {
+  width: 100%;
+}
+
+/* ---------- Carte QR ---------- */
+.qr-panel {
+  padding: 20px 16px;
+  border: 4px solid var(--red);
+  border-radius: 18px;
+  background: var(--navy-2);
+  text-align: center;
+}
+
+.qr-panel__tag {
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  color: var(--red-text);
+}
+
+.qr-panel__name {
+  margin: 6px 0 8px;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1.15;
+}
+
+.qr-panel__text {
+  margin: 0 0 16px;
+  color: var(--muted);
+}
+
+.qr-panel .btn--primary {
+  margin-bottom: 10px;
+  min-height: 60px;
+  font-size: 22px;
+}

@@ -136,7 +136,7 @@
 }
 
 .callout--red {
-  --callout-color: var(--red);
+  --callout-color: var(--red-text);
 }
 
 .callout--green {

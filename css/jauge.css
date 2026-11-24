@@ -66,8 +66,7 @@
   transform: translateY(-3px);
 }
 
-.gauge__cell--alert.is-on,
-.gauge__cell--end.is-on {
+.gauge__cell:nth-child(n + 5).is-on {
   color: var(--white);
 }
 
@@ -138,7 +137,7 @@
 
 .meter.is-alert .meter__flag--alert::after,
 .meter.is-breached .meter__flag--end::after {
-  color: var(--red);
+  color: var(--red-text);
 }
 
 .meter.is-alert .meter__flag--alert {
@@ -223,7 +222,7 @@
 .combo__result {
   margin: 14px 0 0;
   font-weight: 700;
-  color: var(--red);
+  color: var(--red-text);
 }
 
 /* ---------- Ordinateur : jauge plus grande ---------- */

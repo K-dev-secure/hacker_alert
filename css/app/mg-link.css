@@ -1,0 +1,48 @@
+/* =========================================================
+   MINI-JEU SAFE OR FAKE LINK? — barre d'adresse
+   ========================================================= */
+
+.link__browser {
+  border-radius: 14px;
+  overflow: hidden;
+  background: #F4F6FA;
+  color: #1A2230;
+}
+
+.link__dots {
+  display: flex;
+  gap: 6px;
+  padding: 10px 12px;
+  background: #E1E6EE;
+}
+
+.link__dots i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #B8C0CC;
+}
+
+.link__dots i:first-child {
+  background: #E0565B;
+}
+
+.link__dots i:nth-child(2) {
+  background: #E8B14A;
+}
+
+.link__dots i:last-child {
+  background: #5DB870;
+}
+
+/* L'adresse, en grand et lettre par lettre */
+.link__url {
+  margin: 0;
+  padding: 22px 14px;
+  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-weight: 700;
+  font-size: clamp(17px, 5vw, 22px);
+  line-height: 1.4;
+  word-break: break-all;
+  text-align: center;
+}

@@ -50,7 +50,7 @@
   font-family: var(--font-pixel);
   font-weight: 700;
   font-size: clamp(40px, 11vw, 80px);
-  color: var(--red);
+  color: var(--red-text);
   text-shadow: var(--glow-red);
 }
 
@@ -113,7 +113,7 @@
 }
 
 .hero__tagline .alert {
-  color: var(--red);
+  color: var(--red-text);
   text-shadow: var(--glow-red);
 }
 
@@ -155,7 +155,7 @@
 }
 
 .stat:last-child b {
-  color: var(--red);
+  color: var(--red-text);
   text-shadow: var(--glow-red);
 }
 

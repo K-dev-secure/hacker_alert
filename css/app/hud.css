@@ -1,0 +1,125 @@
+/* =========================================================
+   APPLI — CHRONO, JAUGE ET COMPTEUR (toujours visibles en partie)
+   ========================================================= */
+
+.hud {
+  position: sticky;
+  top: 52px;
+  z-index: 25;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px var(--gutter);
+  background: rgba(11, 15, 23, .95);
+  border-bottom: 1px solid var(--navy);
+}
+
+.hud[hidden] {
+  display: none;
+}
+
+/* Chrono */
+.hud__timer {
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--white);
+  text-shadow: var(--glow-green);
+}
+
+/* Jauge */
+.hud__gauge {
+  min-width: 0;
+}
+
+.hud__label {
+  margin: 0 0 4px;
+  font-family: var(--font-pixel);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.hud__cells {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 3px;
+}
+
+.hud__cell {
+  --c: var(--red);
+  height: 16px;
+  border: 1px solid var(--navy);
+  border-radius: 3px;
+  background: var(--navy-2);
+  transition: background-color .3s, box-shadow .3s;
+}
+
+.hud__cell--g {
+  --c: var(--green);
+}
+
+.hud__cell--o {
+  --c: var(--orange);
+}
+
+.hud__cell:nth-child(5),
+.hud__cell:nth-child(10) {
+  border-color: var(--red);
+}
+
+.hud__cell.is-on {
+  background: var(--c);
+  border-color: var(--c);
+  box-shadow: 0 0 8px var(--c);
+}
+
+/* Compteur d'attaques */
+.hud__count {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.hud__count b {
+  display: block;
+  font-family: var(--font-pixel);
+  font-size: 20px;
+  color: var(--white);
+}
+
+/* ---------- Alerte rouge et fin du chrono ---------- */
+body.is-alert .hud {
+  background: rgba(42, 10, 14, .96);
+  border-bottom-color: var(--red);
+}
+
+body.is-alert .hud__label {
+  color: var(--red-text);
+}
+
+body.is-alert .hud__timer {
+  text-shadow: var(--glow-red);
+}
+
+body.is-final .hud__timer {
+  color: var(--red-text);
+  animation: timer-blink 1s steps(1) infinite;
+}
+
+@keyframes timer-blink {
+  50% {
+    opacity: .35;
+  }
+}
+
+/* ---------- Très petits écrans ---------- */
+@media (max-width: 359px) {
+  .hud__timer {
+    font-size: 24px;
+  }
+}

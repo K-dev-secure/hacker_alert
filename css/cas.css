@@ -1,0 +1,86 @@
+/* =========================================================
+   SECTION 10 : CAS PARTICULIERS (accordéons <details>)
+   ========================================================= */
+
+.faq {
+  display: grid;
+  gap: 10px;
+}
+
+.faq__item {
+  background: var(--navy-2);
+  border: 2px solid var(--navy);
+  border-radius: 12px;
+  transition: border-color .2s;
+}
+
+.faq__item[open] {
+  border-color: var(--green);
+}
+
+/* Question (cliquable) */
+.faq__item summary {
+  position: relative;
+  min-height: 52px;
+  padding: 14px 52px 14px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq__item summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Le "+" qui devient "−" */
+.faq__item summary::after {
+  content: "+";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  width: 26px;
+  height: 26px;
+  margin-top: -13px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--green);
+  border-radius: 6px;
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--green);
+}
+
+.faq__item[open] summary::after {
+  content: "−";
+  background: var(--green);
+  color: var(--bg);
+}
+
+.faq__item summary:hover {
+  color: var(--green);
+}
+
+/* Réponse */
+.faq__item p {
+  margin: 0;
+  padding: 0 16px 16px;
+  color: var(--white);
+}
+
+.faq__item p::before {
+  content: "→ ";
+  color: var(--green);
+  font-weight: 700;
+}
+
+.faq__item[open] p {
+  animation: faq-open .25s ease;
+}
+
+@keyframes faq-open {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}

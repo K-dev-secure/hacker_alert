@@ -145,7 +145,7 @@
 .example__tag {
   font-family: var(--font-pixel);
   font-size: 16px;
-  color: var(--red);
+  color: var(--red-text);
 }
 
 .example__situation {
@@ -181,7 +181,7 @@
 }
 
 .outcome--bad {
-  --outcome-color: var(--red);
+  --outcome-color: var(--red-text);
 }
 
 .outcome__card {

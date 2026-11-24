@@ -1,0 +1,144 @@
+/* =========================================================
+   APPLI — MINI-JEUX : ÉLÉMENTS COMMUNS
+   En-tête, consigne, boutons de décision, barre de temps.
+   ========================================================= */
+
+.mg-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-bottom: 8px;
+}
+
+.mg-head__cards {
+  margin: 0;
+  font-family: var(--font-pixel);
+  font-size: 14px;
+  color: var(--red-text);
+}
+
+.mg-head__name {
+  margin: 0;
+  flex-basis: 100%;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: clamp(28px, 8vw, 36px);
+  line-height: 1.1;
+}
+
+.mg-head__sev {
+  margin: 0;
+  order: 1;
+}
+
+.mg-help {
+  margin: 0 0 14px;
+  color: var(--muted);
+}
+
+/* ---------- Boutons de décision ---------- */
+.mg-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.mg-actions > :only-child {
+  grid-column: 1 / -1;
+}
+
+.mg-btn {
+  min-height: 56px;
+  padding: 10px 12px;
+  border: 2px solid var(--b, var(--navy));
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--b, var(--navy)) 20%, var(--navy-2));
+  color: var(--white);
+  font: inherit;
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: transform .08s;
+}
+
+.mg-btn:active:not(:disabled) {
+  transform: scale(.97);
+}
+
+.mg-btn:disabled {
+  opacity: .4;
+  cursor: not-allowed;
+}
+
+.mg-btn--danger {
+  --b: var(--red);
+}
+
+.mg-btn--safe {
+  --b: var(--green);
+}
+
+.mg-btn--next {
+  --b: var(--green);
+  width: 100%;
+  background: var(--green);
+  color: var(--bg);
+}
+
+.mg-btn--ghost {
+  --b: var(--navy);
+  background: transparent;
+}
+
+/* Après la décision */
+.mg-after {
+  margin-top: 16px;
+}
+
+.mg-after[hidden] {
+  display: none;
+}
+
+.mg-after__text {
+  margin: 0 0 10px;
+  font-weight: 600;
+}
+
+/* ---------- Barre de temps ---------- */
+.mg-timer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.mg-timer__track {
+  flex: 1;
+  height: 12px;
+  border: 1px solid var(--navy);
+  border-radius: 6px;
+  background: var(--navy-2);
+  overflow: hidden;
+}
+
+.mg-timer__fill {
+  display: block;
+  height: 100%;
+  background: var(--green);
+  transform-origin: left;
+  transition: transform .1s linear;
+}
+
+.mg-timer__track.is-low .mg-timer__fill {
+  background: var(--red);
+}
+
+.mg-timer__label {
+  min-width: 3.5ch;
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  text-align: right;
+}

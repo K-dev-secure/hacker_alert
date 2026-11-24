@@ -1,0 +1,64 @@
+/* =========================================================
+   APPLI — FICHE DES RÈGLES (résumé, accessible pendant la partie)
+   ========================================================= */
+
+.home__rules {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.rules__title {
+  margin: 0 0 12px;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: clamp(28px, 8vw, 36px);
+  line-height: 1.1;
+}
+
+.rules__sheet {
+  padding: 4px 18px 16px;
+  border: 2px solid var(--green);
+  border-radius: 16px;
+  background: var(--navy-2);
+}
+
+.rules__sheet h3 {
+  margin: 18px 0 6px;
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--green);
+  text-transform: uppercase;
+}
+
+.rules__sheet p,
+.rules__sheet ul,
+.rules__sheet ol {
+  margin: 0;
+}
+
+.rules__sheet ul,
+.rules__sheet ol {
+  padding-left: 22px;
+}
+
+.rules__sheet li + li {
+  margin-top: 4px;
+}
+
+.rules__sheet li::marker {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.rules__sheet strong {
+  color: var(--white);
+}
+
+.rules__full {
+  display: inline-block;
+  min-height: 44px;
+  margin: 12px 0 8px;
+  padding: 10px 0;
+  color: var(--green);
+}

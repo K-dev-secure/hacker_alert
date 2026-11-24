@@ -25,6 +25,9 @@
 <link rel="stylesheet" href="css/cartes.css">
 <link rel="stylesheet" href="css/jauge.css">
 <link rel="stylesheet" href="css/niveaux.css">
+<link rel="stylesheet" href="css/appli.css">
+<link rel="stylesheet" href="css/cas.css">
+<link rel="stylesheet" href="css/exemple.css">
 <link rel="stylesheet" href="css/footer.css">
 </head>
 <body class="no-js">
@@ -558,20 +561,244 @@
 
     <!-- 9 -->
     <section class="section reveal" id="application" aria-labelledby="t-appli">
-      <div class="section__head"><span class="section__num">09</span><h2 class="section__title" id="t-appli">L'application</h2></div>
-      <div class="placeholder">Contenu à venir</div>
+      <div class="section__head">
+        <span class="section__num">09</span><h2 class="section__title" id="t-appli">L'application</h2>
+        <p class="section__sub" lang="en">"NovaCorp Security"</p>
+      </div>
+
+      <p class="lead">Un seul site web, ouvert par <strong>tous les QR codes</strong>. Rien à installer, ça s'ouvre dans le navigateur. La partie est gardée dans le téléphone.</p>
+
+      <div class="callout callout--red">
+        <p><strong>Tout est faux : on ne tape jamais de vraie information.</strong></p>
+      </div>
+
+      <div class="app">
+        <!-- Faux écran de téléphone -->
+        <div class="phone" aria-hidden="true">
+          <div class="phone__notch"></div>
+          <div class="phone__screen">
+            <p class="phone__brand" lang="en">NovaCorp Security</p>
+            <p class="phone__timer" id="phoneTimer">10:00</p>
+            <div class="phone__gauge">
+              <span class="phone__label" lang="en">INTRUSION 3/10</span>
+              <span class="phone__cells"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            </div>
+            <p class="phone__counter" lang="en">Attack <b>2/6</b></p>
+            <div class="phone__pad">
+              <p class="phone__card" lang="en">Card <b>#11</b> · 💀💀💀💀</p>
+              <p class="phone__answer" lang="en">Best: Two-factor (2FA)<br>Acceptable: Strong password</p>
+              <div class="phone__buttons" lang="en">
+                <span class="phone__btn phone__btn--right">Right</span>
+                <span class="phone__btn phone__btn--almost">Almost</span>
+                <span class="phone__btn phone__btn--wrong">Wrong</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="app__features">
+          <h3 class="subhead">L'écran principal</h3>
+          <ul class="features">
+            <li>Le chrono de 10 minutes</li>
+            <li>La jauge 0 à 10</li>
+            <li>Le compteur d'attaques (x/6)</li>
+            <li>Le pavé du maître du jeu : il tape le numéro de la carte, l'appli affiche la situation, la gravité, la meilleure défense et l'acceptable, puis il appuie sur <span lang="en">Right / Almost / Wrong</span> ; <span lang="en">Almost</span> est grisé si la carte n'a pas de défense acceptable</li>
+            <li>La voix du hacker en anglais toutes les 2 minutes</li>
+            <li>L'écran rouge à 5/10 et qui clignote dans les 30 dernières secondes</li>
+            <li>L'écran de fin avec le score</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="subhead">Les cartes QR</h3>
+      <div class="grid grid--2">
+        <article class="block">
+          <p>Pas de carte verte jouée ni usée, le maître du jeu n'appuie sur aucun bouton. L'équipe joue un <strong>mini-jeu</strong> ensemble, l'appli applique la sanction.</p>
+          <p class="app__draw">Chaque scan tire au hasard une attaque <strong>OU</strong> une situation normale : signaler une situation normale = fausse alerte.</p>
+        </article>
+        <article class="block">
+          <h3 class="block__title">Sanctions des mini-jeux</h3>
+          <ul class="penalties">
+            <li class="penalty penalty--ok"><span>Attaque bloquée ou situation normale reconnue</span><b>0</b></li>
+            <li class="penalty penalty--almost"><span>Réponse à moitié juste</span><b><span lang="en">Almost</span> (+1)</b></li>
+            <li class="penalty penalty--bad"><span>Attaque ratée</span><b>La gravité du mini-jeu <small>(imprimée sur la carte)</small></b></li>
+            <li class="penalty penalty--bad"><span>Fausse alerte</span><b>+1</b></li>
+          </ul>
+          <p class="penalties__note">Les bonus du hacker s'appliquent aussi.</p>
+        </article>
+      </div>
+
+      <h3 class="subhead">Les 6 mini-jeux</h3>
+      <ul class="minigames">
+        <li class="minigame">
+          <p class="minigame__top"><span class="minigame__cards">#1 · #2</span><span class="minigame__sev">💀💀</span></p>
+          <h3 class="minigame__name" lang="en">Spot the trap</h3>
+          <p>Un mail ou SMS (arnaque ou vrai message). On touche ce qui est louche, on reste appuyé sur un lien pour voir sa vraie adresse, puis <span lang="en">Report</span> ou <span lang="en">It's safe</span>.</p>
+          <p class="minigame__learn">Reconnaître le phishing.</p>
+        </li>
+        <li class="minigame">
+          <p class="minigame__top"><span class="minigame__cards">#7 · #8</span><span class="minigame__sev">💀💀💀</span></p>
+          <h3 class="minigame__name" lang="en">Password request</h3>
+          <p>Un mail sur le mot de passe, vrai ou faux. <span lang="en">Report</span> ou <span lang="en">Change my password</span>. Si le mail est vrai, on invente un faux mot de passe qui doit résister au moins 100 ans.</p>
+          <p class="minigame__learn">Ne jamais donner son mot de passe, en créer un solide.</p>
+        </li>
+        <li class="minigame">
+          <p class="minigame__top"><span class="minigame__cards">#19 · #20</span><span class="minigame__sev">💀💀💀💀</span></p>
+          <h3 class="minigame__name" lang="en">Incoming call</h3>
+          <p>Le téléphone sonne, une voix en anglais (faux support, faux patron, ou vrai collègue). <span lang="en">Hang up and report</span> ou <span lang="en">It's safe, continue</span>.</p>
+          <p class="minigame__learn">Les faux appels, l'écoute en anglais.</p>
+        </li>
+        <li class="minigame">
+          <p class="minigame__top"><span class="minigame__cards">#25 · #26</span><span class="minigame__sev">💀💀</span></p>
+          <h3 class="minigame__name" lang="en">Safe or fake link?</h3>
+          <p>Une adresse de site, vraie ou presque identique, 15 secondes pour décider.</p>
+          <p class="minigame__learn">Repérer les faux sites.</p>
+        </li>
+        <li class="minigame">
+          <p class="minigame__top"><span class="minigame__cards">#13</span><span class="minigame__sev">💀💀</span></p>
+          <h3 class="minigame__name" lang="en">Messy desk</h3>
+          <p>Le dessin d'un bureau, 40 secondes pour toucher les erreurs (post-it, clé USB, session ouverte, badge, code 2FA, document confidentiel). Parfois il n'y en a aucune.</p>
+          <p class="minigame__learn">La sécurité au quotidien.</p>
+        </li>
+        <li class="minigame">
+          <p class="minigame__top"><span class="minigame__cards">#14</span><span class="minigame__sev">💀💀💀</span></p>
+          <h3 class="minigame__name" lang="en">Strange screen</h3>
+          <p>Un écran apparaît, ransomware ou vrai message de NovaCorp. Si c'est un ransomware, remettre les 4 actions dans l'ordre :</p>
+          <ol class="minigame__order">
+            <li>Débrancher du réseau</li>
+            <li>Prévenir l'informatique</li>
+            <li>Ne pas payer</li>
+            <li>Restaurer la sauvegarde</li>
+          </ol>
+          <p class="minigame__learn">Quoi faire en cas d'attaque grave.</p>
+        </li>
+      </ul>
+
+      <div class="callout callout--green">
+        <p class="callout__title">Conseil</p>
+        <p>Le plus sûr est que le maître du jeu tape le numéro de la carte QR dans l'appli puis appuie sur <strong lang="en">"Open"</strong> (la jauge et le chrono restent dans le même navigateur).</p>
+      </div>
     </section>
 
     <!-- 10 -->
     <section class="section reveal" id="cas-particuliers" aria-labelledby="t-cas">
       <div class="section__head"><span class="section__num">10</span><h2 class="section__title" id="t-cas">Cas particuliers</h2></div>
-      <div class="placeholder">Contenu à venir</div>
+
+      <div class="faq">
+        <details class="faq__item">
+          <summary>L'équipe ne se met pas d'accord</summary>
+          <p>Le maître du jeu tranche.</p>
+        </details>
+        <details class="faq__item">
+          <summary>La meilleure carte verte est déjà usée</summary>
+          <p>On joue la défense acceptable si elle existe (+1), sinon une autre carte (erreur).</p>
+        </details>
+        <details class="faq__item">
+          <summary>Une carte "vrai message" est signalée comme une arnaque</summary>
+          <p>Erreur, toujours +1.</p>
+        </details>
+        <details class="faq__item">
+          <summary>"It's safe!" est jouée sur une vraie arnaque</summary>
+          <p>Erreur, avec la gravité de la carte.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Le chrono tombe à zéro en plein tour</summary>
+          <p>La partie s'arrête : perdu.</p>
+        </details>
+        <details class="faq__item">
+          <summary>La jauge dépasse 10 (ex : 8 + 4)</summary>
+          <p>Elle s'arrête à 10 : perdu.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Une carte QR</summary>
+          <p>Aucune carte verte jouée ni usée, seul le mini-jeu compte.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Plus de batterie</summary>
+          <p>Jauge papier + chrono d'un autre téléphone ; les cartes QR sont remplacées par la carte suivante de la pioche.</p>
+        </details>
+        <details class="faq__item">
+          <summary>Cartes vertes restantes à la fin</summary>
+          <p>Elles ne rapportent rien, seule la jauge compte.</p>
+        </details>
+      </div>
     </section>
 
     <!-- 11 -->
     <section class="section reveal" id="exemple" aria-labelledby="t-exemple">
-      <div class="section__head"><span class="section__num">11</span><h2 class="section__title" id="t-exemple">Exemple de partie</h2></div>
-      <div class="placeholder">Contenu à venir</div>
+      <div class="section__head">
+        <span class="section__num">11</span><h2 class="section__title" id="t-exemple">Exemple de partie</h2>
+        <p class="section__sub">Niveau Pro, jauge de départ 0</p>
+      </div>
+
+      <ol class="turns">
+        <li class="turn reveal" data-before="0" data-after="0">
+          <div class="turn__body">
+            <p class="turn__num">Tour 1</p>
+            <p class="turn__attack">Faux mail de la banque qui demande son code <span class="turn__sev">(💀💀)</span></p>
+            <p class="turn__play">→ <span lang="en">Check the sender</span></p>
+            <p class="turn__result turn__result--right"><b lang="en">Right</b> : 0</p>
+          </div>
+          <div class="turn__meter"><div class="mini" aria-hidden="true"></div><span class="turn__value">jauge 0</span></div>
+        </li>
+        <li class="turn reveal" data-before="0" data-after="1">
+          <div class="turn__body">
+            <p class="turn__num">Tour 2</p>
+            <p class="turn__attack">Mot de passe "123456" <span class="turn__sev">(💀)</span></p>
+            <p class="turn__play">→ <span lang="en">Update</span></p>
+            <p class="turn__result turn__result--wrong"><b lang="en">Wrong</b> : +1</p>
+          </div>
+          <div class="turn__meter"><div class="mini" aria-hidden="true"></div><span class="turn__value">jauge 1</span></div>
+        </li>
+        <li class="turn reveal" data-before="1" data-after="5">
+          <div class="turn__body">
+            <p class="turn__num">Tour 3</p>
+            <p class="turn__attack">Carte QR <span lang="en">"Incoming call"</span> <span class="turn__sev">(💀💀💀💀)</span></p>
+            <p class="turn__play">→ L'équipe donne le code</p>
+            <p class="turn__result turn__result--wrong"><b lang="en">Wrong</b> : +4</p>
+            <p class="turn__flag">Alerte rouge</p>
+          </div>
+          <div class="turn__meter"><div class="mini" aria-hidden="true"></div><span class="turn__value">jauge 5</span></div>
+        </li>
+        <li class="turn reveal" data-before="5" data-after="5">
+          <div class="turn__body">
+            <p class="turn__num">Tour 4</p>
+            <p class="turn__attack">Fausse facture d'un nouveau fournisseur <span class="turn__sev">(💀💀💀)</span></p>
+            <p class="turn__play">→ <span lang="en">Call back to check</span></p>
+            <p class="turn__result turn__result--right"><b lang="en">Right</b> : 0</p>
+          </div>
+          <div class="turn__meter"><div class="mini" aria-hidden="true"></div><span class="turn__value">jauge 5</span></div>
+        </li>
+        <li class="turn reveal" data-before="5" data-after="7">
+          <div class="turn__body">
+            <p class="turn__num">Tour 5</p>
+            <p class="turn__attack">Vrai mail des RH <span class="turn__sev">(💀)</span></p>
+            <p class="turn__play">→ <span lang="en">Alert IT</span> (fausse alerte)</p>
+            <p class="turn__result turn__result--wrong"><b lang="en">Wrong</b> : 1 + 1 (alerte rouge) = +2</p>
+          </div>
+          <div class="turn__meter"><div class="mini" aria-hidden="true"></div><span class="turn__value">jauge 7</span></div>
+        </li>
+        <li class="turn reveal" data-before="7" data-after="10">
+          <div class="turn__body">
+            <p class="turn__num">Tour 6</p>
+            <p class="turn__attack">Wi-Fi de la gare <span class="turn__sev">(💀💀)</span></p>
+            <p class="turn__play">→ <span lang="en">Antivirus scan</span></p>
+            <p class="turn__result turn__result--wrong"><b lang="en">Wrong</b> : 2 + 1 (alerte rouge) = +3</p>
+            <p class="turn__flag">Perdu, <span lang="en">"The hacker is in!"</span></p>
+          </div>
+          <div class="turn__meter"><div class="mini" aria-hidden="true"></div><span class="turn__value">jauge 10</span></div>
+        </li>
+      </ol>
+
+      <div class="gameover reveal" role="img" aria-label="Écran de fin : Game over, the hacker is in!">
+        <p class="gameover__title" data-text="GAME OVER">GAME OVER</p>
+        <p class="gameover__sub" lang="en">The hacker is in!</p>
+      </div>
+
+      <div class="callout callout--green">
+        <p class="callout__title">Morale</p>
+        <p>Au tour 6, la bonne réponse était <strong lang="en">Avoid public Wi-Fi</strong>.</p>
+      </div>
     </section>
   </div>
 </main>
@@ -580,13 +807,14 @@
 <footer class="footer reveal" id="equipe">
   <div class="wrap">
     <p class="footer__brand">Hacker<span>ALERT!</span></p>
+    <p class="footer__event">English Game 2026</p>
+    <p class="footer__school">MyDigitalSchool Grenoble</p>
     <ul class="footer__team" aria-label="L'équipe">
       <li>Kevin MARQUEZE</li>
       <li>Enzo PALADINO</li>
       <li>Willy KOFFI</li>
     </ul>
-    <p>MyDigitalSchool Grenoble</p>
-    <p class="footer__event">English Game 2026</p>
+    <p class="footer__legal">NovaCorp, Bluestone Bank et ParcelGo sont fictifs.</p>
   </div>
 </footer>
 
@@ -602,7 +830,7 @@
   function levelColor(n) {
     if (n <= 2) return "#5DB870";
     if (n <= 4) return "#F28C28";
-    return "#D71920";
+    return "#FF5A5F";
   }
 
   /* Avancement (0 à 1) d'un élément entre deux lignes de l'écran */
@@ -636,7 +864,8 @@
 
   function updateGauge() {
     if (!meter) return;
-    var n = Math.round(progressBetween(meter, 0.9, 0.35) * 10);
+    /* Animations réduites : jauge pleine, sans suivre le scroll */
+    var n = reduceMotion.matches ? 10 : Math.round(progressBetween(meter, 0.9, 0.35) * 10);
     cells.forEach(function (c, idx) { c.classList.toggle("is-on", idx < n); });
     meter.classList.toggle("is-alert", n >= 5);
     meter.classList.toggle("is-breached", n >= 10);
@@ -649,7 +878,7 @@
     if (!timeline) return;
     var vh = window.innerHeight;
     var rect = timeline.getBoundingClientRect();
-    var p = (vh * 0.6 - rect.top) / rect.height;
+    var p = reduceMotion.matches ? 1 : (vh * 0.6 - rect.top) / rect.height;
     timeline.style.setProperty("--progress", Math.min(1, Math.max(0, p)));
   }
 
@@ -665,6 +894,37 @@
   }, { passive: true });
   window.addEventListener("resize", onScroll);
   onScroll();
+
+  /* ---------- Exemple de partie : mini-jauges (section 11) ---------- */
+  /* Chaque tour : les cases d'avant sont déjà pleines, les nouvelles montent quand le tour apparaît */
+  document.querySelectorAll(".turn").forEach(function (turn) {
+    var mini = turn.querySelector(".mini");
+    if (!mini) return;
+    var before = parseInt(turn.getAttribute("data-before"), 10) || 0;
+    var after = parseInt(turn.getAttribute("data-after"), 10) || 0;
+    for (var i = 1; i <= 10; i++) {
+      var cell = document.createElement("span");
+      cell.className = "mini__cell mini__cell--" + (i <= 2 ? "g" : i <= 4 ? "o" : "r");
+      if (i <= before) cell.classList.add("was");
+      else if (i <= after) {
+        cell.classList.add("add");
+        cell.style.setProperty("--d", (300 + (i - before - 1) * 160) + "ms");
+      }
+      mini.appendChild(cell);
+    }
+  });
+
+  /* ---------- Faux téléphone : chrono qui défile (section 9) ---------- */
+  var phoneTimer = document.getElementById("phoneTimer");
+  if (phoneTimer && !reduceMotion.matches) {
+    var seconds = 600;
+    setInterval(function () {
+      seconds = seconds > 0 ? seconds - 1 : 600;
+      var m = Math.floor(seconds / 60);
+      var s = seconds % 60;
+      phoneTimer.textContent = (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s;
+    }, 1000);
+  }
 
   /* ---------- Apparition des sections ---------- */
   var reveals = document.querySelectorAll(".reveal");

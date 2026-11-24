@@ -1,0 +1,140 @@
+/* =========================================================
+   MINI-JEU SPOT THE TRAP — faux mail / faux SMS
+   (fond clair pour imiter une boîte mail : texte foncé, bon contraste)
+   ========================================================= */
+
+.trap__msg {
+  border-radius: 14px;
+  overflow: hidden;
+  color: #1A2230;
+  background: #F4F6FA;
+}
+
+/* ---------- Mail ---------- */
+.trap__header {
+  padding: 12px 14px;
+  border-bottom: 1px solid #D5DBE5;
+  background: #E8ECF3;
+}
+
+.trap__from,
+.trap__subject {
+  margin: 0;
+}
+
+.trap__from {
+  font-size: 15px;
+  word-break: break-word;
+}
+
+.trap__subject {
+  margin-top: 4px;
+  font-weight: 700;
+  font-size: 17px;
+}
+
+.trap__text {
+  margin: 0;
+  padding: 14px;
+  line-height: 1.6;
+}
+
+.trap__cta {
+  margin: 0;
+  padding: 0 14px 16px;
+}
+
+/* ---------- SMS ---------- */
+.trap__msg--sms {
+  padding: 14px;
+}
+
+.trap__smsfrom {
+  margin: 0 0 8px;
+  font-weight: 700;
+  text-align: center;
+  font-size: 15px;
+}
+
+.trap__bubble {
+  margin: 0;
+  max-width: 92%;
+  padding: 12px 14px;
+  border-radius: 18px 18px 18px 4px;
+  background: #DDE3EC;
+  line-height: 1.6;
+}
+
+/* ---------- Morceaux de texte touchables ---------- */
+.trap__seg {
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color .15s;
+}
+
+.trap__seg:hover {
+  background: rgba(29, 42, 61, .08);
+}
+
+.trap__seg.is-flagged {
+  background: #FFE08A;
+  box-shadow: 0 0 0 2px #FFE08A;
+}
+
+/* Après la décision : les vrais signes d'alerte en rouge */
+.is-revealed .trap__seg.is-sus {
+  background: #FFD1D3;
+  box-shadow: 0 0 0 2px #C8161D;
+  color: #8E0E13;
+  font-weight: 700;
+}
+
+.is-revealed .trap__seg {
+  cursor: default;
+}
+
+/* ---------- Lien ---------- */
+.trap__linkwrap {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.trap__link {
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: #1F6FB2;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.trap__msg--sms .trap__link {
+  min-height: 0;
+  padding: 0;
+  background: none;
+  color: #1F5FA0;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.trap__tip {
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #1A2230;
+  color: #fff;
+  font-size: 14px;
+  word-break: break-all;
+}
+
+.trap__tip[hidden] {
+  display: none;
+}

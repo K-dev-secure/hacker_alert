@@ -9,18 +9,33 @@
   color: var(--muted);
 }
 
+.footer p {
+  margin: 0;
+}
+
 .footer__brand {
   font-family: var(--font-title);
   font-size: 32px;
   color: var(--white);
-  margin: 0;
 }
 
 .footer__brand span {
   font-family: var(--font-pixel);
-  color: var(--red);
+  color: var(--red-text);
   font-size: 24px;
   margin-left: 6px;
+}
+
+.footer__event {
+  margin-top: 6px;
+  font-family: var(--font-pixel);
+  color: var(--green);
+  text-shadow: var(--glow-green);
+  font-size: 16px;
+}
+
+.footer__school {
+  margin-top: 4px;
 }
 
 .footer__team {
@@ -41,10 +56,6 @@
   background: var(--navy-2);
 }
 
-.footer__event {
-  font-family: var(--font-pixel);
-  color: var(--green);
-  text-shadow: var(--glow-green);
-  font-size: 16px;
-  margin: 0;
+.footer .footer__legal {
+  font-size: 14px;
 }
