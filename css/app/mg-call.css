@@ -56,6 +56,21 @@
   color: var(--green);
 }
 
+/* Son bloqué par le téléphone (carte scannée, écran pas encore touché) */
+.call__hint {
+  margin: 6px 0 0;
+  padding: 6px 12px;
+  border: 1px dashed var(--orange);
+  border-radius: 10px;
+  color: var(--orange);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.call__hint[hidden] {
+  display: none;
+}
+
 .call__transcript {
   min-height: 0;
   margin: 10px 0 0;

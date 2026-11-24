@@ -190,7 +190,7 @@ window.NovaGame = (function () {
 
   function setVoice(on) {
     write(VOICE_KEY, on ? "on" : "off");
-    if (!on && "speechSynthesis" in window) window.speechSynthesis.cancel();
+    if (!on) window.NovaAudio.stop();
   }
 
   /* Voix dans la langue de l'appli : fr-FR en français, en-GB en anglais */
@@ -207,39 +207,27 @@ window.NovaGame = (function () {
     return close.length ? close[0] : null;
   }
 
-  /* speaker : texte affiché avant le sous-titre ("HACKER", nom de l'appelant...) */
+  /* Parle (voix gérée par js/audio.js) et affiche le sous-titre.
+     opts : speaker (nom affiché), channel ("hacker" par défaut, ou "call"),
+            pitch, rate, noSubtitle, onEnd */
   function speak(text, opts) {
     opts = opts || {};
     if (!opts.noSubtitle) showSubtitle(opts.speaker || "HACKER", text, opts.subtitleMs);
-    if (!voiceOn() || !("speechSynthesis" in window)) {
-      if (opts.onEnd) setTimeout(opts.onEnd, Math.min(8000, 1200 + text.length * 45));
-      return;
-    }
-    try {
-      var u = new SpeechSynthesisUtterance(text);
-      u.lang = SPEECH_LANG;
-      u.rate = opts.rate || 0.9;
-      u.pitch = opts.pitch != null ? opts.pitch : 0.6;
-      var v = pickVoice();
-      if (v) u.voice = v;
-      if (opts.onEnd) {
-        var done = false;
-        var finish = function () { if (!done) { done = true; opts.onEnd(); } };
-        u.onend = finish;
-        u.onerror = finish;
-        // Filet de sécurité si le navigateur ne déclenche jamais "onend"
-        setTimeout(finish, 2000 + text.length * 90);
-      }
-      window.speechSynthesis.speak(u);
-    } catch (e) {
-      if (opts.onEnd) setTimeout(opts.onEnd, 1500);
-    }
+    var started = voiceOn() && window.NovaAudio.speak(text, {
+      lang: SPEECH_LANG,
+      voice: pickVoice(),
+      pitch: opts.pitch,
+      rate: opts.rate,
+      channel: opts.channel || "hacker",
+      onEnd: opts.onEnd
+    });
+    // Pas de voix (coupée, pas encore autorisée...) : le sous-titre suffit
+    if (!started && opts.onEnd) setTimeout(opts.onEnd, Math.min(8000, 1200 + text.length * 45));
+    return started;
   }
 
   function stopSpeaking() {
-    if ("speechSynthesis" in window) {
-      try { window.speechSynthesis.cancel(); } catch (e) { /* rien */ }
-    }
+    window.NovaAudio.stop();
   }
 
   function showSubtitle(speaker, text, ms) {

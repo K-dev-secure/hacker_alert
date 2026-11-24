@@ -75,8 +75,25 @@
     document.body.classList.toggle("is-final", playing && left <= 30);
   }
 
+  /* ---------- L'écran reste allumé pendant la partie (téléphone posé sur la table) ---------- */
+  var wakeLock = null;
+  function keepScreenOn() {
+    if (!("wakeLock" in navigator) || wakeLock || document.hidden || !G.isPlaying()) return;
+    navigator.wakeLock.request("screen").then(function (lock) {
+      wakeLock = lock;
+      lock.addEventListener("release", function () { wakeLock = null; });
+    }).catch(function () { /* refusé (batterie faible...) : pas grave */ });
+  }
+  function releaseScreen() {
+    if (wakeLock) { try { wakeLock.release(); } catch (e) { /* rien */ } wakeLock = null; }
+  }
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) { keepScreenOn(); updateHud(); }
+  });
+
   function tick() {
-    if (!G.isPlaying()) return;
+    if (!G.isPlaying()) { if (wakeLock) releaseScreen(); return; }
+    keepScreenOn();
     updateHud();
     var line = G.dueHackerLine();
     if (line) G.speak(line);

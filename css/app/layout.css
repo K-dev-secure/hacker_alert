@@ -5,10 +5,26 @@
    Les variables (couleurs, polices) viennent de css/base.css.
    ========================================================= */
 
+/* Dans l'appli, on change d'écran d'un coup (pas de défilement doux hérité de base.css) */
+html:has(body.app) {
+  scroll-behavior: auto;
+  scroll-padding-top: 0;
+}
+
 body.app {
   min-height: 100svh;
   padding-bottom: env(safe-area-inset-bottom);
   transition: background-color .4s;
+}
+
+/* Pas de zoom quand on tape deux fois vite sur un bouton (iPhone), pas de sélection de texte */
+body.app button,
+body.app [role="button"],
+body.app .level-opt {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ---------- Barre du haut ---------- */

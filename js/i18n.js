@@ -178,6 +178,7 @@ window.NovaI18n = (function () {
 
       "call.help": "Le téléphone sonne. Décroche, écoute, puis décide.",
       "call.incoming": "Appel entrant...",
+      "call.tapSound": "🔈 Touche l'écran pour activer le son",
       "call.answer": "Décrocher",
       "call.answerAria": "Décrocher l'appel",
       "call.on": "En ligne · {t}",
@@ -420,6 +421,7 @@ window.NovaI18n = (function () {
 
       "call.help": "The phone is ringing. Answer, listen, then decide.",
       "call.incoming": "Incoming call...",
+      "call.tapSound": "🔈 Tap the screen to turn the sound on",
       "call.answer": "Answer",
       "call.answerAria": "Answer the call",
       "call.on": "On call · {t}",

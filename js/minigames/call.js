@@ -10,34 +10,16 @@ Minigames.register("call", function (root, ctx) {
   var t = ctx.t;
   var call = ctx.pick(ctx.data.CALLS);
   var timers = [];
-  var audio = null;
   var ringing = true;
   var decided = false;
 
-  /* ---------- Sonnerie (bips générés, aucun fichier) ---------- */
+  /* Pendant tout l'appel, le hacker se tait (sa voix couperait celle de l'appel) */
+  NovaAudio.setCallActive(true);
+
+  /* ---------- Sonnerie : gérée par js/audio.js, jamais empilée ---------- */
   function ring() {
-    var AC = window.AudioContext || window.webkitAudioContext;
-    if (AC) {
-      try {
-        audio = audio || new AC();
-        if (audio.state === "suspended") audio.resume();
-        [0, 0.45].forEach(function (offset) {
-          var osc = audio.createOscillator();
-          var gain = audio.createGain();
-          osc.type = "sine";
-          osc.frequency.value = offset ? 440 : 480;
-          gain.gain.setValueAtTime(0.0001, audio.currentTime + offset);
-          gain.gain.exponentialRampToValueAtTime(0.15, audio.currentTime + offset + 0.03);
-          gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + offset + 0.4);
-          osc.connect(gain).connect(audio.destination);
-          osc.start(audio.currentTime + offset);
-          osc.stop(audio.currentTime + offset + 0.42);
-        });
-      } catch (e) { /* pas de son, ce n'est pas grave */ }
-    }
-    // Le navigateur refuse de vibrer tant que personne n'a touché l'écran
-    var touched = !navigator.userActivation || navigator.userActivation.hasBeenActive;
-    if (navigator.vibrate && touched) { try { navigator.vibrate([300, 150, 300]); } catch (e) { /* rien */ } }
+    if (!ringing) return;
+    if (NovaAudio.ring()) soundHint.hidden = true;
   }
 
   /* ---------- Écran d'appel ---------- */
@@ -45,6 +27,8 @@ Minigames.register("call", function (root, ctx) {
     .map(function (w) { return w[0]; }).join("").toUpperCase() || "?";
 
   var status = el("p", { class: "call__status", text: t("call.incoming") });
+  // Carte scannée : le téléphone bloque le son tant que personne n'a touché l'écran
+  var soundHint = el("p", { class: "call__hint", text: t("call.tapSound"), hidden: NovaAudio.canPlay() });
   var transcript = el("p", { class: "call__transcript", "aria-live": "polite" });
   var answerBtn = el("button", { class: "call__answer", type: "button", "aria-label": t("call.answerAria") }, [
     el("span", { "aria-hidden": "true", html: "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1z'/></svg>" }),
@@ -56,6 +40,7 @@ Minigames.register("call", function (root, ctx) {
     el("p", { class: "call__name", text: call.name }),
     el("p", { class: "call__number", text: call.number }),
     status,
+    soundHint,
     transcript,
     answerBtn
   ]);
@@ -68,13 +53,18 @@ Minigames.register("call", function (root, ctx) {
   root.appendChild(el("div", { class: "mg-actions" }, [reportBtn, safeBtn]));
 
   ring();
-  var ringTimer = setInterval(function () { if (ringing) ring(); }, 2200);
+  var ringTimer = setInterval(ring, 2200);
   timers.push(ringTimer);
+  // Premier toucher pendant la sonnerie : on fait sonner tout de suite
+  function ringOnTouch() { setTimeout(ring, 50); }
+  root.addEventListener("pointerdown", ringOnTouch, { once: true });
 
   /* ---------- Décrocher ---------- */
   answerBtn.addEventListener("click", function () {
     ringing = false;
     clearInterval(ringTimer);
+    NovaAudio.stopRing();
+    soundHint.hidden = true;
     phone.classList.remove("is-ringing");
     phone.classList.add("is-talking");
     answerBtn.remove();
@@ -100,7 +90,7 @@ Minigames.register("call", function (root, ctx) {
     }, 300);
     timers.push(typer);
 
-    NovaGame.speak(call.text, { speaker: call.name, pitch: call.voice.pitch, rate: 0.95, noSubtitle: true });
+    NovaGame.speak(call.text, { speaker: call.name, pitch: call.voice.pitch, rate: 0.95, noSubtitle: true, channel: "call" });
   });
 
   /* ---------- Décision ---------- */
@@ -128,7 +118,9 @@ Minigames.register("call", function (root, ctx) {
   return function () {
     ringing = false;
     timers.forEach(function (id) { clearInterval(id); });
+    root.removeEventListener("pointerdown", ringOnTouch);
+    NovaAudio.stopRing();
     NovaGame.stopSpeaking();
-    if (audio && audio.close) { try { audio.close(); } catch (e) { /* rien */ } }
+    NovaAudio.setCallActive(false);
   };
 });

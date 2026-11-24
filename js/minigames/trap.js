@@ -53,7 +53,7 @@ Minigames.register("trap", function (root, ctx) {
       pressTimer = setTimeout(function () {
         longPressed = true;
         showTip(t("trap.realAddr"));
-        if (navigator.vibrate) { try { navigator.vibrate(30); } catch (e) { /* rien */ } }
+        if (navigator.vibrate && NovaAudio.canPlay()) { try { navigator.vibrate(30); } catch (e) { /* rien */ } }
       }, LONG_PRESS_MS);
       timers.push(pressTimer);
     });
