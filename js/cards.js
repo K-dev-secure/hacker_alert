@@ -193,12 +193,12 @@ window.NOVA_DATA = (function () {
       body: ["ParcelGo: your parcel cannot be tracked. ", { t: "Install our new app", sus: true }, " ", { t: "(not on the store)", sus: true }, " to follow it: "],
       link: { label: "parcelgo-tracker.apk", href: "https://parcelgo-tracker.info/parcelgo-tracker.apk", scam: true },
       why: "Only install apps from the official store (Google Play, App Store). An app sent by text message can spy on your phone." },
-    /* Nouveau : chantage à la webcam (arnaque de masse) */
+    /* Nouveau : chantage à la fausse vidéo (arnaque de masse, texte tout public) */
     { kind: "email", scam: true, fam: "phishing",
       fromName: "Anonymous", from: { t: "hacker-anonymous@freemail.example", sus: true },
       subject: [{ t: "I know your password", sus: true }],
-      body: ["I hacked your computer and ", { t: "recorded you with your webcam", sus: true }, ". ",
-             { t: "Pay 500 € in bitcoin within 48 hours", sus: true }, " or I send the video to all your contacts."],
+      body: ["I took control of your webcam and ", { t: "filmed you at your desk", sus: true }, ". ",
+             { t: "Pay 500 € in bitcoin within 48 hours", sus: true }, " or I send the video to all your colleagues."],
       link: null,
       why: "This is a mass scam sent to thousands of people: there is no video. Don't answer, don't pay, report it (in France: signal-spam.fr)." },
     /* Nouveau : quiz qui récupère les réponses aux questions secrètes (vie privée) */
@@ -373,7 +373,19 @@ window.NOVA_DATA = (function () {
     ],
     alert: "Red alert! I am inside your network.",
     win: "No! You stopped me... this time.",
-    lose: "The hacker is in. Game over."
+    lose: "The hacker is in. Game over.",
+    /* Le téléphone mène la partie : phrases de chaque tour (voix enregistrées guide-*) */
+    turn: {
+      draw: "Attack incoming! Draw a red card.",
+      choose: "Choose your defence:",
+      choose2: "Choose two defences:",
+      card: "Card {n}: {d}.",
+      blocked: "Hacker blocked! Don't move the pawn.",
+      pawn: "Move the pawn to space {n}.",
+      flip: "Turn the green card face down.",
+      flip2: "Turn the green cards face down.",
+      next: "Next attack!"
+    }
   };
 
   /* =========================================================
@@ -460,6 +472,8 @@ window.NOVA_DATA = (function () {
     FAMILY_INFO: FAMILY_INFO, GLOSSARY: GLOSSARY, REPORT: REPORT, DISCUSS: DISCUSS,
     /* Nom d'une défense à afficher (en français : nom FR + nom imprimé sur la carte) */
     defence: function (name) { return name; },
+    /* Nom d'une défense dit par la voix (en français : le nom français seul) */
+    defenceVoice: function (name) { return name.replace(/!$/, "").replace(" (2FA)", ", 2FA"); },
     FAMILIES: FAMILIES, DEFENCES: DEFENCES, CARDS: CARDS, MINIGAMES: MINIGAMES,
     TRAP: TRAP, PASSWORD: PASSWORD, COMMON_PASSWORDS: COMMON_PASSWORDS,
     CALLS: CALLS, LINKS: LINKS, DESK: DESK, RANSOM: RANSOM, HACKER: HACKER

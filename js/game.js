@@ -221,6 +221,49 @@ window.NovaGame = (function () {
     return (state.usedGreen || []).indexOf(name) >= 0;
   }
 
+  /* Numéro imprimé sur une carte verte : 1 à 12, et 0 pour "It's safe!" */
+  function greenNumber(name) {
+    return name === "It's safe!" ? 0 : D.DEFENCES.indexOf(name) + 1;
+  }
+  function greenName(num) {
+    return num === 0 ? "It's safe!" : D.DEFENCES[num - 1] || null;
+  }
+
+  /* ---------- Le téléphone propose les défenses ----------
+     Junior : 2 choix · Pro : 3 · Expert : 4, et toujours "It's safe!" (n°0) en plus.
+     - la meilleure défense si elle est encore disponible, sinon la défense acceptable ;
+       Expert #11, #21, #30 : les 2 bonnes cartes ;
+     - les autres choix : des pièges tirés au hasard parmi les cartes encore disponibles ;
+     - ordre mélangé. Renvoie les numéros des cartes vertes. */
+  var CHOICES = { junior: 2, pro: 3, expert: 4 };
+  function proposeDefences(card, level, practice) {
+    var count = CHOICES[level] || 3;
+    var free = function (name) { return practice || !greenUsed(name); };
+    var pool = D.DEFENCES.slice(0, 12).filter(free);
+    var chosen = [];
+    var add = function (name) {
+      if (name && name !== "It's safe!" && pool.indexOf(name) >= 0 && chosen.indexOf(name) < 0) chosen.push(name);
+    };
+    if (level === "expert" && card.expert) card.expert.forEach(add);
+    else if (!card.real) {
+      if (free(card.best)) add(card.best);
+      else if (card.ok) add(card.ok);
+    }
+    var traps = shuffle(pool.filter(function (name) { return chosen.indexOf(name) < 0; }));
+    while (chosen.length < count && traps.length) chosen.push(traps.shift());
+    chosen.push("It's safe!");
+    return shuffle(chosen).map(greenNumber);
+  }
+
+  function shuffle(list) {
+    var a = list.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
   /* ---------- Voix (synthèse du navigateur) + sous-titres ---------- */
   var subtitleEl = null;
   var subtitleTimer = null;
@@ -328,9 +371,11 @@ window.NovaGame = (function () {
     return "audio/" + AUDIO_LANG + "/" + key + ".mp3";
   }
 
-  /* Phrase du hacker avec sa voix enregistrée */
+  /* Phrase du hacker avec sa voix enregistrée.
+     key peut être une liste : les fichiers sont joués l'un après l'autre. */
   function speakLine(key, text) {
-    return speak(text, { audio: audioFile(key) });
+    var files = [].concat(key).map(audioFile);
+    return speak(text, { audio: files.length === 1 ? files[0] : files });
   }
 
   /* Phrases chronométrées : renvoie { key, text } ou null */
@@ -364,6 +409,7 @@ window.NovaGame = (function () {
     isPlaying: isPlaying, cardPlayed: cardPlayed,
     penalty: penalty, applyAttack: applyAttack, checkEnd: checkEnd, score: score,
     findCard: findCard, bestFor: bestFor, picksNeeded: picksNeeded, judgeCard: judgeCard, greenUsed: greenUsed,
+    greenNumber: greenNumber, greenName: greenName, proposeDefences: proposeDefences,
     voiceOn: voiceOn, setVoice: setVoice, speak: speak, stopSpeaking: stopSpeaking, replay: replay,
     audioFile: audioFile, speakLine: speakLine,
     showSubtitle: showSubtitle, hideSubtitle: hideSubtitle,

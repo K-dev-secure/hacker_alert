@@ -52,7 +52,7 @@
 .call__status {
   margin: 4px 0 0;
   font-family: var(--font-pixel);
-  font-size: 14px;
+  font-size: 16px;
   color: var(--green);
 }
 
@@ -63,7 +63,7 @@
   border: 1px dashed var(--orange);
   border-radius: 10px;
   color: var(--orange);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
 }
 

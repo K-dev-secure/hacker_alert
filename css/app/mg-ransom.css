@@ -47,7 +47,7 @@
 
 .ransom__small {
   margin-top: 6px !important;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 /* ---------- Vrai message NovaCorp ---------- */
@@ -82,7 +82,7 @@
 .ransom__pct {
   display: block;
   margin-top: 6px;
-  font-size: 14px;
+  font-size: 16px;
   color: #3A4558;
   text-align: right;
 }

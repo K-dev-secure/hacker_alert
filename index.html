@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>NovaCorp Security</title>
-<meta name="description" content="Appli du jeu Hacker Alert, le jeu de cartes coopératif de cybersécurité. Jeu d'entraînement : tout est faux.">
+<meta name="description" content="Hacker Alert companion app: the phone is the game master of the cooperative cybersecurity card game. Training game: everything is fake.">
 <meta name="theme-color" content="#0B0F17">
 <link rel="icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,7 +36,7 @@
 <header class="topbar">
   <a class="topbar__brand" href="./"><img src="logo.png" alt="" width="32" height="32"><span class="topbar__name">NovaCorp Security</span></a>
   <span class="topbar__level" id="levelChip" hidden></span>
-  <button class="topbar__lang" id="langBtn" type="button" data-i18n="lang.switch" data-i18n-aria="lang.aria">EN</button>
+  <button class="topbar__lang" id="langBtn" type="button" data-i18n="lang.switch" data-i18n-aria="lang.aria">FR</button>
   <button class="topbar__voice" id="musicBtn" type="button" aria-pressed="true">🎵</button>
   <button class="topbar__voice" id="voiceBtn" type="button" aria-pressed="true">🔊</button>
 </header>
@@ -45,7 +45,7 @@
 <div class="hud" id="hud" hidden>
   <p class="hud__timer" id="hudTimer" role="timer" data-i18n-aria="hud.time">10:00</p>
   <div class="hud__gauge">
-    <p class="hud__label" id="hudLabel">INTRUSION 0/10</p>
+    <p class="hud__label" id="hudLabel">Pawn: 0/10</p>
     <div class="hud__cells" id="hudCells" aria-hidden="true"></div>
   </div>
   <p class="hud__count"><span data-i18n="hud.attack">Attaque</span> <b id="hudCount">0/6</b></p>
@@ -128,7 +128,7 @@
     <button class="btn btn--primary" id="gloBack" type="button" data-i18n="back"></button>
   </section>
 
-  <!-- ===== Partie : pavé du maître du jeu ===== -->
+  <!-- ===== Partie : le téléphone mène le jeu (pavé de la carte rouge) ===== -->
   <section class="screen game" id="screen-game" hidden>
     <div class="pad" id="pad">
       <p class="pad__help" data-i18n="pad.help"></p>
@@ -154,9 +154,30 @@
       <button class="hint-btn" id="cpHintBtn" type="button" hidden data-i18n="card.hintBtn"></button>
       <p class="card-panel__hint" id="cpHint" hidden></p>
       <p class="picker__title" id="pickTitle"></p>
+      <!-- Les défenses proposées par le téléphone (numéro + nom) -->
+      <ul class="choices" id="gpChoices"></ul>
       <p class="picker__note" data-i18n="pick.note"></p>
-      <div class="picker" id="picker"></div>
+      <!-- Pavé pour taper le NUMÉRO de la carte verte posée sur la table -->
+      <div class="greenpad" id="greenpad">
+        <div class="greenpad__slots" id="gpSlots" aria-live="polite"></div>
+        <p class="greenpad__msg" id="gpMsg" role="status"></p>
+        <div class="pad__keys greenpad__keys" id="gpKeys">
+          <button type="button" data-key="1">1</button><button type="button" data-key="2">2</button><button type="button" data-key="3">3</button>
+          <button type="button" data-key="4">4</button><button type="button" data-key="5">5</button><button type="button" data-key="6">6</button>
+          <button type="button" data-key="7">7</button><button type="button" data-key="8">8</button><button type="button" data-key="9">9</button>
+          <button type="button" data-key="del" data-i18n-aria="pad.delete">⌫</button><button type="button" data-key="0">0</button>
+          <button type="button" data-key="ok" class="pad__ok">OK</button>
+        </div>
+      </div>
       <button class="btn btn--primary picker__validate" id="pickValidate" type="button" disabled data-i18n="pick.validate"></button>
+      <!-- Confirmation : "Card 9 · Call back to check. Confirm?" -->
+      <div class="confirm" id="gpConfirm" hidden role="alertdialog" aria-labelledby="gpConfirmText">
+        <p class="confirm__text" id="gpConfirmText"></p>
+        <div class="btn-row">
+          <button class="btn btn--primary" id="gpYes" type="button" data-i18n="pick.confirm"></button>
+          <button class="btn btn--ghost" id="gpNo" type="button" data-i18n="back"></button>
+        </div>
+      </div>
       <button class="btn btn--ghost btn--small" id="cpBack" type="button" data-i18n="card.back"></button>
     </article>
 
@@ -186,6 +207,8 @@
     <div class="result__box" id="resBox">
       <p class="result__icon" id="resIcon" aria-hidden="true"></p>
       <h2 class="result__title" id="resTitle"></h2>
+      <!-- Ce qu'il faut faire avec le pion papier, en très gros -->
+      <p class="result__pawn" id="resPawn" hidden></p>
       <p class="result__summary" id="resSummary"></p>
       <ul class="result__calc" id="resCalc"></ul>
       <p class="result__gauge" id="resGauge"></p>
@@ -193,6 +216,7 @@
         <p class="result__best" id="resBest"></p>
         <p class="result__why" id="resWhy"></p>
       </div>
+      <p class="result__flip" id="resFlip" hidden></p>
       <div class="result__rule" id="resRuleBox" hidden>
         <p class="result__rule-label" data-i18n="res.ruleLabel"></p>
         <p class="result__rule-text" id="resRule"></p>

@@ -96,7 +96,7 @@
 
 .level-opt__text {
   color: var(--muted);
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .level-opt:has(input:checked) {
@@ -157,7 +157,7 @@
 
 .practice__cards {
   font-family: var(--font-pixel);
-  font-size: 14px;
+  font-size: 16px;
   color: var(--red-text);
 }
 
@@ -168,7 +168,7 @@
 
 .practice__sev {
   white-space: nowrap;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 /* Fiche des règles + glossaire */

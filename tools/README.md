@@ -13,3 +13,12 @@ python make_audio.py
 
 Il faut aussi Node.js (le script lit les textes dans les fichiers `js/`).
 Le dossier `tools/voices/` (environ 250 Mo) n'est pas envoyé sur GitHub.
+
+Les phrases du téléphone maître du jeu (`guide-*.mp3` : « Attack incoming! », « Move the pawn to space 7. »...)
+sont lues dans `HACKER.turn` (js/cards.js et js/cards-fr.js). Pour ne régénérer qu'elles :
+
+```
+python make_audio.py .. guide
+```
+
+La variable d'environnement `PIPER_VOICES` permet d'indiquer un autre dossier de voix.

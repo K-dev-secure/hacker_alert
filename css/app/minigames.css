@@ -14,7 +14,7 @@
 .mg-head__cards {
   margin: 0;
   font-family: var(--font-pixel);
-  font-size: 14px;
+  font-size: 16px;
   color: var(--red-text);
 }
 

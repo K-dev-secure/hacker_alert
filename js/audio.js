@@ -106,19 +106,28 @@ window.NovaAudio = (function () {
     };
 
     if (opts.audio && player) {
+      // opts.audio : un fichier, ou une liste de fichiers joués l'un après l'autre
+      var files = [].concat(opts.audio);
+      var next = 0;
       var token = ++playerToken;
       var fallback = function () {
         if (token !== playerToken || done) return;   // une autre voix a pris la place
+        playerToken++;
         speakSynth(text, opts, channel, finish);
       };
-      player.onended = function () { if (token === playerToken) finish(); };
+      var playNext = function () {
+        if (token !== playerToken || done) return;
+        if (next >= files.length) { finish(); return; }
+        try {
+          player.src = files[next++];
+          player.currentTime = 0;
+          var p = player.play();
+          if (p && p.catch) p.catch(fallback);
+        } catch (e) { fallback(); }
+      };
+      player.onended = playNext;
       player.onerror = fallback;
-      try {
-        player.src = opts.audio;
-        player.currentTime = 0;
-        var p = player.play();
-        if (p && p.catch) p.catch(fallback);
-      } catch (e) { fallback(); }
+      playNext();
       return true;
     }
     if (!synth) return false;

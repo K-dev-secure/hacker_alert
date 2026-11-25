@@ -1,5 +1,5 @@
 /* =========================================================
-   HACKER ALERT — LANGUES (français par défaut, anglais en option)
+   HACKER ALERT — LANGUES (anglais par défaut, français en option)
    Tous les textes de l'interface sont ici.
    t("clé", { variable: valeur }) renvoie le texte dans la langue choisie.
    ========================================================= */
@@ -9,7 +9,7 @@ window.NovaI18n = (function () {
   var KEY = "novacorp-lang";
   var saved = null;
   try { saved = window.localStorage.getItem(KEY); } catch (e) { saved = null; }
-  var lang = saved === "en" ? "en" : "fr";
+  var lang = saved === "fr" ? "fr" : "en";
 
   var S = {
     /* =================== FRANÇAIS =================== */
@@ -26,11 +26,21 @@ window.NovaI18n = (function () {
       "glo.placeholder": "ex : phishing, sauvegarde, box...",
       "glo.empty": "Aucun mot trouvé.",
       "card.hintBtn": "💡 Besoin d'un indice ?",
-      "pick.title": "Quelle carte verte avez-vous posée ?",
-      "pick.title2": "Expert : cette attaque demande 2 cartes vertes. Touchez les deux.",
-      "pick.note": "Posez d'abord la carte verte sur la table, puis touchez-la ici. Ne retournez pas la carte rouge avant d'avoir validé !",
-      "pick.validate": "Valider",
-      "pick.validateWith": "Valider : {c}",
+      "pick.title": "Choisissez votre défense : {list}",
+      "pick.title2": "Expert : choisissez 2 défenses parmi {list}",
+      "pick.note": "Discutez (en anglais !), posez la carte verte papier sur la carte rouge, puis tapez son numéro.",
+      "pick.card": "carte {n}",
+      "pick.or": " ou ",
+      "pick.confirm": "Confirmer",
+      "pick.confirmQ": "Carte {c} · {d}. Confirmer ?",
+      "pick.confirmQ2": "Cartes {c} · {d}. Confirmer ?",
+      "gp.invalid": "Les cartes vertes vont de 1 à 12 (0 = « It's safe! »).",
+      "gp.used": "La carte verte n°{n} a déjà été jouée : elle est retournée sur la table.",
+      "gp.notOffered": "La carte {n} ne fait pas partie des défenses proposées.",
+      "gp.twice": "Il faut 2 cartes vertes différentes.",
+      "gp.empty": "Tapez d'abord le numéro de la carte verte.",
+      "pick.validate": "Continuer",
+      "pick.validateWith": "Continuer : {c}",
       "pick.used": "déjà jouée",
       "res.played": "Vous avez joué : {c}",
       "res.acceptable": "Acceptable : {d}",
@@ -50,21 +60,23 @@ window.NovaI18n = (function () {
       "voice.off": "Voix du hacker : coupée",
       "hud.time": "Temps restant",
       "hud.attack": "Attaque",
+      "hud.pawn": "Pion : {n}/10",
+      "pawn.stay": "🛡️ Ne bougez pas le pion.",
 
-      "home.intro": "NovaCorp est attaquée. Vous êtes l'équipe de sécurité. Vous avez 10 minutes pour bloquer 6 attaques.",
+      "home.intro": "NovaCorp est attaquée. Vous êtes l'équipe de sécurité. Vous avez 10 minutes pour bloquer 6 attaques. Le téléphone est le maître du jeu : il vous guide à chaque tour.",
       "home.resume": "Une partie est en cours sur ce téléphone.",
       "home.continue": "Continuer la partie",
       "home.new": "Nouvelle partie",
       "home.level": "Choisis ton niveau",
-      "lvl.junior": "Les cartes vertes se réutilisent. Pour une première partie.",
-      "lvl.pro": "Chaque carte verte ne sert qu'une fois. Partie normale.",
-      "lvl.expert": "Une seule utilisation, et certaines attaques demandent 2 cartes vertes.",
+      "lvl.junior": "2 défenses proposées + « It's safe! ». Les cartes vertes se réutilisent. Pour une première partie.",
+      "lvl.pro": "3 défenses proposées + « It's safe! ». Chaque carte verte ne sert qu'une fois. Partie normale.",
+      "lvl.expert": "4 défenses proposées + « It's safe! ». Une seule utilisation, et les cartes #11, #21, #30 demandent 2 cartes vertes.",
       "home.start": "Commencer",
       "home.rules": "📋 La fiche des règles",
       "home.practice": "Mode entraînement : les mini-jeux, sans chrono ni jauge",
       "confirm.newGame": "Une partie est en cours. En commencer une nouvelle ?",
 
-      "pad.help": "Tape le numéro de la carte rouge que vous venez de lire.",
+      "pad.help": "Piochez une carte rouge, lisez-la à voix haute, puis tapez son numéro.",
       "pad.delete": "Effacer",
       "pad.invalid": "Tape un numéro de carte rouge entre 1 et 30.",
       "pad.played": "La carte #{n} a déjà été jouée.",
@@ -100,7 +112,8 @@ window.NovaI18n = (function () {
       "calc.alert": "Bonus alerte rouge (jauge à 5 ou plus) : +1",
       "calc.family": "Même erreur deux fois, « le hacker connaît ta faiblesse » : +1",
       "calc.total": "Total : +{n}",
-      "calc.gauge": "Jauge d'intrusion : {a} → {b}/10",
+      "calc.gauge": "Pion : case {a} → case {b}/10",
+      "gp.hash": "n°",
       "calc.practice": "En vraie partie : +{n} (sans les bonus du hacker)",
       "res.best": "Meilleure défense : {d}",
       "res.noGame": "Aucune partie en cours sur ce téléphone : ce résultat ne compte pas. Conseil : tapez le numéro de la carte QR dans le téléphone de la partie, puis appuyez sur Ouvrir.",
@@ -135,14 +148,15 @@ window.NovaI18n = (function () {
       "rules.html":
         "<h3>Le but</h3>" +
         "<p>Bloquer <strong>6 attaques</strong> en <strong>10 minutes</strong>, sans que la jauge d'intrusion atteigne <strong>10</strong>.</p>" +
+        "<h3>Le téléphone est le maître du jeu</h3>" +
+        "<p>Pas de maître du jeu humain : tout le monde joue ensemble. Le téléphone, posé au milieu, mène la partie avec la voix du hacker, propose les défenses, juge et dit où mettre le pion.</p>" +
         "<h3>Un tour</h3>" +
-        "<ol><li>Un joueur retourne une carte rouge et la lit à voix haute.</li>" +
-        "<li>L'équipe discute et choisit <strong>UNE</strong> carte verte, puis la pose sur la carte rouge.</li>" +
-        "<li>On tape le numéro de la carte rouge dans l'appli : la situation s'affiche, <strong>sans la réponse</strong>.</li>" +
-        "<li>On touche la carte verte posée, puis <strong>Valider</strong> : <strong>c'est l'appli qui juge</strong> et calcule la sanction.</li>" +
-        "<li>Ensuite seulement, on retourne la carte rouge pour lire l'explication.</li>" +
-        "<li>La carte verte jouée est grisée dans l'appli (sauf « It's safe! » et sauf au niveau Junior).</li></ol>" +
-        "<p><strong>Pas besoin d'arbitre</strong> : n'importe quel joueur peut tenir le téléphone, personne ne peut tricher en appuyant sur « Bonne ».</p>" +
+        "<ol><li>« <span lang='en'>Attack incoming! Draw a red card.</span> » : on pioche une carte rouge, on la lit à voix haute et on tape son numéro.</li>" +
+        "<li>La situation s'affiche, <strong>sans la réponse</strong>. Carte QR : le mini-jeu s'ouvre.</li>" +
+        "<li>Le téléphone propose des cartes vertes : 2 en Junior, 3 en Pro, 4 en Expert, et toujours « It's safe! » (n°0).</li>" +
+        "<li>L'équipe discute <strong>en anglais</strong>, pose la carte verte papier et tape son numéro, puis <strong>Confirmer</strong>.</li>" +
+        "<li>L'appli juge et dit où mettre le pion : « <span lang='en'>Hacker blocked! Don't move the pawn.</span> » ou « <span lang='en'>Move the pawn to space 7.</span> ». Puis la bonne réponse, l'explication et la règle d'or.</li>" +
+        "<li>« <span lang='en'>Turn the green card face down.</span> » (sauf en Junior et sauf « It's safe! »), puis attaque suivante.</li></ol>" +
         "<h3>Combien avance la jauge</h3>" +
         "<ul><li>✅ La meilleure défense : <strong>0</strong></li>" +
         "<li>🟠 La défense acceptable : <strong>+1</strong></li>" +
@@ -159,7 +173,9 @@ window.NovaI18n = (function () {
         "<h3>Les niveaux</h3>" +
         "<ul><li>🟢 <strong>Junior</strong> : les cartes vertes se réutilisent.</li>" +
         "<li>🟠 <strong>Pro</strong> : chaque carte verte ne sert qu'une fois.</li>" +
-        "<li>🔴 <strong>Expert</strong> : une seule fois, et les cartes #11, #21 et #30 demandent 2 cartes vertes.</li></ul>",
+        "<li>🔴 <strong>Expert</strong> : une seule fois, et les cartes #11, #21 et #30 demandent 2 cartes vertes.</li></ul>" +
+        "<h3>Pas de téléphone ?</h3>" +
+        "<p>Le livret réponses de la boîte remplace l'appli : le pion sur la piste papier pour la jauge, et un minuteur de 10 minutes.</p>",
 
       "mg.card": "Carte {list}",
       "mg.sev": "Gravité {n}",
@@ -305,11 +321,21 @@ window.NovaI18n = (function () {
       "glo.placeholder": "e.g. phishing, backup, router...",
       "glo.empty": "No word found.",
       "card.hintBtn": "💡 Need a hint?",
-      "pick.title": "Which green card did you put down?",
-      "pick.title2": "Expert: this attack needs 2 green cards. Tap both.",
-      "pick.note": "First put the green card on the table, then tap it here. Don't turn the red card over before you confirm!",
-      "pick.validate": "Confirm",
-      "pick.validateWith": "Confirm: {c}",
+      "pick.title": "Choose your defence: {list}",
+      "pick.title2": "Expert: choose 2 defences from {list}",
+      "pick.note": "Talk in English, put the paper green card on the red card, then type its number.",
+      "pick.card": "card {n}",
+      "pick.or": " or ",
+      "pick.confirm": "Confirm",
+      "pick.confirmQ": "Card {c} · {d}. Confirm?",
+      "pick.confirmQ2": "Cards {c} · {d}. Confirm?",
+      "gp.invalid": "Green cards go from 1 to 12 (0 = \"It's safe!\").",
+      "gp.used": "Green card no. {n} has already been played: it is face down on the table.",
+      "gp.notOffered": "Card {n} is not one of the defences on offer.",
+      "gp.twice": "You need 2 different green cards.",
+      "gp.empty": "First type the number of the green card.",
+      "pick.validate": "Next",
+      "pick.validateWith": "Next: {c}",
       "pick.used": "already used",
       "res.played": "You played: {c}",
       "res.acceptable": "Acceptable: {d}",
@@ -329,21 +355,23 @@ window.NovaI18n = (function () {
       "voice.off": "Hacker voice: off",
       "hud.time": "Time left",
       "hud.attack": "Attack",
+      "hud.pawn": "Pawn: {n}/10",
+      "pawn.stay": "🛡️ Don't move the pawn.",
 
-      "home.intro": "NovaCorp is under attack. You are the security team. You have 10 minutes to block 6 attacks.",
+      "home.intro": "NovaCorp is under attack. You are the security team. You have 10 minutes to block 6 attacks. The phone is the game master: it guides you through every turn.",
       "home.resume": "A game is in progress on this phone.",
       "home.continue": "Continue the game",
       "home.new": "New game",
       "home.level": "Choose your level",
-      "lvl.junior": "Green cards can be used again. For a first game.",
-      "lvl.pro": "Each green card can be used only once. Normal game.",
-      "lvl.expert": "Used only once, and some attacks need 2 green cards.",
+      "lvl.junior": "2 defences on offer + \"It's safe!\". Green cards can be used again. For a first game.",
+      "lvl.pro": "3 defences on offer + \"It's safe!\". Each green card can be used only once. Normal game.",
+      "lvl.expert": "4 defences on offer + \"It's safe!\". Used only once, and cards #11, #21, #30 need 2 green cards.",
       "home.start": "Start",
       "home.rules": "📋 Rules sheet",
       "home.practice": "Practice mode: the mini-games, without timer or gauge",
       "confirm.newGame": "A game is in progress. Start a new one?",
 
-      "pad.help": "Type the number of the red card you just read.",
+      "pad.help": "Draw a red card, read it aloud, then type its number.",
       "pad.delete": "Delete",
       "pad.invalid": "Type a red card number between 1 and 30.",
       "pad.played": "Card #{n} has already been played.",
@@ -379,10 +407,11 @@ window.NovaI18n = (function () {
       "calc.alert": "Red alert bonus (gauge at 5 or more): +1",
       "calc.family": "Same mistake twice, \"The hacker knows your weakness\": +1",
       "calc.total": "Total: +{n}",
-      "calc.gauge": "Intrusion gauge: {a} → {b}/10",
+      "calc.gauge": "Pawn: space {a} → space {b}/10",
+      "gp.hash": "no.",
       "calc.practice": "In a real game: +{n} (without the hacker's bonuses)",
       "res.best": "Best defence: {d}",
-      "res.noGame": "No game in progress on this phone: this result is not counted. Tip: the game master types the QR card number in the game phone, then presses Open.",
+      "res.noGame": "No game in progress on this phone: this result is not counted. Tip: type the QR card number in the game phone, then press Open.",
       "res.next": "Next attack",
       "res.toEnd": "See the end of the game",
       "res.backPractice": "Back to practice",
@@ -414,14 +443,15 @@ window.NovaI18n = (function () {
       "rules.html":
         "<h3>The goal</h3>" +
         "<p>Block <strong>6 attacks</strong> in <strong>10 minutes</strong>, before the intrusion gauge reaches <strong>10</strong>.</p>" +
+        "<h3>The phone is the game master</h3>" +
+        "<p>No human game master: everybody plays together. The phone, in the middle of the table, runs the game with the hacker's voice, offers the defences, judges and tells you where to put the pawn.</p>" +
         "<h3>One turn</h3>" +
-        "<ol><li>A player turns over a red card and reads it aloud.</li>" +
-        "<li>The team talks, agrees on <strong>ONE</strong> green card and puts it on the red card.</li>" +
-        "<li>Type the red card number in the app: the situation appears, <strong>without the answer</strong>.</li>" +
-        "<li>Tap the green card you played, then <strong>Confirm</strong>: <strong>the app judges</strong> and calculates the penalty.</li>" +
-        "<li>Only then, turn the red card over to read the explanation.</li>" +
-        "<li>The green card played is greyed out in the app (except \"It's safe!\" and except in Junior).</li></ol>" +
-        "<p><strong>No referee needed</strong>: any player can hold the phone, and nobody can cheat by pressing \"Right\".</p>" +
+        "<ol><li>\"Attack incoming! Draw a red card.\": draw a red card, read it aloud and type its number.</li>" +
+        "<li>The situation appears, <strong>without the answer</strong>. QR card: the mini-game opens.</li>" +
+        "<li>The phone offers green cards: 2 in Junior, 3 in Pro, 4 in Expert, and always \"It's safe!\" (no. 0).</li>" +
+        "<li>The team talks <strong>in English</strong>, puts the paper green card down and types its number, then <strong>Confirm</strong>.</li>" +
+        "<li>The app judges and tells you where to put the pawn: \"Hacker blocked! Don't move the pawn.\" or \"Move the pawn to space 7.\" Then the right answer, the explanation and the golden rule.</li>" +
+        "<li>\"Turn the green card face down.\" (except in Junior and except \"It's safe!\"), then the next attack.</li></ol>" +
         "<h3>How much the gauge goes up</h3>" +
         "<ul><li>✅ The best defence: <strong>0</strong></li>" +
         "<li>🟠 The acceptable defence: <strong>+1</strong></li>" +
@@ -438,7 +468,9 @@ window.NovaI18n = (function () {
         "<h3>Levels</h3>" +
         "<ul><li>🟢 <strong>Junior</strong>: green cards can be used again.</li>" +
         "<li>🟠 <strong>Pro</strong>: each green card is used only once.</li>" +
-        "<li>🔴 <strong>Expert</strong>: only once, and cards #11, #21 and #30 need 2 green cards.</li></ul>",
+        "<li>🔴 <strong>Expert</strong>: only once, and cards #11, #21 and #30 need 2 green cards.</li></ul>" +
+        "<h3>No phone?</h3>" +
+        "<p>The answer booklet in the box replaces the app: the pawn on the paper track for the gauge, and a 10-minute timer.</p>",
 
       "mg.card": "Card {list}",
       "mg.sev": "Severity {n}",
@@ -582,7 +614,7 @@ window.NovaI18n = (function () {
   }
 
   function setLang(l) {
-    try { window.localStorage.setItem(KEY, l === "en" ? "en" : "fr"); } catch (e) { /* rien */ }
+    try { window.localStorage.setItem(KEY, l === "fr" ? "fr" : "en"); } catch (e) { /* rien */ }
   }
 
   /* Traduit le HTML : data-i18n (texte), data-i18n-html (HTML), data-i18n-aria (aria-label) */

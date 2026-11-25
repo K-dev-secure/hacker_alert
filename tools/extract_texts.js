@@ -3,6 +3,23 @@ const fs = require("fs");
 const path = require("path");
 const root = process.argv[2];
 const out = {};
+// Phrases du téléphone maître du jeu (voix du hacker), une par fichier guide-*
+function guide(D) {
+  const T = D.HACKER.turn, g = {};
+  g["guide-draw"] = T.draw;
+  g["guide-choose"] = T.choose;
+  g["guide-choose2"] = T.choose2;
+  for (let n = 0; n <= 12; n++) {
+    const name = n === 0 ? "It's safe!" : D.DEFENCES[n - 1];
+    g["guide-card-" + n] = T.card.replace("{n}", n).replace("{d}", D.defenceVoice(name));
+  }
+  g["guide-blocked"] = T.blocked;
+  for (let n = 1; n <= 10; n++) g["guide-pawn-" + n] = T.pawn.replace("{n}", n);
+  g["guide-flip"] = T.flip;
+  g["guide-flip2"] = T.flip2;
+  g["guide-next"] = T.next;
+  return g;
+}
 for (const lang of ["fr", "en"]) {
   const ctx = { window: {}, console };
   ctx.window.NovaI18n = { lang };
@@ -21,7 +38,8 @@ for (const lang of ["fr", "en"]) {
       "hacker-win": D.HACKER.win,
       "hacker-lose": D.HACKER.lose
     },
-    calls: D.CALLS.map((c, i) => ({ key: "call-" + i, name: c.name, text: c.text }))
+    calls: D.CALLS.map((c, i) => ({ key: "call-" + i, name: c.name, text: c.text })),
+    guide: guide(D)
   };
 }
 process.stdout.write(JSON.stringify(out, null, 1));

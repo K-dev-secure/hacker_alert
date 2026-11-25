@@ -4,9 +4,9 @@
    ?c=start · ?c=trap · ?c=password · ?c=desk · ?c=ransom
    ?c=call · ?c=link · ?c=practice
 
-   C'est l'appli qui juge : l'équipe touche la carte verte posée,
-   l'appli compare avec la bonne réponse. Personne ne peut
-   "appuyer sur Bonne" à la place du jeu.
+   LE TÉLÉPHONE EST LE MAÎTRE DU JEU : avec la voix du hacker,
+   il mène chaque tour, propose les défenses possibles, juge,
+   et dit où mettre le pion papier. Il n'y a pas de maître du jeu humain.
    ========================================================= */
 (function () {
   "use strict";
@@ -23,6 +23,8 @@
   var typed = "";            // numéro tapé sur le pavé
   var shownCard = null;      // carte affichée
   var picks = [];            // cartes vertes choisies
+  var offered = [];          // numéros des cartes vertes proposées pour cette carte rouge
+  var TURN = D.HACKER.turn;  // phrases de chaque tour
   var cardPractice = false;  // carte rouge jouée en entraînement (sans partie)
   var mgContext = null;      // { inGame, card, practice, scannedWithoutGame }
   var lastResultEnded = false;
@@ -76,7 +78,7 @@
     if (!st) return;
     var left = G.remainingSeconds();
     $("hudTimer").textContent = formatTime(left);
-    $("hudLabel").textContent = "INTRUSION " + st.gauge + "/10";
+    $("hudLabel").textContent = t("hud.pawn", { n: st.gauge });
     Array.prototype.forEach.call(hudCells.children, function (cell, idx) {
       cell.classList.toggle("is-on", idx < st.gauge);
     });
@@ -178,7 +180,7 @@
     G.newGame(level);
     cardPractice = false;
     resetPad();
-    G.speakLine("hacker-start", D.HACKER.start);
+    G.speakLine(["hacker-start", "guide-draw"], D.HACKER.start + " " + TURN.draw);
     show("game");
   });
 
@@ -293,10 +295,17 @@
 
   /* Clavier physique (ordinateur) */
   document.addEventListener("keydown", function (e) {
-    if (current !== "game" || $("pad").hidden) return;
-    if (/^[0-9]$/.test(e.key)) $("padKeys").querySelector("[data-key='" + e.key + "']").click();
-    else if (e.key === "Backspace") $("padKeys").querySelector("[data-key='del']").click();
-    else if (e.key === "Enter") { e.preventDefault(); openCard(); }
+    if (current !== "game") return;
+    if (!$("cardPanel").hidden && !$("gpConfirm").hidden) {
+      if (e.key === "Enter") { e.preventDefault(); $("gpYes").click(); }
+      else if (e.key === "Escape" || e.key === "Backspace") { e.preventDefault(); $("gpNo").click(); }
+      return;
+    }
+    var keys = !$("pad").hidden ? $("padKeys") : !$("cardPanel").hidden ? $("gpKeys") : null;
+    if (!keys) return;
+    if (/^[0-9]$/.test(e.key)) keys.querySelector("[data-key='" + e.key + "']").click();
+    else if (e.key === "Backspace") keys.querySelector("[data-key='del']").click();
+    else if (e.key === "Enter") { e.preventDefault(); keys.querySelector("[data-key='ok']").click(); }
   });
 
   function openCard() {
@@ -339,9 +348,36 @@
     $("cpHint").textContent = "💡 " + D.FAMILY_INFO[card.fam].hint;
 
     var need = G.picksNeeded(card, level);
-    $("pickTitle").textContent = t(need === 2 ? "pick.title2" : "pick.title");
-    buildPicker(need);
+    // Le téléphone propose les défenses (2, 3 ou 4 selon le niveau, + "It's safe!")
+    offered = G.proposeDefences(card, level, cardPractice);
+    renderChoices();
+    $("pickTitle").textContent = t(need === 2 ? "pick.title2" : "pick.title", { list: choiceList() });
+    buildGreenPad(need);
     $("cardPanel").hidden = false;
+    // ... et le dit à voix haute : "Choose your defence: card 9, card 3 or card 0"
+    var intro = need === 2 ? TURN.choose2 : TURN.choose;
+    var said = offered.map(function (num) {
+      return TURN.card.replace("{n}", num).replace("{d}", D.defenceVoice(greenName(num)));
+    });
+    G.speakLine([need === 2 ? "guide-choose2" : "guide-choose"].concat(offered.map(function (num) { return "guide-card-" + num; })),
+      intro + " " + said.join(" "));
+  }
+
+  /* "card 9, card 3 or card 0" */
+  function choiceList() {
+    var names = offered.map(function (num) { return t("pick.card", { n: num }); });
+    return names.length < 2 ? names.join("") : names.slice(0, -1).join(", ") + t("pick.or") + names[names.length - 1];
+  }
+
+  function renderChoices() {
+    var ul = $("gpChoices");
+    ul.innerHTML = "";
+    offered.forEach(function (num) {
+      var li = makeEl("li", "choice" + (num === 0 ? " choice--safe" : ""));
+      li.appendChild(makeEl("span", "choice__num", String(num)));
+      li.appendChild(makeEl("span", "choice__name", D.defence(greenName(num))));
+      ul.appendChild(li);
+    });
   }
 
   $("cpHintBtn").addEventListener("click", function () {
@@ -349,61 +385,124 @@
     this.hidden = true;
   });
 
-  function buildPicker(need) {
-    var grid = $("picker");
-    grid.innerHTML = "";
-    D.DEFENCES.forEach(function (name) {
-      var used = cardPractice ? false : G.greenUsed(name);
-      var b = makeEl("button", "pick" + (name === "It's safe!" ? " pick--safe" : ""));
-      b.type = "button";
-      b.setAttribute("aria-pressed", "false");
-      b.setAttribute("data-name", name);
-      var fr = D.defence(name);
-      // En français : nom FR en grand, nom imprimé sur la carte en petit
-      var main = fr.split(" – ")[0];
-      if (main === fr && fr.indexOf(" (") > 0) main = fr.slice(0, fr.indexOf(" ("));
-      b.appendChild(makeEl("span", "pick__main", main));
-      if (main !== name) b.appendChild(makeEl("span", "pick__en", name));
-      if (used) {
-        b.disabled = true;
-        b.appendChild(makeEl("span", "pick__used", t("pick.used")));
-      }
-      b.addEventListener("click", function () {
-        var k = picks.indexOf(name);
-        if (k >= 0) picks.splice(k, 1);
-        else {
-          if (picks.length >= need) picks.shift();   // on remplace le plus ancien choix
-          picks.push(name);
-        }
-        Array.prototype.forEach.call(grid.children, function (btn) {
-          btn.setAttribute("aria-pressed", picks.indexOf(btn.getAttribute("data-name")) >= 0 ? "true" : "false");
-        });
-        $("pickValidate").disabled = picks.length === 0;
-        $("pickValidate").textContent = picks.length
-          ? t("pick.validateWith", { c: picks.map(function (p) { return D.defence(p).split(" (")[0].split(" – ")[0]; }).join(" + ") })
-          : t("pick.validate");
-      });
-      grid.appendChild(b);
-    });
-    $("pickValidate").disabled = true;
-    $("pickValidate").textContent = t("pick.validate");
+  /* =========================================================
+     CARTE VERTE : on tape le NUMÉRO imprimé sur la carte posée
+     (1 à 12, et 0 pour "It's safe!"). L'appli n'affiche jamais les
+     noms des cartes vertes : il faut les cartes papier pour jouer.
+     ========================================================= */
+  var slots = [];   // numéros tapés (texte), 1 case ou 2 en Expert
+  var slot = 0;     // case en cours
+  var need = 1;
+
+  function greenName(num) { return G.greenName(num); }
+
+  function buildGreenPad(n) {
+    need = n;
+    slots = [];
+    for (var k = 0; k < need; k++) slots.push("");
+    slot = 0;
+    $("gpMsg").textContent = "";
+    showConfirm(false);
+    renderSlots();
   }
 
+  /* Problème avec le numéro de la case idx ? (renvoie le message, ou "") */
+  function slotError(v, idx) {
+    if (v === "") return "";
+    var num = parseInt(v, 10);
+    if (isNaN(num) || num > 12) return t("gp.invalid");
+    if (!cardPractice && G.greenUsed(greenName(num))) return t("gp.used", { n: num });
+    if (offered.indexOf(num) < 0) return t("gp.notOffered", { n: num });
+    for (var j = 0; j < slots.length; j++) {
+      if (j !== idx && slots[j] !== "" && parseInt(slots[j], 10) === num) return t("gp.twice");
+    }
+    return "";
+  }
+
+  function allValid() {
+    return slots.every(function (v, i) { return v !== "" && !slotError(v, i); });
+  }
+
+  function renderSlots() {
+    var box = $("gpSlots");
+    box.innerHTML = "";
+    slots.forEach(function (v, i) {
+      var cell = makeEl("span", "greenpad__slot" + (i === slot ? " is-active" : "") + (v !== "" && !slotError(v, i) ? " is-ok" : ""));
+      cell.appendChild(makeEl("span", "greenpad__hash", t("gp.hash")));
+      cell.appendChild(makeEl("span", "greenpad__num", v === "" ? "—" : v));
+      box.appendChild(cell);
+    });
+    var ok = allValid();
+    $("pickValidate").disabled = !ok;
+    $("pickValidate").textContent = ok
+      ? t("pick.validateWith", { c: slots.map(function (v) { return t("pick.card", { n: parseInt(v, 10) }); }).join(" + ") })
+      : t("pick.validate");
+  }
+
+  $("gpKeys").addEventListener("click", function (e) {
+    var btn = e.target.closest("button");
+    if (!btn || !shownCard) return;
+    var key = btn.getAttribute("data-key");
+    if (key === "del") {
+      if (slots[slot] === "" && slot > 0) slot--;
+      slots[slot] = slots[slot].slice(0, -1);
+    } else if (key === "ok") {
+      var err = slotError(slots[slot], slot);
+      if (slots[slot] === "" || err) {
+        $("gpMsg").textContent = err || t("gp.empty");
+        return;
+      }
+      if (slot < need - 1) slot++;           // Expert : on passe à la 2e carte
+      else if (allValid()) { showConfirm(true); return; }
+    } else {
+      var v = slots[slot] === "0" ? key : slots[slot] + key;
+      if (v.length > 2) v = key;             // on recommence le nombre
+      slots[slot] = v;
+    }
+    $("gpMsg").textContent = slotError(slots[slot], slot);
+    renderSlots();
+  });
+
   $("pickValidate").addEventListener("click", function () {
-    if (!shownCard || !picks.length) return;
+    if (!shownCard || !allValid()) return;
+    showConfirm(true);
+  });
+
+  /* ---------- Confirmation : "Card 9 · Call back to check. Confirm?" ---------- */
+  function showConfirm(on) {
+    $("gpConfirm").hidden = !on;
+    $("greenpad").hidden = on;
+    $("pickValidate").hidden = on;
+    if (!on) return;
+    var nums = slots.map(function (v) { return parseInt(v, 10); });
+    $("gpConfirmText").textContent = t(nums.length === 2 ? "pick.confirmQ2" : "pick.confirmQ", {
+      c: nums.join(" + "),
+      d: nums.map(function (n) { return D.defence(greenName(n)); }).join(" + ")
+    });
+    $("gpYes").focus();
+  }
+  $("gpYes").addEventListener("click", function () {
+    if (!shownCard || !allValid()) return;
+    showConfirm(false);
     judge();
+  });
+  $("gpNo").addEventListener("click", function () {
+    showConfirm(false);
+    renderSlots();
   });
 
   /* ---------- L'appli juge ---------- */
   function judge() {
     var card = shownCard;
     var level = cardPractice ? "pro" : G.get().level;
+    var nums = slots.map(function (v) { return parseInt(v, 10); });
+    picks = nums.map(greenName);
     var res = G.judgeCard(card, level, picks);
     var played = picks.slice();
-    var playedText = played.map(D.defence).join(" + ");
     var info = {
       verdict: res.verdict, falseAlarm: res.falseAlarm, sev: card.sev, fam: card.fam,
-      played: playedText,
+      played: nums.map(function (n) { return t("pick.card", { n: n }) + " · " + D.defence(greenName(n)); }).join(" + "),
+      flip: level !== "junior" ? nums.filter(function (n) { return n !== 0; }).length : 0,   // cartes à retourner
       best: G.bestFor(card, level),
       acceptable: card.ok && !(level === "expert" && card.expert) ? D.defence(card.ok) : null,
       why: card.why
@@ -411,6 +510,7 @@
 
     if (cardPractice || !G.isPlaying()) {
       info.practiceCost = G.penalty({ verdict: res.verdict, falseAlarm: res.falseAlarm, sev: card.sev, fam: card.fam }, 0, []).total;
+      info.flip = 0;
       showResult(info, null, false);
       return;
     }
@@ -419,8 +519,9 @@
       card: card.n,
       label: "#" + card.n + " " + D.FAMILIES[card.fam],
       fam: card.fam, sev: card.sev, verdict: res.verdict, falseAlarm: res.falseAlarm,
-      played: played, best: info.best, lesson: card.why
+      played: played, best: info.best, lesson: card.why   // gardés pour le débrief de fin
     });
+    // Le verso des cartes rouges n'a pas de réponse : c'est l'appli qui l'affiche
     showResult(info, out, true);
   }
 
@@ -509,14 +610,20 @@
       line(t("calc.total", { n: p.total }), "is-total");
       $("resGauge").textContent = t("calc.gauge", { a: out.before, b: out.after });
       $("resGauge").hidden = false;
-      if (out.crossedAlert && G.markAlertSpoken()) {
-        G.speakLine("hacker-alert", D.HACKER.alert);
-        flashAlert();
-      }
     } else {
       line(t("calc.practice", { n: r.practiceCost || 0 }), "is-total");
       $("resGauge").hidden = true;
     }
+
+    // Le pion papier : "Hacker blocked! Don't move the pawn." ou "Move the pawn to space 7."
+    var moved = !!(inGame && out && out.after !== out.before);
+    var pawnText = !inGame || !out ? "" : moved ? TURN.pawn.replace("{n}", out.after) : TURN.blocked;
+    $("resPawn").textContent = moved ? pawnText : t("pawn.stay");   // le titre dit déjà "Hacker blocked!"
+    $("resPawn").hidden = !pawnText;
+    $("resPawn").className = "result__pawn" + (moved ? " is-move" : "");
+    var flipText = inGame && r.flip ? (r.flip > 1 ? TURN.flip2 : TURN.flip) : "";
+    $("resFlip").textContent = flipText ? "🃏 " + flipText : "";
+    $("resFlip").hidden = !flipText;
 
     var best = r.best ? t("res.best", { d: r.best }) : "";
     if (r.best && r.acceptable) best += " · " + t("res.acceptable", { d: r.acceptable });
@@ -535,6 +642,19 @@
     else next.textContent = t(lastResultEnded ? "res.toEnd" : "res.next");
     show("result");
     next.focus();
+
+    // Le téléphone le dit à voix haute
+    if (inGame && out) {
+      var keys = [moved ? "guide-pawn-" + out.after : "guide-blocked"];
+      var texts = [pawnText];
+      if (out.crossedAlert && G.markAlertSpoken()) {
+        keys.push("hacker-alert"); texts.push(D.HACKER.alert);
+        flashAlert();
+      }
+      if (flipText) { keys.push(r.flip > 1 ? "guide-flip2" : "guide-flip"); texts.push(flipText); }
+      if (!lastResultEnded) { keys.push("guide-next"); texts.push(TURN.next); }
+      G.speakLine(keys, texts.join(" "));
+    }
   }
 
   $("resNext").addEventListener("click", function () {
@@ -547,6 +667,7 @@
     }
     resetPad();
     show(G.isPlaying() ? "game" : "home");
+    if (G.isPlaying()) G.speakLine("guide-draw", TURN.draw);   // "Attack incoming! Draw a red card."
   });
 
   function flashAlert() {

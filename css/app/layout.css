@@ -73,7 +73,7 @@ body.app .level-opt {
   border: 1px solid var(--navy);
   border-radius: 6px;
   font-family: var(--font-pixel);
-  font-size: 14px;
+  font-size: 16px;
   color: var(--muted);
 }
 
@@ -89,7 +89,7 @@ body.app .level-opt {
   color: var(--white);
   font-family: var(--font-pixel);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
 }
 
@@ -169,7 +169,7 @@ body.app .level-opt {
 
 .btn--small {
   min-height: 44px;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
 }
 
@@ -182,7 +182,7 @@ body.app .level-opt {
   background: none;
   color: var(--muted);
   font: inherit;
-  font-size: 15px;
+  font-size: 16px;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -214,7 +214,7 @@ body.app .level-opt {
   border-radius: 10px;
   background: rgba(242, 140, 40, .1);
   color: var(--orange);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   text-align: center;
 }
@@ -238,7 +238,7 @@ body.app .level-opt {
   display: block;
   font-family: var(--font-pixel);
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--red-text);
 }
 
@@ -297,7 +297,7 @@ body.app.is-final::before {
 
 /* Bouton "Réécouter" dans les sous-titres */
 .subtitle__replay {
-  min-height: 40px;
+  min-height: 44px;
   margin-top: 8px;
   padding: 6px 12px;
   border: 1px solid var(--red);
@@ -305,7 +305,7 @@ body.app.is-final::before {
   background: transparent;
   color: var(--white);
   font: inherit;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
 }

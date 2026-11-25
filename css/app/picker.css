@@ -1,5 +1,7 @@
 /* =========================================================
-   APPLI — CHOIX DE LA CARTE VERTE (c'est l'appli qui juge)
+   APPLI — NUMÉRO DE LA CARTE VERTE (c'est l'appli qui juge)
+   L'appli n'affiche jamais les noms des cartes vertes :
+   on tape le numéro imprimé sur la carte papier.
    ========================================================= */
 
 /* Indice (niveau Junior et entraînement) */
@@ -40,93 +42,69 @@
 
 .picker__note {
   margin: 0 0 12px;
-  font-size: 14px;
+  font-size: 16px;
   color: var(--muted);
 }
 
-/* ---------- Grille des 13 cartes vertes ---------- */
-.picker {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+/* ---------- Pavé : numéro de la carte verte ---------- */
+.greenpad {
   margin-bottom: 12px;
 }
 
-.pick {
-  position: relative;
-  min-height: 64px;
+.greenpad__slots {
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  gap: 2px;
-  padding: 8px 10px;
-  border: 2px solid var(--green);
-  border-radius: 12px;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+/* Une case = une carte verte (2 cases en Expert pour #11, #21, #30) */
+.greenpad__slot {
+  min-width: 120px;
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 14px;
+  border: 2px solid var(--navy);
+  border-radius: 14px;
   background: var(--bg);
-  color: var(--white);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color .15s, box-shadow .15s, transform .08s;
-}
-
-.pick:active:not(:disabled) {
-  transform: scale(.97);
-}
-
-.pick__main {
+  font-family: var(--font-pixel);
   font-weight: 700;
-  font-size: 15px;
-  line-height: 1.2;
 }
 
-.pick__en {
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.2;
-}
-
-/* Carte choisie */
-.pick[aria-pressed="true"] {
-  background: var(--green);
-  color: var(--bg);
+.greenpad__slot.is-active {
+  border-color: var(--green);
   box-shadow: var(--glow-green);
 }
 
-.pick[aria-pressed="true"] .pick__en {
-  color: var(--bg);
+.greenpad__slot.is-ok {
+  background: rgba(93, 184, 112, .15);
 }
 
-.pick[aria-pressed="true"]::after {
-  content: "✓";
-  position: absolute;
-  top: 6px;
-  right: 10px;
-  font-weight: 700;
+.greenpad__hash {
+  font-size: 18px;
+  color: var(--green);
 }
 
-/* "It's safe!" : toute la largeur, toujours disponible */
-.pick--safe {
-  grid-column: 1 / -1;
-  border-style: dashed;
+.greenpad__num {
+  font-size: 40px;
+  line-height: 1.1;
+  color: var(--white);
 }
 
-/* Carte déjà jouée (Pro / Expert) */
-.pick:disabled {
-  border-color: var(--navy);
-  color: var(--muted);
-  cursor: not-allowed;
-  opacity: .55;
+.greenpad__msg {
+  min-height: 22px;
+  margin: 0 0 8px;
+  color: var(--orange);
+  font-weight: 600;
+  text-align: center;
 }
 
-.pick:disabled .pick__main {
-  text-decoration: line-through;
-}
-
-.pick__used {
-  font-size: 12px;
-  font-family: var(--font-pixel);
-  color: var(--muted);
+/* Les touches reprennent le style du pavé (.pad__keys), en vert */
+.greenpad__keys button {
+  min-height: 54px;
+  border-color: rgba(93, 184, 112, .45);
 }
 
 .picker__validate {
@@ -140,8 +118,68 @@
   cursor: not-allowed;
 }
 
-@media (min-width: 560px) {
-  .picker {
-    grid-template-columns: repeat(3, 1fr);
-  }
+/* ---------- Les défenses proposées par le téléphone (numéro + nom) ---------- */
+.choices {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 8px 12px;
+  border: 2px solid var(--green);
+  border-radius: 12px;
+  background: rgba(93, 184, 112, .1);
+}
+
+.choice--safe {
+  border-style: dashed;
+}
+
+.choice__num {
+  flex: none;
+  min-width: 36px;
+  font-family: var(--font-pixel);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--green);
+  text-align: center;
+}
+
+.choice__name {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+/* ---------- Confirmation : "Card 9 · Call back to check. Confirm?" ---------- */
+.confirm {
+  margin: 0 0 12px;
+  padding: 16px;
+  border: 2px solid var(--green);
+  border-radius: 14px;
+  background: var(--bg);
+  box-shadow: var(--glow-green);
+  text-align: center;
+}
+
+.confirm[hidden],
+.greenpad[hidden],
+.picker__validate[hidden] {
+  display: none;
+}
+
+.confirm__text {
+  margin: 0 0 12px;
+  font-family: var(--font-title);
+  font-size: 22px;
+  line-height: 1.25;
 }

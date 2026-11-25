@@ -18,7 +18,7 @@
 .debrief__label {
   margin: 0;
   font-family: var(--font-pixel);
-  font-size: 15px;
+  font-size: 16px;
   color: var(--orange);
 }
 
@@ -44,7 +44,7 @@
   margin: 6px 0 0;
   padding-top: 8px;
   border-top: 1px dashed var(--navy);
-  font-size: 15px;
+  font-size: 16px;
   color: var(--muted);
   line-height: 1.45;
 }
@@ -77,7 +77,7 @@
 
 .debrief__homeline {
   color: var(--muted);
-  font-size: 15px;
+  font-size: 16px;
 }
 
 /* Questions pour discuter */
@@ -122,7 +122,7 @@ a.report__name {
 
 .report__what {
   color: var(--muted);
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .end__buttons {

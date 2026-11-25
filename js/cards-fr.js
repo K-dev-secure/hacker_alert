@@ -20,7 +20,7 @@
     phishing: "Phishing",
     passwords: "Mots de passe",
     devices: "Appareils",
-    humans: "Faux humains",
+    humans: "Social engineering",
     network: "Réseau"
   };
 
@@ -45,6 +45,7 @@
     // "Two-factor (2FA)" a déjà des parenthèses : on sépare avec un tiret
     return name.indexOf("(") >= 0 ? DEF[name] + " – " + name : DEF[name] + " (" + name + ")";
   };
+  FR.defenceVoice = function (name) { return DEF[name] || name; };
 
   /* ---------- Cartes rouges : situation + explication ---------- */
   var CARDS = {
@@ -219,7 +220,18 @@
     ],
     alert: "Alerte rouge ! Je suis dans votre réseau.",
     win: "Non ! Vous m'avez arrêté... cette fois.",
-    lose: "Le hacker est entré. Partie terminée."
+    lose: "Le hacker est entré. Partie terminée.",
+    turn: {
+      draw: "Attaque en approche ! Piochez une carte rouge.",
+      choose: "Choisissez votre défense :",
+      choose2: "Choisissez deux défenses :",
+      card: "Carte {n} : {d}.",
+      blocked: "Hacker bloqué ! Ne bougez pas le pion.",
+      pawn: "Avancez le pion sur la case {n}.",
+      flip: "Retournez la carte verte face cachée.",
+      flip2: "Retournez les cartes vertes face cachée.",
+      next: "Attaque suivante !"
+    }
   };
 
   /* =========================================================
@@ -240,8 +252,8 @@
 
   T[7].fromName = "Anonyme";
   T[7].subject = [{ t: "Je connais ton mot de passe", sus: true }];
-  T[7].body = ["J'ai piraté ton ordinateur et ", { t: "je t'ai filmé avec ta webcam", sus: true }, ". ",
-               { t: "Paie 500 € en bitcoin sous 48 heures", sus: true }, " ou j'envoie la vidéo à tous tes contacts."];
+  T[7].body = ["J'ai pris le contrôle de ta webcam et ", { t: "je t'ai filmé à ton bureau", sus: true }, ". ",
+               { t: "Paie 500 € en bitcoin sous 48 heures", sus: true }, " ou j'envoie la vidéo à tous tes collègues."];
   T[7].why = "C'est une arnaque envoyée à des milliers de personnes : il n'y a aucune vidéo. Ne réponds pas, ne paie pas, signale-la (en France : signal-spam.fr).";
 
   T[8].subject = ["Quel est ton nom de hacker ? 😎"];
@@ -304,7 +316,7 @@
   /* =========================================================
      PÉDAGOGIE EN FRANÇAIS
      ========================================================= */
-  FR.FAMILIES.humans = "Faux humains (ingénierie sociale)";
+  FR.FAMILIES.humans = "Social engineering";   // nom imprimé sur les cartes
 
   FR.FAMILY_INFO = {
     phishing: {

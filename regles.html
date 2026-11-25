@@ -54,8 +54,9 @@
     <li><a href="#gagner"><span class="num">08</span>Gagner, perdre, niveaux</a></li>
     <li><a href="#application"><span class="num">09</span>L'application</a></li>
     <li><a href="#cas-particuliers"><span class="num">10</span>Cas particuliers</a></li>
-    <li><a href="#exemple"><span class="num">11</span>Exemple de partie</a></li>
-    <li><a href="#equipe"><span class="num">12</span>L'équipe</a></li>
+    <li><a href="#sans-telephone"><span class="num">11</span>Pas de téléphone ?</a></li>
+    <li><a href="#exemple"><span class="num">12</span>Exemple de partie</a></li>
+    <li><a href="#equipe"><span class="num">13</span>L'équipe</a></li>
   </ul>
 </nav>
 
@@ -82,7 +83,7 @@
     <section class="section reveal" id="bref" aria-labelledby="t-bref">
       <div class="section__head"><span class="section__num">01</span><h2 class="section__title" id="t-bref">Le jeu en bref</h2></div>
 
-      <p class="lead">Hacker Alert est un jeu de cartes <strong>coopératif</strong> de <strong>10 minutes</strong> : 3 à 5 joueurs protègent ensemble une entreprise contre un hacker, avec un téléphone qui gère le chrono et la jauge.</p>
+      <p class="lead">Hacker Alert est un jeu de cartes <strong>coopératif</strong> de <strong>10 minutes</strong> : 3 à 5 joueurs protègent ensemble une entreprise contre un hacker. <strong>Le téléphone est le maître du jeu</strong> : avec la voix du hacker, il mène la partie, propose les défenses et juge.</p>
 
       <dl class="fiche">
         <div class="fiche__item"><dt>Sujet</dt><dd>Cybersécurité</dd></div>
@@ -122,21 +123,21 @@
     <section class="section reveal" id="materiel" aria-labelledby="t-materiel">
       <div class="section__head">
         <span class="section__num">02</span><h2 class="section__title" id="t-materiel">Le matériel</h2>
-        <p class="section__sub">44 cartes, ni dé ni plateau</p>
+        <p class="section__sub">44 cartes, une piste, un pion, ni dé ni plateau</p>
       </div>
 
       <ul class="kit">
         <li class="kit__item kit__item--red">
           <span class="kit__count">30</span>
-          <div><h3 class="kit__name">Cartes rouges (Attaque)</h3><p class="kit__text">Les attaques du hacker. On en pioche 6 au hasard par partie. 10 ont un QR code.</p></div>
+          <div><h3 class="kit__name">Cartes rouges (Attaque)</h3><p class="kit__text">Les attaques du hacker, 5 familles de 6. On en pioche 6 au hasard par partie. 10 ont un QR code. Verso identique pour toutes : aucune réponse imprimée.</p></div>
         </li>
         <li class="kit__item kit__item--green">
           <span class="kit__count">12</span>
-          <div><h3 class="kit__name">Cartes vertes (Défense)</h3><p class="kit__text">Les bons réflexes, toujours posées face visible au milieu.</p></div>
+          <div><h3 class="kit__name">Cartes vertes (Défense)</h3><p class="kit__text">Les bons réflexes, numérotées de 1 à 12, toujours posées face visible au milieu. Verso « USED ».</p></div>
         </li>
         <li class="kit__item kit__item--green">
           <span class="kit__count">1</span>
-          <div><h3 class="kit__name">Carte "It's safe!"</h3><p class="kit__text">Pour dire qu'un message est vrai. Toujours disponible.</p></div>
+          <div><h3 class="kit__name">Carte "It's safe!" (n°0)</h3><p class="kit__text">Pour dire qu'un message est vrai. Toujours disponible (verso « ALWAYS AVAILABLE »).</p></div>
         </li>
         <li class="kit__item">
           <span class="kit__count">1</span>
@@ -148,11 +149,15 @@
         </li>
         <li class="kit__item kit__item--orange">
           <span class="kit__count">1</span>
-          <div><h3 class="kit__name">Jauge papier (piste 0 à 10 + 1 pion rouge)</h3><p class="kit__text">Secours uniquement, si le téléphone ne marche pas.</p></div>
+          <div><h3 class="kit__name">Piste papier 0 à 10 + 1 pion</h3><p class="kit__text">Cases 0 à 4 normales, 5 à 9 en rouge « RED ALERT », 10 = « HACKER IS IN ». Le téléphone dit à chaque tour sur quelle case mettre le pion.</p></div>
         </li>
         <li class="kit__item">
           <span class="kit__count">1</span>
-          <div><h3 class="kit__name">Smartphone (fourni par les joueurs)</h3><p class="kit__text">Posé au milieu, pour toute l'équipe.</p></div>
+          <div><h3 class="kit__name">Livret réponses</h3><p class="kit__text">Pour jouer sans téléphone (<a href="#sans-telephone">section 11</a>).</p></div>
+        </li>
+        <li class="kit__item">
+          <span class="kit__count">1</span>
+          <div><h3 class="kit__name">Smartphone (fourni par les joueurs)</h3><p class="kit__text">Posé au milieu, pour toute l'équipe. C'est le maître du jeu.</p></div>
         </li>
       </ul>
     </section>
@@ -169,7 +174,7 @@
         <li class="family"><b>Phishing</b><span>Faux mail de la banque, faux SMS de livraison, pièce jointe piégée</span></li>
         <li class="family"><b>Mots de passe</b><span>"123456", même mot de passe partout, post-it</span></li>
         <li class="family"><b>Appareils</b><span>Clé USB trouvée, fausse mise à jour, PC laissé ouvert</span></li>
-        <li class="family"><b>Faux humains</b><span>Faux support informatique, faux patron, fausse facture</span></li>
+        <li class="family"><b lang="en">Social engineering</b><span>Faux support informatique, faux patron, fausse facture</span></li>
         <li class="family"><b>Réseau</b><span>Wi-Fi gratuit de la gare, site sans cadenas</span></li>
       </ul>
 
@@ -177,11 +182,11 @@
       <div class="grid grid--2">
         <article class="block block--red">
           <h3 class="block__title">Recto</h3>
-          <p>Numéro (#1 à #30), gravité, situation en anglais.</p>
+          <p>Numéro (#1 à #30), famille, gravité, titre, situation en anglais.</p>
         </article>
         <article class="block block--red">
           <h3 class="block__title">Verso</h3>
-          <p>Meilleure défense, défense acceptable (s'il y en a une), explication courte en anglais.</p>
+          <p>Identique pour toutes (logo + « ATTACK ») : <strong>aucune réponse imprimée</strong>, et rien n'indique qu'une carte est un vrai message. C'est le téléphone qui donne la bonne réponse et l'explication.</p>
         </article>
       </div>
 
@@ -232,8 +237,8 @@
               <span class="card__situation" lang="en">The boss's password was stolen in a data leak. Someone is trying to log in to her account right now.</span>
             </span>
             <span class="card__face card__back">
-              <span class="card__answer"><span class="card__label">Best</span><span class="card__name" lang="en">Two-factor (2FA)</span></span>
-              <span class="card__answer card__answer--alt"><span class="card__label">Acceptable</span><span class="card__name" lang="en">Strong password</span></span>
+              <span class="card__answer"><span class="card__label">Verso</span><span class="card__name" lang="en">ATTACK</span></span>
+              <span class="card__answer card__answer--alt"><span class="card__label">La réponse ?</span><span class="card__name">Dans le téléphone</span></span>
             </span>
           </span>
         </button>
@@ -310,7 +315,7 @@
           <div class="defense__body"><h3 class="defense__name" lang="en">Alert IT</h3><p class="defense__text">Prévenir le service informatique</p></div>
         </li>
         <li class="defense defense--safe">
-          <span class="defense__num">+</span>
+          <span class="defense__num">0</span>
           <span class="defense__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M7.5 12.5l3 3 6-7"/></svg></span>
           <div class="defense__body"><h3 class="defense__name" lang="en">It's safe!</h3><p class="defense__text">Le message est vrai, on peut continuer</p></div>
         </li>
@@ -324,7 +329,7 @@
         </li>
         <li>
           <strong>Chacune ne sert qu'UNE fois (niveaux Pro et Expert).</strong>
-          <p>Une carte jouée est retournée face cachée jusqu'à la fin. Seule "It's safe!" reste toujours disponible. Avec 12 défenses pour 6 attaques, il faut garder les bonnes cartes pour plus tard.</p>
+          <p>Une carte jouée est retournée face cachée (verso « USED ») jusqu'à la fin. Seule "It's safe!" reste toujours disponible. Avec 12 défenses pour 6 attaques, il faut garder les bonnes cartes pour plus tard.</p>
         </li>
       </ol>
 
@@ -339,7 +344,7 @@
           <li class="outcome--ok"><span class="outcome__card" lang="en">Check the sender</span><span class="outcome__verdict">Acceptable</span><span class="outcome__cost">+1</span></li>
           <li class="outcome--bad"><span class="outcome__card">Autre carte</span><span class="outcome__verdict">Erreur</span><span class="outcome__cost">+3</span></li>
         </ul>
-        <p class="example__note">Si la meilleure carte est déjà usée, l'équipe peut limiter les dégâts avec la carte acceptable.</p>
+        <p class="example__note">Si la meilleure carte est déjà usée, le téléphone propose la carte acceptable : l'équipe peut limiter les dégâts.</p>
       </div>
     </section>
 
@@ -351,24 +356,22 @@
       </div>
 
       <ol class="setup">
-        <li>Lire la carte <strong>"How to play"</strong> à voix haute.</li>
-        <li>Choisir un <strong>maître du jeu</strong> parmi les joueurs : c'est lui qui tient le téléphone. Ce n'est pas un arbitre, c'est l'appli qui juge.</li>
         <li>Mélanger les 30 cartes rouges et en piocher <strong>6 au hasard</strong>, face cachée. Les 24 autres ne servent pas.</li>
         <li>Poser les 12 cartes vertes + "It's safe!" <strong>face visible</strong> au milieu.</li>
-        <li>Scanner le QR code <strong>"Start"</strong> de la boîte et choisir le niveau (Junior, Pro ou Expert).</li>
-        <li>Poser le téléphone au milieu, visible par tous. Appuyer sur <strong>"Start"</strong> : le chrono démarre, la jauge est à 0.</li>
+        <li>Mettre le pion sur la case <strong>0</strong> de la piste.</li>
+        <li>Scanner le QR code <strong>"Start"</strong> de la boîte, choisir le niveau (Junior, Pro ou Expert), poser le téléphone au milieu et appuyer sur <strong>"Start"</strong> : la voix du hacker lance le chrono de 10 minutes.</li>
       </ol>
 
       <article class="block gm">
-        <h3 class="block__title">Le maître du jeu</h3>
-        <p>Un joueur qui joue aussi avec l'équipe. En plus, il :</p>
+        <h3 class="block__title">Le téléphone est le maître du jeu</h3>
+        <p>Il n'y a <strong>pas de maître du jeu humain</strong> ni de joueur actif : tout le monde joue ensemble. Le téléphone, posé au milieu :</p>
         <ul class="gm__tasks">
-          <li>tient le téléphone et tape le numéro de chaque carte rouge,</li>
-          <li>touche dans l'appli la carte verte choisie par l'équipe, puis « Valider »,</li>
-          <li>et tranche si l'équipe ne se met pas d'accord.</li>
+          <li>mène chaque tour avec la voix du hacker (et des sous-titres),</li>
+          <li>propose les défenses possibles,</li>
+          <li>connaît la bonne réponse et juge,</li>
+          <li>et dit sur quelle case mettre le pion.</li>
         </ul>
-        <p class="gm__warning">Il ne juge JAMAIS les réponses : c'est l'appli qui compare avec la bonne réponse et calcule la sanction. Personne ne peut tricher.</p>
-        <p class="gm__note">On peut changer de maître du jeu à chaque partie.</p>
+        <p class="gm__warning">Personne ne peut tricher : c'est le téléphone qui compare avec la bonne réponse et calcule la sanction.</p>
       </article>
     </section>
 
@@ -379,27 +382,35 @@
         <p class="section__sub">Une partie = 6 tours</p>
       </div>
 
+      <p class="lead">Le téléphone guide chaque étape avec la voix du hacker et des sous-titres.</p>
+
       <ol class="timeline" id="timeline">
         <li class="timeline__step reveal">
           <h3 class="timeline__title">Piocher</h3>
-          <p>Un joueur retourne la première carte rouge et la lit à voix haute, en anglais.</p>
-          <p class="timeline__aside">Carte QR : on tape son numéro dans l'appli puis « Ouvrir », voir <a href="#application">section 9</a>.</p>
+          <p>Le téléphone dit <strong lang="en">"Attack incoming! Draw a red card."</strong> L'équipe pioche une carte rouge, la lit à voix haute et tape son numéro.</p>
         </li>
         <li class="timeline__step reveal">
-          <h3 class="timeline__title">Discuter</h3>
-          <p>L'équipe discute en anglais et se met d'accord sur <strong>UNE</strong> carte verte. Pas de temps limite par tour, seul le chrono global de 10 minutes compte. En cas de désaccord, le maître du jeu tranche.</p>
+          <h3 class="timeline__title">Lire</h3>
+          <p>La situation s'affiche, <strong>sans la réponse</strong>.</p>
+          <p class="timeline__aside">Carte QR : le mini-jeu s'ouvre, voir <a href="#application">section 9</a>.</p>
         </li>
         <li class="timeline__step reveal">
-          <h3 class="timeline__title">Jouer</h3>
-          <p>On pose la carte verte sur la carte rouge. <strong>On ne retourne pas encore la carte rouge</strong> : la réponse est au verso.</p>
+          <h3 class="timeline__title">Choisir</h3>
+          <p>Le téléphone propose des cartes vertes : <strong lang="en">"Choose your defence: card 9, card 3 or card 0"</strong> (numéro + nom à l'écran).</p>
+          <ul class="checklist">
+            <li>Junior : 2 choix · Pro : 3 · Expert : 4 (et 2 cartes à choisir pour #11, #21, #30)</li>
+            <li>Toujours la meilleure défense si elle n'est pas encore utilisée, sinon la défense acceptable</li>
+            <li>Toujours "It's safe!" (n°0) en plus</li>
+            <li>Les autres : des pièges tirés au hasard parmi les cartes encore disponibles, dans un ordre mélangé</li>
+          </ul>
         </li>
         <li class="timeline__step reveal">
-          <h3 class="timeline__title">Taper</h3>
-          <p>Le maître du jeu tape le numéro de la carte rouge dans l'appli. La situation s'affiche, <strong>sans la réponse</strong>.</p>
+          <h3 class="timeline__title">Discuter et jouer</h3>
+          <p>L'équipe discute <strong>en anglais</strong>, pose la carte verte papier et tape son numéro. Le téléphone demande confirmation : <strong lang="en">"Card 9 · Call back to check. Confirm?"</strong> (<span lang="en">Confirm</span> ou <span lang="en">Back</span>). Pas de temps limite par tour, seul le chrono de 10 minutes compte.</p>
         </li>
         <li class="timeline__step reveal">
           <h3 class="timeline__title">Juger</h3>
-          <p>Il touche la carte verte posée, puis « Valider ». <strong>C'est l'appli qui juge</strong> :</p>
+          <p><strong>Le téléphone juge</strong> et le dit à voix haute, en très gros :</p>
           <ul class="verdicts">
             <li class="verdict verdict--right"><span lang="en">✅ Right defence</span><small>la meilleure défense</small></li>
             <li class="verdict verdict--almost"><span lang="en">🟠 Almost right</span><small>la défense acceptable</small></li>
@@ -407,12 +418,12 @@
           </ul>
         </li>
         <li class="timeline__step reveal">
-          <h3 class="timeline__title">Sanction</h3>
-          <p>L'appli fait avancer la jauge toute seule et affiche la bonne réponse, l'explication et la règle d'or à retenir. On peut alors retourner la carte rouge.</p>
+          <h3 class="timeline__title">Pion et réponse</h3>
+          <p><strong lang="en">"Hacker blocked! Don't move the pawn."</strong> ou <strong lang="en">"Move the pawn to space 7."</strong> Puis la bonne réponse, l'explication et la règle d'or à retenir.</p>
         </li>
         <li class="timeline__step reveal">
           <h3 class="timeline__title">Ranger</h3>
-          <p>La carte verte jouée est retournée face cachée (sauf "It's safe!" et sauf au niveau Junior) : l'appli la grise aussi. On passe à l'attaque suivante.</p>
+          <p><strong lang="en">"Turn the green card face down."</strong> (sauf au niveau Junior et sauf "It's safe!"), puis <strong lang="en">"Next attack!"</strong></p>
         </li>
       </ol>
 
@@ -436,7 +447,7 @@
       </ul>
 
       <div class="callout callout--green">
-        <p>Dans tous les cas, l'appli montre la meilleure défense et explique pourquoi : <strong>on apprend même en se trompant.</strong></p>
+        <p>Dans tous les cas, le téléphone montre la meilleure défense et explique pourquoi : <strong>on apprend même en se trompant.</strong></p>
       </div>
     </section>
 
@@ -494,8 +505,8 @@
       </div>
 
       <div class="callout callout--muted">
-        <p class="callout__title">Si le téléphone ne marche pas</p>
-        <p>On utilise la jauge papier et le maître du jeu applique lui-même le tableau et les bonus.</p>
+        <p class="callout__title">La jauge du téléphone = le pion</p>
+        <p>Le téléphone affiche toujours <strong lang="en">"Pawn: X/10"</strong> et dit la case exacte à chaque tour. Sans téléphone : voir <a href="#sans-telephone">section 11</a>.</p>
       </div>
     </section>
 
@@ -580,17 +591,17 @@
             <p class="phone__brand" lang="en">NovaCorp Security</p>
             <p class="phone__timer" id="phoneTimer">10:00</p>
             <div class="phone__gauge">
-              <span class="phone__label" lang="en">INTRUSION 3/10</span>
+              <span class="phone__label" lang="en">Pawn: 3/10</span>
               <span class="phone__cells"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
             </div>
             <p class="phone__counter" lang="en">Attack <b>2/6</b></p>
             <div class="phone__pad">
               <p class="phone__card" lang="en">Card <b>#11</b> · 💀💀💀💀</p>
-              <p class="phone__answer">Quelle carte verte avez-vous posée ?</p>
+              <p class="phone__answer" lang="en">Choose your defence:</p>
               <div class="phone__buttons" lang="en">
-                <span class="phone__btn phone__btn--right">2FA ✓</span>
-                <span class="phone__btn phone__btn--almost">Update</span>
-                <span class="phone__btn phone__btn--wrong">Valider</span>
+                <span class="phone__btn phone__btn--right">5 · 2FA</span>
+                <span class="phone__btn phone__btn--almost">3 · Strong password</span>
+                <span class="phone__btn phone__btn--wrong">0 · It's safe!</span>
               </div>
             </div>
           </div>
@@ -600,11 +611,12 @@
           <h3 class="subhead">L'écran principal</h3>
           <ul class="features">
             <li>Le chrono de 10 minutes</li>
-            <li>La jauge 0 à 10</li>
+            <li>Le pion, toujours affiché : <span lang="en">"Pawn: X/10"</span></li>
             <li>Le compteur d'attaques (x/6)</li>
-            <li>Le pavé : on tape le numéro de la carte, l'appli affiche la situation et la gravité <strong>sans la réponse</strong>, on touche la carte verte jouée puis « Valider » ; l'appli juge toute seule et grise les cartes vertes déjà jouées</li>
-            <li>Après chaque attaque : la bonne réponse, l'explication et une règle d'or à retenir</li>
-            <li>La voix du hacker toutes les 2 minutes et les voix des appels, enregistrées (en français ou en anglais), avec sous-titres et bouton « Réécouter »</li>
+            <li>Le pavé : on tape le numéro de la carte rouge, la situation s'affiche <strong>sans la réponse</strong></li>
+            <li>Les défenses proposées (numéro + nom), puis on tape le numéro de la carte verte posée et on confirme ; le téléphone refuse une carte déjà jouée ou non proposée</li>
+            <li>Le jugement en très gros, avec la case du pion, puis la bonne réponse, l'explication et une règle d'or à retenir</li>
+            <li>La voix du hacker qui mène chaque tour, parle toutes les 2 minutes, et les voix des appels, enregistrées (en anglais ou en français), avec sous-titres et bouton « Réécouter »</li>
             <li>L'écran rouge à 5/10 et qui clignote dans les 30 dernières secondes</li>
             <li>L'écran de fin avec le score et un débrief : le point faible de l'équipe, les règles d'or, des questions pour en parler et où signaler une arnaque en France</li>
             <li>Un glossaire anglais / français, une fiche des règles et un mode entraînement</li>
@@ -615,14 +627,14 @@
       <h3 class="subhead">Les cartes QR</h3>
       <div class="grid grid--2">
         <article class="block">
-          <p>Pas de carte verte jouée ni usée. L'équipe joue un <strong>mini-jeu</strong> ensemble, l'appli juge et applique la sanction.</p>
+          <p>Pas de carte verte jouée ni usée. L'équipe joue un <strong>mini-jeu</strong> ensemble, le téléphone juge et dit où mettre le pion.</p>
           <p class="app__draw">Chaque scan tire au hasard une attaque <strong>OU</strong> une situation normale : signaler une situation normale = fausse alerte.</p>
         </article>
         <article class="block">
           <h3 class="block__title">Sanctions des mini-jeux</h3>
           <ul class="penalties">
             <li class="penalty penalty--ok"><span>Attaque bloquée ou situation normale reconnue</span><b>0</b></li>
-            <li class="penalty penalty--almost"><span>Réponse à moitié juste</span><b><span lang="en">Almost</span> (+1)</b></li>
+            <li class="penalty penalty--almost"><span>Réponse à moitié juste (mot de passe de 1 à 100 ans, bureau avec 1 oubli, ransomware avec 2 ou 3 actions bien placées)</span><b><span lang="en">Almost</span> (+1)</b></li>
             <li class="penalty penalty--bad"><span>Attaque ratée</span><b>La gravité du mini-jeu <small>(imprimée sur la carte)</small></b></li>
             <li class="penalty penalty--bad"><span>Fausse alerte</span><b>+1</b></li>
           </ul>
@@ -635,7 +647,7 @@
         <li class="minigame">
           <p class="minigame__top"><span class="minigame__cards">#1 · #2</span><span class="minigame__sev">💀💀</span></p>
           <h3 class="minigame__name" lang="en">Spot the trap</h3>
-          <p>Un mail ou SMS (arnaque ou vrai message). On touche ce qui est louche, on reste appuyé sur un lien pour voir sa vraie adresse, puis <span lang="en">Report</span> ou <span lang="en">It's safe</span>.</p>
+          <p>Un mail ou SMS : arnaque (fausse banque, faux colis, faux patron, faux mail de la box, appli hors store, quiz qui vole la vie privée, chantage à la fausse vidéo) ou vrai message. On touche ce qui est louche, on reste appuyé sur un lien pour voir sa vraie adresse, puis <span lang="en">Report</span> ou <span lang="en">It's safe</span>.</p>
           <p class="minigame__learn">Reconnaître le phishing.</p>
         </li>
         <li class="minigame">
@@ -647,25 +659,25 @@
         <li class="minigame">
           <p class="minigame__top"><span class="minigame__cards">#19 · #20</span><span class="minigame__sev">💀💀💀💀</span></p>
           <h3 class="minigame__name" lang="en">Incoming call</h3>
-          <p>Le téléphone sonne, une voix en anglais (faux support, faux patron, ou vrai collègue). <span lang="en">Hang up and report</span> ou <span lang="en">It's safe, continue</span>.</p>
+          <p>Le téléphone sonne, une voix en anglais (faux support, faux patron, faux conseiller bancaire, faux technicien de la box, ou vrai collègue). <span lang="en">Hang up and report</span> ou <span lang="en">It's safe, continue</span>.</p>
           <p class="minigame__learn">Les faux appels, l'écoute en anglais.</p>
         </li>
         <li class="minigame">
           <p class="minigame__top"><span class="minigame__cards">#25 · #26</span><span class="minigame__sev">💀💀</span></p>
           <h3 class="minigame__name" lang="en">Safe or fake link?</h3>
-          <p>Une adresse de site, vraie ou presque identique, 15 secondes pour décider.</p>
-          <p class="minigame__learn">Repérer les faux sites.</p>
+          <p>Une adresse de site, un QR code piégé ou un nom de réseau Wi-Fi, vrai ou presque identique : 15 secondes pour décider.</p>
+          <p class="minigame__learn">Repérer les faux sites, les QR codes piégés et les faux Wi-Fi.</p>
         </li>
         <li class="minigame">
           <p class="minigame__top"><span class="minigame__cards">#13</span><span class="minigame__sev">💀💀</span></p>
           <h3 class="minigame__name" lang="en">Messy desk</h3>
-          <p>Le dessin d'un bureau, 40 secondes pour toucher les erreurs (post-it, clé USB, session ouverte, badge, code 2FA, document confidentiel). Parfois il n'y en a aucune.</p>
+          <p>Le dessin d'un bureau, 40 secondes pour toucher les erreurs (post-it, clé USB, session ouverte, badge, code 2FA, document confidentiel, mot de passe Wi-Fi collé sur la box). Parfois il n'y en a aucune.</p>
           <p class="minigame__learn">La sécurité au quotidien.</p>
         </li>
         <li class="minigame">
           <p class="minigame__top"><span class="minigame__cards">#14</span><span class="minigame__sev">💀💀💀</span></p>
           <h3 class="minigame__name" lang="en">Strange screen</h3>
-          <p>Un écran apparaît, ransomware ou vrai message de NovaCorp. Si c'est un ransomware, remettre les 4 actions dans l'ordre :</p>
+          <p>Un écran apparaît : ransomware, fausse alerte virus ou vrai message de NovaCorp. Si c'est un ransomware, remettre les 4 actions dans l'ordre :</p>
           <ol class="minigame__order">
             <li>Débrancher du réseau</li>
             <li>Prévenir l'informatique</li>
@@ -678,7 +690,7 @@
 
       <div class="callout callout--green">
         <p class="callout__title">Conseil</p>
-        <p>Le plus sûr est de taper le numéro de la carte QR dans l'appli puis d'appuyer sur <strong>« Ouvrir »</strong> (la jauge et le chrono restent dans le même navigateur).</p>
+        <p>Le plus sûr est de taper le numéro de la carte QR dans l'appli puis d'appuyer sur <strong lang="en">"Open"</strong> (la jauge et le chrono restent dans le même navigateur). On peut aussi scanner le QR.</p>
       </div>
     </section>
 
@@ -689,15 +701,19 @@
       <div class="faq">
         <details class="faq__item">
           <summary>L'équipe ne se met pas d'accord</summary>
-          <p>Le maître du jeu tranche.</p>
+          <p>Il n'y a pas d'arbitre : l'équipe discute jusqu'à se mettre d'accord. Le chrono tourne pour tout le monde.</p>
         </details>
         <details class="faq__item">
-          <summary>On a touché la mauvaise carte verte dans l'appli</summary>
-          <p>Avant de valider, le bouton affiche la carte choisie : vérifiez-le. Une fois validé, on ne peut plus annuler, sinon on pourrait tricher en essayant toutes les cartes.</p>
+          <summary>On a tapé le mauvais numéro de carte verte</summary>
+          <p>Avant de juger, le téléphone demande <span lang="en">"Card 9 · Call back to check. Confirm?"</span> : vérifiez avec la carte posée, sinon <span lang="en">Back</span>. Une fois confirmé, on ne peut plus annuler, sinon on pourrait tricher en essayant tous les numéros.</p>
+        </details>
+        <details class="faq__item">
+          <summary>On tape une carte verte qui n'est pas proposée</summary>
+          <p>Le téléphone la refuse : il faut choisir parmi les défenses qu'il propose (ou "It's safe!").</p>
         </details>
         <details class="faq__item">
           <summary>La meilleure carte verte est déjà usée</summary>
-          <p>On joue la défense acceptable si elle existe (+1), sinon une autre carte (erreur).</p>
+          <p>Le téléphone propose alors la défense acceptable si elle existe (+1). Sinon, toutes les cartes proposées sont des erreurs.</p>
         </details>
         <details class="faq__item">
           <summary>Une carte "vrai message" est signalée comme une arnaque</summary>
@@ -717,11 +733,11 @@
         </details>
         <details class="faq__item">
           <summary>Une carte QR</summary>
-          <p>Aucune carte verte jouée ni usée, seul le mini-jeu compte.</p>
+          <p>Aucune carte verte jouée ni usée, seul le mini-jeu compte. Le téléphone dit où mettre le pion.</p>
         </details>
         <details class="faq__item">
           <summary>Plus de batterie</summary>
-          <p>Jauge papier + chrono d'un autre téléphone ; les cartes QR sont remplacées par la carte suivante de la pioche.</p>
+          <p>Voir <a href="#sans-telephone">« Pas de téléphone ? »</a>.</p>
         </details>
         <details class="faq__item">
           <summary>Cartes vertes restantes à la fin</summary>
@@ -731,9 +747,31 @@
     </section>
 
     <!-- 11 -->
+    <section class="section reveal" id="sans-telephone" aria-labelledby="t-nophone">
+      <div class="section__head">
+        <span class="section__num">11</span><h2 class="section__title" id="t-nophone">Pas de téléphone ?</h2>
+        <p class="section__sub" lang="en">No phone?</p>
+      </div>
+
+      <p class="lead">Plus de batterie, pas de réseau ? On joue quand même avec le <strong>livret réponses</strong>, le <strong>pion</strong> et un <strong>minuteur</strong>.</p>
+
+      <ol class="setup">
+        <li>Lancer un minuteur de <strong>10 minutes</strong> (montre, minuteur de cuisine, autre téléphone).</li>
+        <li>Les cartes QR ne se jouent pas : on les remplace par la carte suivante de la pioche.</li>
+        <li>L'équipe choisit une carte verte parmi toutes celles encore disponibles et la pose.</li>
+        <li>Un joueur cherche le numéro de la carte rouge dans le livret réponses et lit à voix haute la meilleure défense, la défense acceptable et l'explication.</li>
+        <li>L'équipe applique le tableau de la jauge et les bonus du hacker (<a href="#jauge">section 7</a>), puis avance le pion sur la piste.</li>
+      </ol>
+
+      <div class="callout callout--muted">
+        <p>Même règles qu'avec le téléphone : la partie est gagnée si les 6 attaques sont jouées avant la fin du minuteur, pion sous 10.</p>
+      </div>
+    </section>
+
+    <!-- 12 -->
     <section class="section reveal" id="exemple" aria-labelledby="t-exemple">
       <div class="section__head">
-        <span class="section__num">11</span><h2 class="section__title" id="t-exemple">Exemple de partie</h2>
+        <span class="section__num">12</span><h2 class="section__title" id="t-exemple">Exemple de partie</h2>
         <p class="section__sub">Niveau Pro, jauge de départ 0</p>
       </div>
 
@@ -809,7 +847,7 @@
   </div>
 </main>
 
-<!-- 12. Pied de page -->
+<!-- 13. Pied de page -->
 <footer class="footer reveal" id="equipe">
   <div class="wrap">
     <p class="footer__brand">Hacker<span>ALERT!</span></p>

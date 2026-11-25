@@ -26,7 +26,7 @@
   margin: 18px 0 6px;
   font-family: var(--font-pixel);
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px;
   color: var(--green);
   text-transform: uppercase;
 }
@@ -66,7 +66,7 @@
 /* Crédits des voix (licences CC BY) */
 .rules__credits {
   margin: 16px 0 0;
-  font-size: 13px;
+  font-size: 16px;
   color: var(--muted);
   text-align: center;
 }

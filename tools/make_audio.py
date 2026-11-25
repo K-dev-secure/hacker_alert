@@ -4,8 +4,9 @@ import numpy as np, lameenc
 from piper import PiperVoice, SynthesisConfig
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-VOICES = os.path.join(HERE, "voices")   # modèles Piper téléchargés (non envoyés sur GitHub)
+VOICES = os.environ.get("PIPER_VOICES") or os.path.join(HERE, "voices")   # modèles Piper (non envoyés sur GitHub)
 PROJECT = sys.argv[1] if len(sys.argv) > 1 else os.path.dirname(HERE)
+ONLY = sys.argv[2] if len(sys.argv) > 2 else None   # "guide" : seulement les phrases du maître du jeu
 texts = json.loads(subprocess.check_output(["node", os.path.join(HERE, "extract_texts.js"), PROJECT]).decode("utf-8"))
 
 # Voix : (modèle, locuteur, vitesse) — length_scale < 1 = un peu plus rapide
@@ -57,6 +58,11 @@ total = 0
 for lang in ["fr", "en"]:
     folder = os.path.join(PROJECT, "audio", lang)
     os.makedirs(folder, exist_ok=True)
+    for key, text in texts[lang]["guide"].items():
+        size, dur = synth(lang, "hacker", text, os.path.join(folder, key + ".mp3"))
+        total += size; print(lang, key, f"{dur:.1f}s", f"{size//1024} Ko")
+    if ONLY == "guide":
+        continue
     for key, text in texts[lang]["hacker"].items():
         size, dur = synth(lang, "hacker", text, os.path.join(folder, key + ".mp3"))
         total += size; print(lang, key, f"{dur:.1f}s", f"{size//1024} Ko")
