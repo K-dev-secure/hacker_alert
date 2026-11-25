@@ -64,7 +64,9 @@ window.NovaAudio = (function () {
     if (AC) {
       try {
         ctx = ctx || new AC();
-        if (ctx.state === "suspended") ctx.resume();
+        // Le son est débloqué : la musique de fond démarre
+        var ready = ctx.state === "suspended" ? ctx.resume() : Promise.resolve();
+        ready.then(musicStart).catch(function () { /* rien */ });
       } catch (e) { ctx = null; }
     }
   }
@@ -92,12 +94,14 @@ window.NovaAudio = (function () {
 
     stop();   // la nouvelle voix remplace l'ancienne
     currentChannel = channel;
+    duck(true);   // la musique baisse pendant que quelqu'un parle
 
     var done = false;
     var finish = function () {
       if (done) return;
       done = true;
       if (currentChannel === channel) currentChannel = null;
+      duck(false);
       if (opts.onEnd) opts.onEnd();
     };
 
@@ -150,6 +154,7 @@ window.NovaAudio = (function () {
     clearTimeout(speakTimer);
     currentChannel = null;
     playerToken++;   // annule une éventuelle voix de secours en attente
+    if (music.ducked) duck(false);
     if (player) {
       player.onended = null;
       player.onerror = null;
@@ -162,6 +167,7 @@ window.NovaAudio = (function () {
   function setCallActive(on) {
     callActive = !!on;
     if (on && currentChannel === "hacker") stop();
+    updateMusicLevel();   // la musique baisse pendant tout l'appel
   }
 
   /* ---------- Sonnerie du téléphone (bips générés, aucun fichier) ---------- */
@@ -205,8 +211,163 @@ window.NovaAudio = (function () {
     try { navigator.vibrate(pattern); } catch (e) { /* rien */ }
   }
 
+  /* =========================================================
+     MUSIQUE DE FOND (fabriquée ici, aucun fichier, aucun droit d'auteur)
+     - un bourdon grave + une petite mélodie qui tourne en boucle
+     - plus rapide à l'alerte rouge (5/10) et dans les 30 dernières secondes
+     - baisse toute seule quand le hacker ou un appel parle
+     ========================================================= */
+  /* Musique désactivée pour l'instant : mettre true pour la remettre (bouton 🎵 compris) */
+  var MUSIC_ENABLED = false;
+  var MUSIC_KEY = "novacorp-music";
+  var MOODS = {
+    calm:  { bpm: 84,  level: 1 },
+    alert: { bpm: 112, level: 1.15 },
+    final: { bpm: 144, level: 1.3 }
+  };
+  // La mineur : la, do, mi, sol, mi, do, sol grave, si grave
+  var NOTES = [220, 261.63, 329.63, 392, 329.63, 261.63, 196, 246.94];
+  var MUSIC_VOLUME = 0.05;
+  var music = { on: readMusicPref(), nodes: null, timer: null, mood: "calm", next: 0, step: 0, ducked: false };
+
+  function readMusicPref() {
+    try { return window.localStorage.getItem(MUSIC_KEY) !== "off"; } catch (e) { return true; }
+  }
+
+  function musicLevel() {
+    var lvl = MUSIC_VOLUME * MOODS[music.mood].level;
+    return music.ducked || callActive ? lvl * 0.25 : lvl;
+  }
+
+  function updateMusicLevel() {
+    if (!music.nodes) return;
+    try { music.nodes.master.gain.setTargetAtTime(musicLevel(), ctx.currentTime, 0.25); } catch (e) { /* rien */ }
+  }
+
+  function musicStart() {
+    if (!MUSIC_ENABLED || !music.on || music.nodes || !ctx || ctx.state !== "running") return;
+    try {
+      var now = ctx.currentTime;
+      var master = ctx.createGain();
+      master.gain.setValueAtTime(0.0001, now);
+      master.gain.exponentialRampToValueAtTime(musicLevel(), now + 2.5);   // arrive doucement
+      master.connect(ctx.destination);
+
+      // Bourdon : deux notes graves légèrement décalées, filtrées, qui "respirent"
+      var filter = ctx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.value = 280;
+      filter.Q.value = 5;
+      filter.connect(master);
+      var droneGain = ctx.createGain();
+      droneGain.gain.value = 0.5;
+      droneGain.connect(filter);
+      var oscs = [55, 55.7].map(function (f) {
+        var o = ctx.createOscillator();
+        o.type = "sawtooth";
+        o.frequency.value = f;
+        o.connect(droneGain);
+        o.start(now);
+        return o;
+      });
+      var lfo = ctx.createOscillator();
+      var lfoGain = ctx.createGain();
+      lfo.frequency.value = 0.08;
+      lfoGain.gain.value = 140;
+      lfo.connect(lfoGain);
+      lfoGain.connect(filter.frequency);
+      lfo.start(now);
+      oscs.push(lfo);
+
+      music.nodes = { master: master, oscs: oscs };
+      music.next = now + 0.2;
+      music.step = 0;
+      music.timer = setInterval(scheduleMusic, 60);
+    } catch (e) { music.nodes = null; }
+  }
+
+  /* Programme les notes un peu à l'avance (son régulier même si l'écran rame) */
+  function scheduleMusic() {
+    if (!music.nodes || !ctx) return;
+    var beat = 60 / MOODS[music.mood].bpm / 2;   // croches
+    while (music.next < ctx.currentTime + 0.25) {
+      var t = music.next, s = music.step;
+      // Petite note de la mélodie
+      var o = ctx.createOscillator();
+      var g = ctx.createGain();
+      o.type = "triangle";
+      o.frequency.value = NOTES[s % NOTES.length] * (music.mood === "final" && s % 2 ? 2 : 1);
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.18, t + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + beat * 0.9);
+      o.connect(g);
+      g.connect(music.nodes.master);
+      o.start(t);
+      o.stop(t + beat);
+      // Pulsation grave (comme un cœur) toutes les 4 notes
+      if (s % 4 === 0) {
+        var k = ctx.createOscillator();
+        var kg = ctx.createGain();
+        k.type = "sine";
+        k.frequency.setValueAtTime(110, t);
+        k.frequency.exponentialRampToValueAtTime(40, t + 0.15);
+        kg.gain.setValueAtTime(0.9, t);
+        kg.gain.exponentialRampToValueAtTime(0.0001, t + 0.22);
+        k.connect(kg);
+        kg.connect(music.nodes.master);
+        k.start(t);
+        k.stop(t + 0.25);
+      }
+      music.next += beat;
+      music.step++;
+    }
+  }
+
+  function musicStop() {
+    clearInterval(music.timer);
+    music.timer = null;
+    if (!music.nodes) return;
+    var n = music.nodes;
+    music.nodes = null;
+    try {
+      n.master.gain.setTargetAtTime(0.0001, ctx.currentTime, 0.2);
+      n.oscs.forEach(function (o) { o.stop(ctx.currentTime + 1); });
+    } catch (e) { /* rien */ }
+  }
+
+  /* Allumer / couper la musique (bouton 🎵), choix gardé dans le téléphone */
+  function setMusic(on) {
+    music.on = !!on;
+    try { window.localStorage.setItem(MUSIC_KEY, on ? "on" : "off"); } catch (e) { /* rien */ }
+    if (on) musicStart(); else musicStop();
+  }
+
+  /* Ambiance : "calm", "alert" (jauge à 5 ou plus), "final" (30 dernières secondes) */
+  function setMusicMood(mood) {
+    if (!MOODS[mood] || mood === music.mood) return;
+    music.mood = mood;
+    updateMusicLevel();
+  }
+
+  /* La musique baisse quand quelqu'un parle */
+  function duck(on) {
+    music.ducked = !!on;
+    updateMusicLevel();
+  }
+
+  /* Écran éteint ou autre onglet : on coupe tout le son, on le remet au retour */
+  document.addEventListener("visibilitychange", function () {
+    if (!ctx) return;
+    try {
+      if (document.hidden) ctx.suspend();
+      else if (unlocked) ctx.resume().then(musicStart);
+    } catch (e) { /* rien */ }
+  });
+
   return {
     speak: speak, stop: stop, ring: ring, stopRing: stopRing,
-    setCallActive: setCallActive, canPlay: canPlay, unlock: unlock
+    setCallActive: setCallActive, canPlay: canPlay, unlock: unlock,
+    setMusic: setMusic, setMusicMood: setMusicMood, musicOn: function () { return music.on; },
+    musicEnabled: MUSIC_ENABLED
   };
 })();

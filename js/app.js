@@ -84,6 +84,8 @@
     var playing = G.isPlaying();
     document.body.classList.toggle("is-alert", playing && st.gauge >= 5);
     document.body.classList.toggle("is-final", playing && left <= 30);
+    // La musique accélère à l'alerte rouge et dans les 30 dernières secondes
+    NovaAudio.setMusicMood(!playing ? "calm" : left <= 30 ? "final" : st.gauge >= 5 ? "alert" : "calm");
   }
 
   /* ---------- L'écran reste allumé pendant la partie (téléphone posé sur la table) ---------- */
@@ -144,6 +146,20 @@
   renderVoiceBtn();
 
   $("subReplay").addEventListener("click", function () { G.replay(); });
+
+  /* ---------- Musique de fond (bouton 🎵) ---------- */
+  function renderMusicBtn() {
+    var on = NovaAudio.musicOn();
+    $("musicBtn").setAttribute("aria-pressed", on ? "true" : "false");
+    $("musicBtn").setAttribute("aria-label", t(on ? "music.on" : "music.off"));
+    $("musicBtn").title = t(on ? "music.on" : "music.off");
+  }
+  $("musicBtn").addEventListener("click", function () {
+    NovaAudio.setMusic(!NovaAudio.musicOn());
+    renderMusicBtn();
+  });
+  renderMusicBtn();
+  $("musicBtn").hidden = !NovaAudio.musicEnabled;   // pas de bouton 🎵 tant que la musique est désactivée
 
   /* =========================================================
      ACCUEIL
@@ -552,6 +568,7 @@
       G.speakLine(won ? "hacker-win" : "hacker-lose", won ? D.HACKER.win : D.HACKER.lose);
     }
     document.body.classList.remove("is-alert", "is-final");
+    NovaAudio.setMusicMood("calm");
     $("endScreen").className = "end__screen " + (won ? "is-won" : "is-lost");
     $("endBig").textContent = t(won ? "end.wonBig" : "end.lostBig");
     $("endBig").setAttribute("data-text", $("endBig").textContent);
@@ -683,12 +700,9 @@
     }
     if (c === "start") cleanUrl();
 
-    if (st && st.status !== "playing") {
-      if (c === "start") { G.clear(); showHome(); }
-      else goToEnd();
-      return;
-    }
-    if (G.isPlaying() && c !== "start") { resetPad(); show("game"); return; }
+    // En arrivant sur le site, on montre TOUJOURS l'accueil.
+    // Une partie en cours se reprend avec "Continuer la partie" ; une partie finie est effacée.
+    if (st && st.status !== "playing") G.clear();
     showHome();
   }
 

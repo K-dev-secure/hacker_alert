@@ -309,3 +309,8 @@ body.app.is-final::before {
   font-weight: 600;
   cursor: pointer;
 }
+
+/* Bouton musique coupée : barré */
+.topbar__voice#musicBtn[aria-pressed="false"] {
+  text-decoration: line-through;
+}

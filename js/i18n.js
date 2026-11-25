@@ -16,6 +16,8 @@ window.NovaI18n = (function () {
     fr: {
       "fake": "Jeu d'entraînement. Tout est faux : ne tape jamais de vraie information.",
       "voice.replay": "🔁 Réécouter",
+      "music.on": "Musique de fond : activée",
+      "music.off": "Musique de fond : coupée",
       "credits.voices": "Voix : Piper (gratuit et libre), voix SIWIS, MLS et VCTK (CC BY 4.0) et « Jenny (Dioco) ».",
       "home.glossary": "📖 Glossaire FR / EN",
       "glo.title": "Glossaire anglais / français",
@@ -293,6 +295,8 @@ window.NovaI18n = (function () {
     en: {
       "fake": "Training game. Everything here is fake: never type real information.",
       "voice.replay": "🔁 Listen again",
+      "music.on": "Background music: on",
+      "music.off": "Background music: off",
       "credits.voices": "Voices: Piper (free and open source), SIWIS, MLS and VCTK voices (CC BY 4.0) and \"Jenny (Dioco)\".",
       "home.glossary": "📖 Glossary EN / FR",
       "glo.title": "English / French glossary",
