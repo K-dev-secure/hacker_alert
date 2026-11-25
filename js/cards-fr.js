@@ -102,6 +102,34 @@
   FR.MINIGAMES.call.name = "Appel entrant";
   FR.MINIGAMES.link.name = "Vrai ou faux site ?";
 
+  /* ---------- Titres des cartes rouges ---------- */
+  var TITLES = {
+    3: "Smartphone gratuit",
+    4: "Pièce jointe bizarre",
+    5: "Dates de congés",
+    6: "Carte bloquée",
+    9: "Mot de passe facile",
+    10: "Même mot de passe partout",
+    11: "Mot de passe volé",
+    12: "Mot de passe sur un post-it",
+    15: "Clé USB sur le parking",
+    16: "Mise à jour du lecteur vidéo",
+    17: "Pause déjeuner",
+    18: "Vieil ordinateur portable",
+    21: "Facture urgente",
+    22: "Le livreur",
+    23: "Réunion déplacée",
+    24: "Journaliste curieux",
+    27: "Wi-Fi de la gare",
+    28: "Pas de cadenas",
+    29: "Mise à jour ce soir",
+    30: "Ransomware !"
+  };
+  FR.CARDS.forEach(function (c) {
+    if (c.qr) { c.title = FR.MINIGAMES[c.qr].name; c.text = "Message entrant ! Tapez le numéro de cette carte dans l'appli."; }
+    else if (TITLES[c.n]) c.title = TITLES[c.n];
+  });
+
   /* ---------- Repère le piège (#1, #2) ---------- */
   var T = FR.TRAP;
   T[0].subject = [{ t: "URGENT", sus: true }, " Votre compte va être fermé"];

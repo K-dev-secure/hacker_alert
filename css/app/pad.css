@@ -122,6 +122,18 @@
   display: none;
 }
 
+.card-panel__title {
+  margin: 12px 0 0;
+  font-family: var(--font-title);
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 1.15;
+}
+
+.card-panel__title:empty {
+  display: none;
+}
+
 .card-panel__text {
   margin: 12px 0;
   font-size: 18px;

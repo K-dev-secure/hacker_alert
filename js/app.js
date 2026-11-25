@@ -1,6 +1,6 @@
 /* =========================================================
    HACKER ALERT — L'APPLI (écrans, pavé, jugement, débrief)
-   Adresses des QR codes (déjà imprimées, ne pas changer) :
+   Adresses (QR "Start" de la boîte et anciens QR imprimés : ne jamais changer) :
    ?c=start · ?c=trap · ?c=password · ?c=desk · ?c=ransom
    ?c=call · ?c=link · ?c=practice
 
@@ -317,7 +317,7 @@
       shownCard = card;
       $("pad").hidden = true;
       var m = D.MINIGAMES[card.qr];
-      $("qrName").textContent = "#" + n + " · " + m.name + " " + skulls(m.sev);
+      $("qrName").textContent = "#" + n + " · " + (card.title || m.name) + " " + skulls(m.sev);
       $("qrPanel").hidden = false;
       $("qrOpen").focus();
       return;
@@ -339,6 +339,7 @@
     $("cpFam").textContent = D.FAMILIES[card.fam];
     $("cpSev").textContent = skulls(card.sev);
     $("cpSev").setAttribute("aria-label", t("card.sev", { n: card.sev }));
+    $("cpTitle").textContent = card.title || "";
     $("cpText").textContent = card.text;
 
     // Indice : seulement au niveau Junior et en entraînement
@@ -531,7 +532,7 @@
   });
   $("qrBack").addEventListener("click", resetPad);
 
-  /* ---------- Carte QR ouverte depuis le pavé ---------- */
+  /* ---------- Carte mini-jeu ouverte depuis le pavé ---------- */
   $("qrOpen").addEventListener("click", function () {
     if (!shownCard || !shownCard.qr) return;
     startMinigame(shownCard.qr, { inGame: true, card: shownCard.n });
@@ -562,13 +563,13 @@
     if (mgContext.inGame && G.isPlaying()) {
       var out = G.applyAttack({
         card: mgContext.card,
-        label: (mgContext.card ? "#" + mgContext.card + " " : "QR · ") + meta.name,
+        label: (mgContext.card ? "#" + mgContext.card + " " : "") + meta.name,
         fam: r.fam, sev: r.sev, verdict: r.verdict, falseAlarm: r.falseAlarm,
         lesson: r.why
       });
       showResult(info, out, true);
     } else {
-      // Entraînement, ou carte scannée sans partie en cours sur ce téléphone
+      // Entraînement, ou mini-jeu ouvert par son adresse sans partie en cours sur ce téléphone
       info.practiceCost = G.penalty(r, 0, []).total;
       info.note = mgContext.scannedWithoutGame ? t("res.noGame") : null;
       showResult(info, null, false);

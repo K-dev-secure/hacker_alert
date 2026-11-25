@@ -94,7 +94,7 @@ window.NovaI18n = (function () {
       "v.wrong.sub": "une autre carte",
       "v.wrong.subReal": "l'équipe l'a signalé comme une arnaque",
       "card.back": "Mauvais numéro ? Retour",
-      "qr.tag": "Message entrant ! Carte QR",
+      "qr.tag": "Message entrant ! Carte mini-jeu",
       "qr.text": "Toute l'équipe joue le mini-jeu ensemble. Aucune carte verte n'est jouée ni usée. L'appli applique la sanction.",
       "qr.open": "Ouvrir",
       "game.rules": "📋 Fiche des règles",
@@ -116,7 +116,7 @@ window.NovaI18n = (function () {
       "gp.hash": "n°",
       "calc.practice": "En vraie partie : +{n} (sans les bonus du hacker)",
       "res.best": "Meilleure défense : {d}",
-      "res.noGame": "Aucune partie en cours sur ce téléphone : ce résultat ne compte pas. Conseil : tapez le numéro de la carte QR dans le téléphone de la partie, puis appuyez sur Ouvrir.",
+      "res.noGame": "Aucune partie en cours sur ce téléphone : ce résultat ne compte pas. Conseil : tapez le numéro de la carte mini-jeu dans le téléphone de la partie, puis appuyez sur Ouvrir.",
       "res.next": "Attaque suivante",
       "res.toEnd": "Voir la fin de la partie",
       "res.backPractice": "Retour à l'entraînement",
@@ -152,7 +152,7 @@ window.NovaI18n = (function () {
         "<p>Pas de maître du jeu humain : tout le monde joue ensemble. Le téléphone, posé au milieu, mène la partie avec la voix du hacker, propose les défenses, juge et dit où mettre le pion.</p>" +
         "<h3>Un tour</h3>" +
         "<ol><li>« <span lang='en'>Attack incoming! Draw a red card.</span> » : on pioche une carte rouge, on la lit à voix haute et on tape son numéro.</li>" +
-        "<li>La situation s'affiche, <strong>sans la réponse</strong>. Carte QR : le mini-jeu s'ouvre.</li>" +
+        "<li>La situation s'affiche, <strong>sans la réponse</strong>. Carte mini-jeu : le mini-jeu s'ouvre.</li>" +
         "<li>Le téléphone propose des cartes vertes : 2 en Junior, 3 en Pro, 4 en Expert, et toujours « It's safe! » (n°0).</li>" +
         "<li>L'équipe discute <strong>en anglais</strong>, pose la carte verte papier et tape son numéro, puis <strong>Confirmer</strong>.</li>" +
         "<li>L'appli juge et dit où mettre le pion : « <span lang='en'>Hacker blocked! Don't move the pawn.</span> » ou « <span lang='en'>Move the pawn to space 7.</span> ». Puis la bonne réponse, l'explication et la règle d'or.</li>" +
@@ -165,7 +165,7 @@ window.NovaI18n = (function () {
         "<h3>Les deux bonus du hacker</h3>" +
         "<ul><li><strong>Alerte rouge</strong> : à partir de 5/10, chaque réponse qui n'est pas bonne coûte +1 de plus.</li>" +
         "<li><strong>Même erreur deux fois</strong> : rater une 2e attaque de la même famille coûte +1 de plus (jamais pour une fausse alerte).</li></ul>" +
-        "<h3>Les cartes QR</h3>" +
+        "<h3>Les cartes mini-jeu</h3>" +
         "<p>On tape le numéro de la carte puis on appuie sur Ouvrir. L'équipe joue le mini-jeu ensemble : aucune carte verte n'est jouée.</p>" +
         "<h3>La fin</h3>" +
         "<ul><li><strong>Gagné</strong> : les 6 attaques sont jouées, la jauge est sous 10 et le chrono n'est pas à zéro. Score = 10 − jauge.</li>" +
@@ -389,7 +389,7 @@ window.NovaI18n = (function () {
       "v.wrong.sub": "another card",
       "v.wrong.subReal": "the team reported it",
       "card.back": "Wrong number? Back",
-      "qr.tag": "Incoming message! QR card",
+      "qr.tag": "Incoming message! Mini-game card",
       "qr.text": "The whole team plays the mini-game together. No green card is played or used. The app applies the penalty.",
       "qr.open": "Open",
       "game.rules": "📋 Rules sheet",
@@ -411,7 +411,7 @@ window.NovaI18n = (function () {
       "gp.hash": "no.",
       "calc.practice": "In a real game: +{n} (without the hacker's bonuses)",
       "res.best": "Best defence: {d}",
-      "res.noGame": "No game in progress on this phone: this result is not counted. Tip: type the QR card number in the game phone, then press Open.",
+      "res.noGame": "No game in progress on this phone: this result is not counted. Tip: type the mini-game card number in the game phone, then press Open.",
       "res.next": "Next attack",
       "res.toEnd": "See the end of the game",
       "res.backPractice": "Back to practice",
@@ -447,7 +447,7 @@ window.NovaI18n = (function () {
         "<p>No human game master: everybody plays together. The phone, in the middle of the table, runs the game with the hacker's voice, offers the defences, judges and tells you where to put the pawn.</p>" +
         "<h3>One turn</h3>" +
         "<ol><li>\"Attack incoming! Draw a red card.\": draw a red card, read it aloud and type its number.</li>" +
-        "<li>The situation appears, <strong>without the answer</strong>. QR card: the mini-game opens.</li>" +
+        "<li>The situation appears, <strong>without the answer</strong>. Mini-game card: the mini-game opens.</li>" +
         "<li>The phone offers green cards: 2 in Junior, 3 in Pro, 4 in Expert, and always \"It's safe!\" (no. 0).</li>" +
         "<li>The team talks <strong>in English</strong>, puts the paper green card down and types its number, then <strong>Confirm</strong>.</li>" +
         "<li>The app judges and tells you where to put the pawn: \"Hacker blocked! Don't move the pawn.\" or \"Move the pawn to space 7.\" Then the right answer, the explanation and the golden rule.</li>" +
@@ -460,7 +460,7 @@ window.NovaI18n = (function () {
         "<h3>The hacker's two bonuses</h3>" +
         "<ul><li><strong>Red alert</strong>: from 5/10, each answer that is not Right costs +1 more.</li>" +
         "<li><strong>Same mistake twice</strong>: missing a 2nd attack of the same family costs +1 more (never for a false alarm).</li></ul>" +
-        "<h3>QR cards</h3>" +
+        "<h3>Mini-game cards</h3>" +
         "<p>Type the card number then press Open. The team plays the mini-game together: no green card is played.</p>" +
         "<h3>The end</h3>" +
         "<ul><li><strong>Won</strong>: the 6 attacks are played, the gauge is under 10 and the timer is not at zero. Score = 10 − gauge.</li>" +
