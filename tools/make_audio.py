@@ -1,4 +1,4 @@
-"""Génère les fichiers MP3 de la voix (Piper, gratuit et libre) dans audio/fr et audio/en."""
+"""Génère les fichiers MP3 de la voix (Piper, gratuit et libre) dans audio/en (la voix parle toujours anglais)."""
 import json, os, sys, subprocess
 import numpy as np, lameenc
 from piper import PiperVoice, SynthesisConfig
@@ -11,11 +11,6 @@ texts = json.loads(subprocess.check_output(["node", os.path.join(HERE, "extract_
 
 # Voix : (modèle, locuteur, vitesse) — length_scale < 1 = un peu plus rapide
 V = {
-  "fr": {
-    "hacker": ("fr_FR-mls-medium", "8582", 0.72),
-    "m1": ("fr_FR-mls-medium", "10065", 0.78), "m2": ("fr_FR-mls-medium", "13177", 0.78), "m3": ("fr_FR-mls-medium", "5525", 0.8),
-    "f1": ("fr_FR-siwis-medium", None, 0.95), "f2": ("fr_FR-mls-medium", "1474", 0.75),
-  },
   "en": {
     "hacker": ("en_GB-vctk-medium", "p254", 1.0),
     "m1": ("en_GB-vctk-medium", "p226", 1.0), "m2": ("en_GB-vctk-medium", "p232", 1.0), "m3": ("en_GB-vctk-medium", "p360", 1.0),
@@ -55,7 +50,7 @@ def synth(lang, role, text, dest):
     return len(data), len(pcm) / v.config.sample_rate
 
 total = 0
-for lang in ["fr", "en"]:
+for lang in ["en"]:   # la voix parle toujours anglais (English Game)
     folder = os.path.join(PROJECT, "audio", lang)
     os.makedirs(folder, exist_ok=True)
     for key, text in texts[lang]["guide"].items():

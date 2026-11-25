@@ -17,13 +17,30 @@ window.NOVA_DATA = (function () {
     network: "Network"
   };
 
-  /* ---------- Les 12 défenses + It's safe! ---------- */
+  /* ---------- Les cartes vertes : 1 à 12 (tous niveaux), 13 à 16 (Expert), 0 = It's safe! ----------
+     Le numéro imprimé = la place dans cette liste (1 à 16). */
   var DEFENCES = [
     "Check the sender", "Don't click", "Strong password", "Password manager",
     "Two-factor (2FA)", "Update", "Backup", "Lock your screen",
     "Call back to check", "Avoid public Wi-Fi", "Antivirus scan", "Alert IT",
-    "It's safe!"
+    "Isolate the machine", "Patch the server", "Block the access", "Reset & revoke"
   ];
+  var STANDARD_GREENS = 12;   // Junior et Pro : cartes vertes 1 à 12
+
+  /* Les 4 cartes vertes Expert : phrase imprimée et règle d'or */
+  var EXPERT_GREENS = {
+    "Isolate the machine": { text: "Cut it from the network (cable and Wi-Fi), but don't switch it off.",
+      rule: "Isolate first, investigate after: never switch off a machine under attack, its memory holds evidence." },
+    "Patch the server": { text: "Install the security fix now, before hackers use the flaw.",
+      rule: "A known flaw that hackers already use is patched first. If you can't patch now, reduce access until you can." },
+    "Block the access": { text: "Close the port or block the address on the firewall.",
+      rule: "Close what doesn't need to be open to the Internet, and block what attacks you." },
+    "Reset & revoke": { text: "Change the password and log out all open sessions.",
+      rule: "A stolen account is only safe again when the password is changed AND every open session is closed." }
+  };
+
+  /* Paquet de chaque niveau : Junior et Pro jouent #1 à #30, Expert joue son propre paquet */
+  var EXPERT_DECK = [31, 32, 33, 34, 35, 36, 37, 38, 39, 14, 19, 25];
 
   /* ---------- Les 30 cartes rouges (identiques aux cartes imprimées) ----------
      n      : numéro imprimé
@@ -34,114 +51,163 @@ window.NOVA_DATA = (function () {
      text   : situation (EN)
      best   : meilleure défense
      ok     : défense acceptable (null = aucune → bouton Almost grisé)
-     expert : 2 défenses demandées au niveau Expert
+     expert : 2 défenses demandées (cartes x2 : #34, #36, #37, niveau Expert)
+     traps  : pièges crédibles proposés par le téléphone (semblent logiques, mais faux)
+     rule   : règle d'or propre à la carte (sinon celle de la famille)
+     deck   : "standard" (#1-#30, Junior et Pro) ou "expert" (#31-#39)
      why    : explication courte (EN)
      qr     : carte mini-jeu (pas de QR imprimé : on tape son numéro, l'appli ouvre ce mini-jeu) */
   var CARDS = [
-    { n: 1, fam: "phishing", sev: 2, title: "Spot the trap",
+    { n: 1, fam: "phishing", sev: 2, deck: "standard", title: "Spot the trap",
       text: "Incoming message! Type this card's number in the app.", qr: "trap" },
-    { n: 2, fam: "phishing", sev: 2, title: "Spot the trap",
+    { n: 2, fam: "phishing", sev: 2, deck: "standard", title: "Spot the trap",
       text: "Incoming message! Type this card's number in the app.", qr: "trap" },
-    { n: 3, fam: "phishing", sev: 2, title: "Free smartphone", real: false,
+    { n: 3, fam: "phishing", sev: 2, deck: "standard", traps: ["Antivirus scan", "Call back to check", "Alert IT"], title: "Free smartphone", real: false,
       text: "An email says you won a free smartphone. Click the link to claim it before tonight.",
       best: "Don't click", ok: "Check the sender",
       why: "Nobody gives you a phone for nothing. The link steals your login or installs a virus. Don't click, delete the email." },
-    { n: 4, fam: "phishing", sev: 3, title: "Strange attachment", real: false,
+    { n: 4, fam: "phishing", sev: 3, deck: "standard", traps: ["Check the sender", "Alert IT", "Update"], title: "Strange attachment", real: false,
       text: "An email from \"NovaCorp IT\" has an attachment called invoice.pdf.exe.",
       best: "Don't click", ok: "Antivirus scan",
       why: "\".exe\" at the end means it is a program, not a PDF. Opening it can install a virus. Don't open it and let IT check it." },
-    { n: 5, fam: "phishing", sev: 1, title: "Holiday dates", real: true,
+    { n: 5, fam: "phishing", sev: 1, deck: "standard", traps: ["Check the sender", "Call back to check", "Alert IT"], title: "Holiday dates", real: true,
       text: "An email from hr@novacorp.com reminds you to enter your holiday dates on the intranet before Friday.",
       best: "It's safe!", ok: null,
       why: "This one is real: the right address, a link to the intranet you know, no password asked, no pressure." },
-    { n: 6, fam: "phishing", sev: 2, title: "Card blocked", real: false,
+    { n: 6, fam: "phishing", sev: 2, deck: "standard", traps: ["Check the sender", "Alert IT", "Two-factor (2FA)"], title: "Card blocked", real: false,
       text: "A text message: \"Bluestone Bank: your card is blocked. Call this number now.\"",
       best: "Call back to check", ok: "Don't click",
       why: "Banks don't block cards by text. Never call the number in the message: call the number on the back of your card." },
 
-    { n: 7, fam: "passwords", sev: 3, title: "Password request",
+    { n: 7, fam: "passwords", sev: 3, deck: "standard", title: "Password request",
       text: "Incoming message! Type this card's number in the app.", qr: "password" },
-    { n: 8, fam: "passwords", sev: 3, title: "Password request",
+    { n: 8, fam: "passwords", sev: 3, deck: "standard", title: "Password request",
       text: "Incoming message! Type this card's number in the app.", qr: "password" },
-    { n: 9, fam: "passwords", sev: 1, title: "Easy password", real: false,
+    { n: 9, fam: "passwords", sev: 1, deck: "standard", traps: ["Two-factor (2FA)", "Lock your screen", "Update"], title: "Easy password", real: false,
       text: "The accountant's password is \"NovaCorp2026\".",
       best: "Strong password", ok: "Password manager",
       why: "Company name + year is one of the first things a hacker tries. Use a long password, like 4 random words." },
-    { n: 10, fam: "passwords", sev: 2, title: "Same password everywhere", real: false,
+    { n: 10, fam: "passwords", sev: 2, deck: "standard", traps: ["Two-factor (2FA)", "Lock your screen", "Alert IT"], title: "Same password everywhere", real: false,
       text: "A colleague uses the same password for his mailbox, his bank and Netflix.",
       best: "Password manager", ok: "Strong password",
       why: "If one website leaks, the hacker gets into everything. A password manager gives every account its own password." },
-    { n: 11, fam: "passwords", sev: 4, title: "Stolen password", real: false,
+    { n: 11, fam: "passwords", sev: 4, deck: "standard", traps: ["Password manager", "Alert IT", "Lock your screen"], title: "Stolen password", real: false,
       text: "The boss's password was stolen in a data leak. Someone is trying to log in to her account right now.",
-      best: "Two-factor (2FA)", ok: "Strong password", expert: ["Two-factor (2FA)", "Strong password"],
+      best: "Two-factor (2FA)", ok: "Strong password",
       why: "With two-factor authentication, a stolen password is not enough: the hacker also needs the code sent to the boss's phone. Then change the password." },
-    { n: 12, fam: "passwords", sev: 2, title: "Post-it password", real: false,
+    { n: 12, fam: "passwords", sev: 2, deck: "standard", traps: ["Lock your screen", "Two-factor (2FA)", "Alert IT"], title: "Post-it password", real: false,
       text: "The new intern wrote his password on a post-it under his keyboard.",
       best: "Password manager", ok: "Strong password",
       why: "Anyone who walks past can read it. A password manager remembers passwords for you, so you don't need post-its." },
 
-    { n: 13, fam: "devices", sev: 2, title: "Messy desk",
+    { n: 13, fam: "devices", sev: 2, deck: "standard", title: "Messy desk",
       text: "Incoming message! Type this card's number in the app.", qr: "desk" },
-    { n: 14, fam: "devices", sev: 3, title: "Strange screen",
+    { n: 14, fam: "devices", sev: 3, deck: "standard", title: "Strange screen",
       text: "Incoming message! Type this card's number in the app.", qr: "ransom" },
-    { n: 15, fam: "devices", sev: 3, title: "USB key in the car park", real: false,
+    { n: 15, fam: "devices", sev: 3, deck: "standard", traps: ["Don't click", "Update", "Backup"], title: "USB key in the car park", real: false,
       text: "A USB key labelled \"Salaries 2026\" is found in the car park. A colleague wants to plug it in to see who it belongs to.",
       best: "Alert IT", ok: "Antivirus scan",
       why: "Hackers leave infected USB keys on purpose: curiosity does the rest. Never plug it in, give it to IT." },
-    { n: 16, fam: "devices", sev: 2, title: "Video player update", real: false,
+    { n: 16, fam: "devices", sev: 2, deck: "standard", traps: ["Update", "Check the sender", "Alert IT"], title: "Video player update", real: false,
       text: "A pop-up on a website says: \"Your video player is out of date. Download the update here.\"",
       best: "Don't click", ok: "Antivirus scan",
       why: "Real updates come from your computer's settings, not from a pop-up on a website. This \"update\" is a virus." },
-    { n: 17, fam: "devices", sev: 2, title: "Lunch break", real: false,
+    { n: 17, fam: "devices", sev: 2, deck: "standard", traps: ["Backup", "Alert IT", "Strong password"], title: "Lunch break", real: false,
       text: "You go to lunch. Your computer is still open on the payroll file.",
       best: "Lock your screen", ok: null,
       why: "Anyone can read or copy the file while you are away. Lock your screen every time you leave (Windows + L)." },
-    { n: 18, fam: "devices", sev: 2, title: "Old laptop", real: false,
+    { n: 18, fam: "devices", sev: 2, deck: "standard", traps: ["Antivirus scan", "Backup", "Alert IT"], title: "Old laptop", real: false,
       text: "Your laptop has not been updated for 6 months. Hackers are using a known security flaw.",
       best: "Update", ok: null,
       why: "Updates repair the holes that hackers use. Install them as soon as your computer asks." },
 
-    { n: 19, fam: "humans", sev: 4, title: "Incoming call",
+    { n: 19, fam: "humans", sev: 4, deck: "standard", title: "Incoming call",
       text: "Incoming message! Type this card's number in the app.", qr: "call" },
-    { n: 20, fam: "humans", sev: 4, title: "Incoming call",
+    { n: 20, fam: "humans", sev: 4, deck: "standard", title: "Incoming call",
       text: "Incoming message! Type this card's number in the app.", qr: "call" },
-    { n: 21, fam: "humans", sev: 3, title: "Urgent invoice", real: false,
+    { n: 21, fam: "humans", sev: 3, deck: "standard", traps: ["Alert IT", "Don't click", "Two-factor (2FA)"], title: "Urgent invoice", real: false,
       text: "The accountant receives an urgent invoice from a new supplier, with new bank details.",
-      best: "Call back to check", ok: "Check the sender", expert: ["Call back to check", "Alert IT"],
+      best: "Call back to check", ok: "Check the sender",
       why: "Fake invoices are a classic scam. Call the supplier on a number you already know before paying anything." },
-    { n: 22, fam: "humans", sev: 3, title: "Delivery man", real: false,
+    { n: 22, fam: "humans", sev: 3, deck: "standard", traps: ["Call back to check", "Lock your screen", "Check the sender"], title: "Delivery man", real: false,
       text: "A man in a delivery uniform asks you to hold the door of the server room for him.",
       best: "Alert IT", ok: null,
       why: "Hackers also walk in. Nobody enters the server room without a badge: don't hold the door, call IT or security." },
-    { n: 23, fam: "humans", sev: 1, title: "Meeting moved", real: true,
+    { n: 23, fam: "humans", sev: 1, deck: "standard", traps: ["Call back to check", "Check the sender", "Alert IT"], title: "Meeting moved", real: true,
       text: "Your manager calls from her usual office number to move tomorrow's meeting to 10 am.",
       best: "It's safe!", ok: null,
       why: "This one is real: a number you know, a normal request, nothing secret or urgent, no money and no code." },
-    { n: 24, fam: "humans", sev: 2, title: "Curious journalist", real: false,
+    { n: 24, fam: "humans", sev: 2, deck: "standard", traps: ["Check the sender", "Don't click", "Lock your screen"], title: "Curious journalist", real: false,
       text: "A \"journalist\" calls to ask for the names and emails of everyone in the HR team.",
       best: "Alert IT", ok: "Call back to check",
       why: "Names and emails help hackers write believable fake emails. Give nothing and pass the request to IT." },
 
-    { n: 25, fam: "network", sev: 2, title: "Safe or fake link?",
+    { n: 25, fam: "network", sev: 2, deck: "standard", title: "Safe or fake link?",
       text: "Incoming message! Type this card's number in the app.", qr: "link" },
-    { n: 26, fam: "network", sev: 2, title: "Safe or fake link?",
+    { n: 26, fam: "network", sev: 2, deck: "standard", title: "Safe or fake link?",
       text: "Incoming message! Type this card's number in the app.", qr: "link" },
-    { n: 27, fam: "network", sev: 2, title: "Station Wi-Fi", real: false,
+    { n: 27, fam: "network", sev: 2, deck: "standard", traps: ["Antivirus scan", "Two-factor (2FA)", "Strong password"], title: "Station Wi-Fi", real: false,
       text: "You send a client file from the free Wi-Fi of the train station.",
       best: "Avoid public Wi-Fi", ok: null,
       why: "On a free Wi-Fi, someone can spy on what you send. Wait for a safe network or use your phone's connection." },
-    { n: 28, fam: "network", sev: 3, title: "No padlock", real: false,
+    { n: 28, fam: "network", sev: 3, deck: "standard", traps: ["Check the sender", "Antivirus scan", "Avoid public Wi-Fi"], title: "No padlock", real: false,
       text: "A website asks for your card number, but the address starts with http:// and there is no padlock.",
       best: "Don't click", ok: null,
       why: "Without \"https\" and a padlock, what you type is not protected. Never type card details on that kind of page." },
-    { n: 29, fam: "network", sev: 1, title: "Update tonight", real: true,
+    { n: 29, fam: "network", sev: 1, deck: "standard", traps: ["Update", "Alert IT", "Check the sender"], title: "Update tonight", real: true,
       text: "IT announces by email (it@novacorp.com) a security update tonight at 8 pm. You have nothing to do.",
       best: "It's safe!", ok: null,
       why: "This one is real: the right address, no link, no request. Real updates are announced like this." },
-    { n: 30, fam: "network", sev: 4, title: "Ransomware!", real: false,
+    { n: 30, fam: "network", sev: 4, deck: "standard", traps: ["Antivirus scan", "Update", "Don't click"], title: "Ransomware!", real: false,
       text: "Ransomware on the file server: all the shared files are locked.",
-      best: "Backup", ok: "Alert IT", expert: ["Backup", "Alert IT"],
-      why: "With a recent backup, you can restore the files without paying. Alert IT at once so they can stop the attack." }
+      best: "Backup", ok: "Alert IT",
+      why: "With a recent backup, you can restore the files without paying. Alert IT at once so they can stop the attack." },
+    /* ---------- Paquet Expert (#31 à #39) ---------- */
+    { n: 31, fam: "phishing", sev: 3, deck: "expert", title: "Failed checks", real: false,
+      text: "An invoice email from billing@novacorp.com. The headers show: SPF fail, DKIM none, DMARC fail. The Reply-To is pay@novacorp-billing.example.",
+      best: "Alert IT", ok: "Check the sender", traps: ["Don't click", "Antivirus scan", "It's safe!"],
+      why: "SPF and DMARC fail: the email did not come from NovaCorp's servers. Report it so IT can block it for everyone.",
+      rule: "Read the authentication results: SPF or DMARC failing on your own domain means someone is faking it. Report it, never reply." },
+    { n: 32, fam: "phishing", sev: 3, deck: "expert", title: "Lookalike domain", real: false,
+      text: "A login page asks for your NovaCorp password. The address bar shows xn--nvacorp-9ig.com: the \"o\" in \"nоvacorp\" is a Cyrillic letter.",
+      best: "Don't click", ok: "Alert IT", traps: ["It's safe!", "Check the sender", "Strong password"],
+      why: "\"xn--\" means the name uses foreign letters that look like ours (punycode). Never type a password on it.",
+      rule: "Trust the address, not the look of the page: \"xn--\" means lookalike letters." },
+    { n: 33, fam: "phishing", sev: 1, deck: "expert", title: "Password manager rollout", real: true,
+      text: "An email from it@novacorp.com (SPF, DKIM and DMARC: pass) announces the new company password manager. The link goes to intranet.novacorp.com.",
+      best: "It's safe!", ok: null, traps: ["Alert IT", "Check the sender", "Don't click"],
+      why: "All checks pass, the sender and the link are NovaCorp's. Not every security email is a trap.",
+      rule: "Check the facts (sender, checks, link) before you report: a false alarm wastes everybody's time." },
+    { n: 34, fam: "passwords", sev: 4, deck: "expert", title: "MFA fatigue", real: false,
+      text: "At 2 am, the CFO receives 15 \"Approve sign-in?\" notifications on her phone. She did not try to log in.",
+      best: "Reset & revoke", ok: "Alert IT", expert: ["Reset & revoke", "Alert IT"], traps: ["Two-factor (2FA)", "It's safe!", "Strong password"],
+      why: "Someone has her password and is spamming 2FA requests. Never approve: reset the password, revoke sessions and alert IT.",
+      rule: "A sign-in request you did not start is an attack: deny it, then reset the password." },
+    { n: 35, fam: "passwords", sev: 3, deck: "expert", title: "Brute force", real: false,
+      text: "The logs show 400 failed logins on the \"admin\" account, then one successful login from an unknown IP abroad (203.0.113.45).",
+      best: "Reset & revoke", ok: "Block the access", traps: ["Strong password", "Antivirus scan", "Lock your screen"],
+      why: "A success after 400 failures means the account is compromised. Reset it, kill the sessions, then block the IP.",
+      rule: "Many failures then one success = a stolen account. Reset and revoke first, block second." },
+    { n: 36, fam: "devices", sev: 4, deck: "expert", title: "Encryption in progress", real: false,
+      text: "Security alert: a laptop is encrypting files on the shared drive right now.",
+      best: "Isolate the machine", ok: "Alert IT", expert: ["Isolate the machine", "Alert IT"], traps: ["Backup", "Antivirus scan", "Update"],
+      why: "Cut the network to stop the spread, but keep the laptop on for the investigation. Backups come later.",
+      rule: "Isolate, don't switch off: the memory holds evidence." },
+    { n: 37, fam: "humans", sev: 4, deck: "expert", title: "Deepfake CEO", real: false,
+      text: "The CFO gets a video call from the \"CEO\". The face and voice look real. He asks for an urgent and secret €80,000 transfer.",
+      best: "Call back to check", ok: "Alert IT", expert: ["Call back to check", "Alert IT"], traps: ["Check the sender", "It's safe!", "Two-factor (2FA)"],
+      why: "Video and voice can be faked by AI. Call the CEO back on his known number and follow the payment procedure.",
+      rule: "Urgent + secret + money = check through another channel, even if you can see a face." },
+    { n: 38, fam: "network", sev: 4, deck: "expert", title: "Open door", real: false,
+      text: "An Nmap scan of NovaCorp's public IP shows: 3389/tcp open ms-wbt-server (Remote Desktop) and 445/tcp open microsoft-ds (file sharing).",
+      best: "Block the access", ok: "Patch the server", traps: ["Avoid public Wi-Fi", "Antivirus scan", "Alert IT"],
+      why: "Remote Desktop and file sharing open to the Internet are the main doors for ransomware. Close them; use a VPN with 2FA.",
+      rule: "Show as little as possible to the Internet: no Remote Desktop, no file sharing, a VPN with 2FA." },
+    { n: 39, fam: "network", sev: 4, deck: "expert", title: "VPN flaw", real: false,
+      text: "CERT-FR warns: a critical flaw in the brand of VPN NovaCorp uses is being actively exploited. A patch is available.",
+      best: "Patch the server", ok: "Block the access", traps: ["Update", "Backup", "Alert IT"],
+      why: "An actively exploited flaw must be patched first. If you can't patch now, restrict access to the VPN.",
+      rule: "Actively exploited flaw = patch now; if you can't, reduce access until you can." }
   ];
 
   /* ---------- Mini-jeux : nom, gravité, famille, cartes ---------- */
@@ -390,12 +456,16 @@ window.NOVA_DATA = (function () {
       draw: "Attack incoming! Draw a red card.",
       choose: "Choose your defence:",
       choose2: "Choose two defences:",
-      card: "Card {n}: {d}.",
+      card: "card {n}",
+      or: "or",
+      question: "Turn the card over. Read the question aloud.",
       blocked: "Hacker blocked! Don't move the pawn.",
       pawn: "Move the pawn to space {n}.",
       flip: "Turn the green card face down.",
       flip2: "Turn the green cards face down.",
-      next: "Next attack!"
+      next: "Next attack!",
+      correct: "Correct!",
+      wrong: "Wrong answer."
     }
   };
 
@@ -459,7 +529,23 @@ window.NOVA_DATA = (function () {
     { en: "Lock your screen", fr: "Verrouiller l'écran", def: "Close your session when you leave: Windows + L." },
     { en: "Hacker", fr: "Pirate informatique", def: "Someone who gets into systems without permission." },
     { en: "To report", fr: "Signaler", def: "To tell IT or an official website about a scam." },
-    { en: "Fake / Real", fr: "Faux / Vrai", def: "The key question of the whole game!" }
+    { en: "Fake / Real", fr: "Faux / Vrai", def: "The key question of the whole game!" },
+    { en: "SPF", fr: "SPF", def: "A list of the servers allowed to send email for a domain. \"SPF fail\" = sent from a server that is not allowed." },
+    { en: "DKIM", fr: "DKIM", def: "A digital signature added to an email, so you can see if it was changed on the way." },
+    { en: "DMARC", fr: "DMARC", def: "Checks that SPF or DKIM match the visible sender, and tells servers what to do with fake emails (p=reject)." },
+    { en: "Punycode", fr: "Punycode", def: "How web addresses with foreign letters are written (xn--...). Used for lookalike fake domains." },
+    { en: "MFA fatigue", fr: "Fatigue MFA", def: "Spamming sign-in requests until the victim approves one. Never approve a request you didn't start." },
+    { en: "Brute force", fr: "Force brute", def: "Trying thousands of passwords until one works." },
+    { en: "Nmap", fr: "Nmap", def: "A free tool that lists the open ports of a machine. Defenders use it to find doors left open." },
+    { en: "Port", fr: "Port", def: "A numbered door on a computer for one service (443 = web, 3389 = Remote Desktop)." },
+    { en: "RDP (Remote Desktop)", fr: "Bureau à distance (RDP)", def: "Controlling a computer from far away. Never open it directly to the Internet." },
+    { en: "CVE", fr: "CVE", def: "A unique number for a known security flaw (e.g. CVE-2024-1234)." },
+    { en: "Patch", fr: "Correctif", def: "An update that fixes a security flaw." },
+    { en: "Deepfake", fr: "Hypertrucage (deepfake)", def: "A fake video or voice made by AI that looks and sounds real." },
+    { en: "Revoke sessions", fr: "Révoquer les sessions", def: "Log out every open session, so a thief who is already connected is kicked out." },
+    { en: "Least privilege", fr: "Moindre privilège", def: "Each account only gets the rights it really needs." },
+    { en: "SIM swap", fr: "Échange de carte SIM", def: "A scammer gets your phone number moved to his SIM card to receive your SMS codes." },
+    { en: "3-2-1 backup", fr: "Sauvegarde 3-2-1", def: "3 copies of your files, on 2 types of media, 1 kept somewhere else." }
   ];
 
   /* ---------- Où signaler, en France ---------- */
@@ -484,8 +570,9 @@ window.NOVA_DATA = (function () {
     /* Nom d'une défense à afficher (en français : nom FR + nom imprimé sur la carte) */
     defence: function (name) { return name; },
     /* Nom d'une défense dit par la voix (en français : le nom français seul) */
-    defenceVoice: function (name) { return name.replace(/!$/, "").replace(" (2FA)", ", 2FA"); },
+    defenceVoice: function (name) { return name.replace(/!$/, "").replace(" (2FA)", ", 2FA").replace(" & ", " and "); },
     FAMILIES: FAMILIES, DEFENCES: DEFENCES, CARDS: CARDS, MINIGAMES: MINIGAMES,
+    STANDARD_GREENS: STANDARD_GREENS, EXPERT_GREENS: EXPERT_GREENS, EXPERT_DECK: EXPERT_DECK,
     TRAP: TRAP, PASSWORD: PASSWORD, COMMON_PASSWORDS: COMMON_PASSWORDS,
     CALLS: CALLS, LINKS: LINKS, DESK: DESK, RANSOM: RANSOM, HACKER: HACKER
   };

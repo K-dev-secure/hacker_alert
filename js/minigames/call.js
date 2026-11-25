@@ -29,7 +29,7 @@ Minigames.register("call", function (root, ctx) {
   var status = el("p", { class: "call__status", text: t("call.incoming") });
   // Carte scannée : le téléphone bloque le son tant que personne n'a touché l'écran
   var soundHint = el("p", { class: "call__hint", text: t("call.tapSound"), hidden: NovaAudio.canPlay() });
-  var transcript = el("p", { class: "call__transcript", "aria-live": "polite" });
+  var transcript = el("p", { class: "call__transcript", lang: "en", "aria-live": "polite" });
   var answerBtn = el("button", { class: "call__answer", type: "button", "aria-label": t("call.answerAria") }, [
     el("span", { "aria-hidden": "true", html: "<svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1z'/></svg>" }),
     t("call.answer")
@@ -79,9 +79,11 @@ Minigames.register("call", function (root, ctx) {
     status.textContent = clockText();
     timers.push(setInterval(function () { status.textContent = clockText(); }, 500));
 
-    // Sous-titres mot par mot
-    var words = call.text.split(" ");
-    var q = window.NovaI18n.lang === "fr" ? ["« ", " »"] : ["“", "”"];
+    // Sous-titres mot par mot : l'appel est toujours en anglais (exercice d'écoute)
+    var idx = ctx.data.CALLS.indexOf(call);
+    var spoken = ((window.NOVA_DATA_EN || ctx.data).CALLS[idx] || call).text;
+    var words = spoken.split(" ");
+    var q = ["“", "”"];
     var i = 0;
     var typer = setInterval(function () {
       i++;
@@ -91,9 +93,9 @@ Minigames.register("call", function (root, ctx) {
     timers.push(typer);
 
     function say() {
-      // Voix enregistrée de l'appel (audio/fr/call-N.mp3), sinon voix du téléphone
-      var audio = NovaGame.audioFile("call-" + ctx.data.CALLS.indexOf(call));
-      NovaGame.speak(call.text, { speaker: call.name, pitch: call.voice.pitch, rate: 0.95, noSubtitle: true, channel: "call", audio: audio });
+      // Voix enregistrée de l'appel (audio/en/call-N.mp3), sinon voix du téléphone
+      var audio = NovaGame.audioFile("call-" + idx);
+      NovaGame.speak(spoken, { speaker: call.name, pitch: call.voice.pitch, rate: 0.95, noSubtitle: true, channel: "call", audio: audio });
     }
     say();
     // Réécouter l'appel (le texte reste affiché)

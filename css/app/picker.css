@@ -119,18 +119,20 @@
 }
 
 /* ---------- Les défenses proposées par le téléphone (numéro + nom) ---------- */
+/* Seulement le numéro : le nom se lit sur la carte papier */
 .choices {
   list-style: none;
   margin: 0 0 12px;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
   gap: 8px;
 }
 
 .choice {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   min-height: 56px;
   padding: 8px 12px;
@@ -148,7 +150,7 @@
   min-width: 36px;
   font-family: var(--font-pixel);
   font-weight: 700;
-  font-size: 28px;
+  font-size: 34px;
   line-height: 1;
   color: var(--green);
   text-align: center;

@@ -18,7 +18,7 @@ window.NovaI18n = (function () {
       "voice.replay": "🔁 Réécouter",
       "music.on": "Musique de fond : activée",
       "music.off": "Musique de fond : coupée",
-      "credits.voices": "Voix : Piper (gratuit et libre), voix SIWIS, MLS et VCTK (CC BY 4.0) et « Jenny (Dioco) ».",
+      "credits.voices": "Voix (toujours en anglais) : Piper (gratuit et libre), voix VCTK (CC BY 4.0) et « Jenny (Dioco) ».",
       "home.glossary": "📖 Glossaire FR / EN",
       "glo.title": "Glossaire anglais / français",
       "glo.intro": "Les mots de la cybersécurité, en anglais et en français, avec une explication simple.",
@@ -32,9 +32,9 @@ window.NovaI18n = (function () {
       "pick.card": "carte {n}",
       "pick.or": " ou ",
       "pick.confirm": "Confirmer",
-      "pick.confirmQ": "Carte {c} · {d}. Confirmer ?",
-      "pick.confirmQ2": "Cartes {c} · {d}. Confirmer ?",
-      "gp.invalid": "Les cartes vertes vont de 1 à 12 (0 = « It's safe! »).",
+      "pick.confirmQ": "Carte {c}. Confirmer ?",
+      "pick.confirmQ2": "Cartes {c}. Confirmer ?",
+      "gp.invalid": "Les cartes vertes vont de 1 à {max} (0 = « It's safe! »).",
       "gp.used": "La carte verte n°{n} a déjà été jouée : elle est retournée sur la table.",
       "gp.notOffered": "La carte {n} ne fait pas partie des défenses proposées.",
       "gp.twice": "Il faut 2 cartes vertes différentes.",
@@ -68,9 +68,9 @@ window.NovaI18n = (function () {
       "home.continue": "Continuer la partie",
       "home.new": "Nouvelle partie",
       "home.level": "Choisis ton niveau",
-      "lvl.junior": "2 défenses proposées + « It's safe! ». Les cartes vertes se réutilisent. Pour une première partie.",
-      "lvl.pro": "3 défenses proposées + « It's safe! ». Chaque carte verte ne sert qu'une fois. Partie normale.",
-      "lvl.expert": "4 défenses proposées + « It's safe! ». Une seule utilisation, et les cartes #11, #21, #30 demandent 2 cartes vertes.",
+      "lvl.junior": "Cartes #1 à #30. 2 défenses proposées + « It's safe! ». Les cartes vertes se réutilisent. Pour une première partie.",
+      "lvl.pro": "Cartes #1 à #30. 3 défenses proposées + « It's safe! ». Chaque carte verte ne sert qu'une fois. Une question après chaque carte.",
+      "lvl.expert": "Le paquet Expert (12 cartes) et les cartes vertes 0 à 16. 4 défenses proposées. Questions : une erreur coûte +1.",
       "home.start": "Commencer",
       "home.rules": "📋 La fiche des règles",
       "home.practice": "Mode entraînement : les mini-jeux, sans chrono ni jauge",
@@ -78,7 +78,32 @@ window.NovaI18n = (function () {
 
       "pad.help": "Piochez une carte rouge, lisez-la à voix haute, puis tapez son numéro.",
       "pad.delete": "Effacer",
-      "pad.invalid": "Tape un numéro de carte rouge entre 1 et 30.",
+      "pad.invalid": "Tape un numéro de carte rouge entre 1 et 39.",
+      "pad.expertDeck": "Le niveau Expert utilise le paquet Expert : #31 à #39, #14, #19 et #25.",
+      "pad.standardDeck": "Ce niveau utilise les cartes #1 à #30. Les cartes #31 à #39 sont pour le niveau Expert.",
+      "card.read": "📖 Un joueur lit la carte papier à voix haute, en anglais.",
+      "card.showText": "Voir le texte (carte abîmée, difficile à lire)",
+      "res.toQuestion": "Question de suivi",
+      "q.read": "🔄 Retournez la carte rouge #{n} : un joueur lit la question du dos à voix haute, en anglais. L'équipe discute, pose une carte verte et tape son numéro (la carte n'est pas usée).",
+      "q.back": "question au dos",
+      "q.title": "Question au dos de la carte",
+      "q.right": "Bonne réponse !",
+      "q.almost": "Presque",
+      "q.wrong": "Mauvaise réponse",
+      "calc.qPro": "Niveau Pro : une question ne coûte rien",
+      "calc.qAlmost": "Presque : +0",
+      "calc.qWrong": "Mauvaise réponse : +1",
+      "q.letter": "Réponse {l}",
+      "q.tagPro": "Question de suivi · Pro",
+      "q.tagExpert": "Question de suivi · Expert : une erreur coûte +1",
+      "q.helpMcq": "Touchez la lettre choisie par l'équipe.",
+      "q.helpOrder": "Touchez les lettres dans l'ordre, de la première action à la dernière.",
+      "q.check": "Vérifier l'ordre",
+      "q.reset": "Recommencer",
+      "q.goodAnswer": "La bonne réponse :",
+      "q.goodOrder": "Le bon ordre :",
+      "q.source": "Source :",
+      "end.questions": "Questions de suivi",
       "pad.played": "La carte #{n} a déjà été jouée.",
       "card.real": "Carte « vrai message »",
       "card.best": "Meilleure",
@@ -151,12 +176,14 @@ window.NovaI18n = (function () {
         "<h3>Le téléphone est le maître du jeu</h3>" +
         "<p>Pas de maître du jeu humain : tout le monde joue ensemble. Le téléphone, posé au milieu, mène la partie avec la voix du hacker, propose les défenses, juge et dit où mettre le pion.</p>" +
         "<h3>Un tour</h3>" +
-        "<ol><li>« <span lang='en'>Attack incoming! Draw a red card.</span> » : on pioche une carte rouge, on la lit à voix haute et on tape son numéro.</li>" +
-        "<li>La situation s'affiche, <strong>sans la réponse</strong>. Carte mini-jeu : le mini-jeu s'ouvre.</li>" +
-        "<li>Le téléphone propose des cartes vertes : 2 en Junior, 3 en Pro, 4 en Expert, et toujours « It's safe! » (n°0).</li>" +
+        "<ol><li>« <span lang='en'>Attack incoming! Draw a red card.</span> » : on pioche une carte rouge, <strong>un joueur la lit à voix haute, en anglais</strong>, et on tape son numéro. La voix de l'appli ne lit jamais les cartes.</li>" +
+        "<li>L'appli affiche seulement le numéro, la famille, la gravité et le titre, pour vérifier. Carte mini-jeu : le mini-jeu s'ouvre.</li>" +
+        "<li>Le téléphone propose des cartes vertes, <strong>seulement par leur numéro</strong> : 2 en Junior, 3 en Pro, 4 en Expert, et toujours « It's safe! » (n°0).</li>" +
         "<li>L'équipe discute <strong>en anglais</strong>, pose la carte verte papier et tape son numéro, puis <strong>Confirmer</strong>.</li>" +
         "<li>L'appli juge et dit où mettre le pion : « <span lang='en'>Hacker blocked! Don't move the pawn.</span> » ou « <span lang='en'>Move the pawn to space 7.</span> ». Puis la bonne réponse, l'explication et la règle d'or.</li>" +
         "<li>« <span lang='en'>Turn the green card face down.</span> » (sauf en Junior et sauf « It's safe! »), puis attaque suivante.</li></ol>" +
+        "<h3>Les questions de suivi (Pro et Expert)</h3>" +
+        "<p>Après chaque carte à texte, l'appli dit « <span lang='en'>Turn the card over.</span> » : la question est au dos de la carte rouge. Un joueur la lit à voix haute, l'équipe discute en anglais puis répond avec une carte verte (elle n'est pas usée). En Pro, aucune pénalité ; en Expert, une erreur coûte +1.</p>" +
         "<h3>Combien avance la jauge</h3>" +
         "<ul><li>✅ La meilleure défense : <strong>0</strong></li>" +
         "<li>🟠 La défense acceptable : <strong>+1</strong></li>" +
@@ -173,7 +200,7 @@ window.NovaI18n = (function () {
         "<h3>Les niveaux</h3>" +
         "<ul><li>🟢 <strong>Junior</strong> : les cartes vertes se réutilisent.</li>" +
         "<li>🟠 <strong>Pro</strong> : chaque carte verte ne sert qu'une fois.</li>" +
-        "<li>🔴 <strong>Expert</strong> : une seule fois, et les cartes #11, #21 et #30 demandent 2 cartes vertes.</li></ul>" +
+        "<li>🔴 <strong>Expert</strong> : le paquet Expert (#31 à #39 + #14, #19, #25) et les cartes vertes 0 à 16. Les cartes ×2 (#34, #36, #37) demandent 2 cartes vertes.</li></ul>" +
         "<h3>Pas de téléphone ?</h3>" +
         "<p>Le livret réponses de la boîte remplace l'appli : le pion sur la piste papier pour la jauge, et un minuteur de 10 minutes.</p>",
 
@@ -313,7 +340,7 @@ window.NovaI18n = (function () {
       "voice.replay": "🔁 Listen again",
       "music.on": "Background music: on",
       "music.off": "Background music: off",
-      "credits.voices": "Voices: Piper (free and open source), SIWIS, MLS and VCTK voices (CC BY 4.0) and \"Jenny (Dioco)\".",
+      "credits.voices": "Voices (always in English): Piper (free and open source), VCTK voices (CC BY 4.0) and \"Jenny (Dioco)\".",
       "home.glossary": "📖 Glossary EN / FR",
       "glo.title": "English / French glossary",
       "glo.intro": "The words of cybersecurity, in English and in French, with a simple explanation.",
@@ -327,9 +354,9 @@ window.NovaI18n = (function () {
       "pick.card": "card {n}",
       "pick.or": " or ",
       "pick.confirm": "Confirm",
-      "pick.confirmQ": "Card {c} · {d}. Confirm?",
-      "pick.confirmQ2": "Cards {c} · {d}. Confirm?",
-      "gp.invalid": "Green cards go from 1 to 12 (0 = \"It's safe!\").",
+      "pick.confirmQ": "Card {c}. Confirm?",
+      "pick.confirmQ2": "Cards {c}. Confirm?",
+      "gp.invalid": "Green cards go from 1 to {max} (0 = \"It's safe!\").",
       "gp.used": "Green card no. {n} has already been played: it is face down on the table.",
       "gp.notOffered": "Card {n} is not one of the defences on offer.",
       "gp.twice": "You need 2 different green cards.",
@@ -363,9 +390,9 @@ window.NovaI18n = (function () {
       "home.continue": "Continue the game",
       "home.new": "New game",
       "home.level": "Choose your level",
-      "lvl.junior": "2 defences on offer + \"It's safe!\". Green cards can be used again. For a first game.",
-      "lvl.pro": "3 defences on offer + \"It's safe!\". Each green card can be used only once. Normal game.",
-      "lvl.expert": "4 defences on offer + \"It's safe!\". Used only once, and cards #11, #21, #30 need 2 green cards.",
+      "lvl.junior": "Cards #1 to #30. 2 defences on offer + \"It's safe!\". Green cards can be used again. For a first game.",
+      "lvl.pro": "Cards #1 to #30. 3 defences on offer + \"It's safe!\". Each green card can be used only once. A question after each card.",
+      "lvl.expert": "The Expert deck (12 cards) and green cards 0 to 16. 4 defences on offer. Questions: a mistake costs +1.",
       "home.start": "Start",
       "home.rules": "📋 Rules sheet",
       "home.practice": "Practice mode: the mini-games, without timer or gauge",
@@ -373,7 +400,32 @@ window.NovaI18n = (function () {
 
       "pad.help": "Draw a red card, read it aloud, then type its number.",
       "pad.delete": "Delete",
-      "pad.invalid": "Type a red card number between 1 and 30.",
+      "pad.invalid": "Type a red card number between 1 and 39.",
+      "pad.expertDeck": "Expert uses the Expert deck: #31 to #39, #14, #19 and #25.",
+      "pad.standardDeck": "This level uses cards #1 to #30. Cards #31 to #39 are for the Expert level.",
+      "card.read": "📖 One player reads the paper card aloud, in English.",
+      "card.showText": "Show the text (damaged card, hard to read)",
+      "res.toQuestion": "Follow-up question",
+      "q.read": "🔄 Turn red card #{n} over: one player reads the question on the back aloud, in English. The team talks, puts a green card down and types its number (the card is not used up).",
+      "q.back": "question on the back",
+      "q.title": "Question on the back of the card",
+      "q.right": "Correct!",
+      "q.almost": "Almost",
+      "q.wrong": "Wrong answer",
+      "calc.qPro": "Pro level: a question costs nothing",
+      "calc.qAlmost": "Almost: +0",
+      "calc.qWrong": "Wrong answer: +1",
+      "q.letter": "Answer {l}",
+      "q.tagPro": "Follow-up question · Pro",
+      "q.tagExpert": "Follow-up question · Expert: a mistake costs +1",
+      "q.helpMcq": "Tap the letter the team chose.",
+      "q.helpOrder": "Tap the letters in order, from the first action to the last.",
+      "q.check": "Check the order",
+      "q.reset": "Start again",
+      "q.goodAnswer": "The right answer:",
+      "q.goodOrder": "The right order:",
+      "q.source": "Source:",
+      "end.questions": "Follow-up questions",
       "pad.played": "Card #{n} has already been played.",
       "card.real": "Real message card",
       "card.best": "Best",
@@ -446,12 +498,14 @@ window.NovaI18n = (function () {
         "<h3>The phone is the game master</h3>" +
         "<p>No human game master: everybody plays together. The phone, in the middle of the table, runs the game with the hacker's voice, offers the defences, judges and tells you where to put the pawn.</p>" +
         "<h3>One turn</h3>" +
-        "<ol><li>\"Attack incoming! Draw a red card.\": draw a red card, read it aloud and type its number.</li>" +
-        "<li>The situation appears, <strong>without the answer</strong>. Mini-game card: the mini-game opens.</li>" +
-        "<li>The phone offers green cards: 2 in Junior, 3 in Pro, 4 in Expert, and always \"It's safe!\" (no. 0).</li>" +
+        "<ol><li>\"Attack incoming! Draw a red card.\": draw a red card, <strong>one player reads it aloud, in English</strong>, then type its number. The app's voice never reads the cards.</li>" +
+        "<li>The app only shows the number, family, severity and title, so you can check. Mini-game card: the mini-game opens.</li>" +
+        "<li>The phone offers green cards, <strong>by number only</strong>: 2 in Junior, 3 in Pro, 4 in Expert, and always \"It's safe!\" (no. 0).</li>" +
         "<li>The team talks <strong>in English</strong>, puts the paper green card down and types its number, then <strong>Confirm</strong>.</li>" +
         "<li>The app judges and tells you where to put the pawn: \"Hacker blocked! Don't move the pawn.\" or \"Move the pawn to space 7.\" Then the right answer, the explanation and the golden rule.</li>" +
         "<li>\"Turn the green card face down.\" (except in Junior and except \"It's safe!\"), then the next attack.</li></ol>" +
+        "<h3>Follow-up questions (Pro and Expert)</h3>" +
+        "<p>After each text card, the app says \"Turn the card over.\": the question is on the back of the red card. One player reads it aloud, the team talks in English, then answers with a green card (it is not used up). In Pro, no penalty; in Expert, a mistake costs +1.</p>" +
         "<h3>How much the gauge goes up</h3>" +
         "<ul><li>✅ The best defence: <strong>0</strong></li>" +
         "<li>🟠 The acceptable defence: <strong>+1</strong></li>" +
@@ -468,7 +522,7 @@ window.NovaI18n = (function () {
         "<h3>Levels</h3>" +
         "<ul><li>🟢 <strong>Junior</strong>: green cards can be used again.</li>" +
         "<li>🟠 <strong>Pro</strong>: each green card is used only once.</li>" +
-        "<li>🔴 <strong>Expert</strong>: only once, and cards #11, #21 and #30 need 2 green cards.</li></ul>" +
+        "<li>🔴 <strong>Expert</strong>: the Expert deck (#31 to #39 + #14, #19, #25) and green cards 0 to 16. The ×2 cards (#34, #36, #37) need 2 green cards.</li></ul>" +
         "<h3>No phone?</h3>" +
         "<p>The answer booklet in the box replaces the app: the pawn on the paper track for the gauge, and a 10-minute timer.</p>",
 

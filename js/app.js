@@ -24,7 +24,12 @@
   var shownCard = null;      // carte affichée
   var picks = [];            // cartes vertes choisies
   var offered = [];          // numéros des cartes vertes proposées pour cette carte rouge
-  var TURN = D.HACKER.turn;  // phrases de chaque tour
+  var TURN = D.HACKER.turn;  // phrases de chaque tour (affichées dans la langue de l'écran)
+  var DV = window.NOVA_DATA_EN || D;   // la voix parle toujours anglais (English Game)
+  var TV = DV.HACKER.turn;   // phrases dites par la voix
+  var pendingQ = null;       // question de suivi à poser après le résultat
+  var resultInGame = false;
+  var practiceLevel = "junior";
   var cardPractice = false;  // carte rouge jouée en entraînement (sans partie)
   var mgContext = null;      // { inGame, card, practice, scannedWithoutGame }
   var lastResultEnded = false;
@@ -41,7 +46,7 @@
     });
     current = name;
     var practicing = (mgContext && !mgContext.inGame) || cardPractice;
-    var inGame = G.isPlaying() && (name === "game" || ((name === "minigame" || name === "result") && !practicing));
+    var inGame = G.isPlaying() && (name === "game" || ((name === "minigame" || name === "result" || name === "question") && !practicing));
     $("hud").hidden = !inGame;
     document.body.classList.toggle("is-ingame", inGame);
     var st = G.get();
@@ -180,7 +185,7 @@
     G.newGame(level);
     cardPractice = false;
     resetPad();
-    G.speakLine(["hacker-start", "guide-draw"], D.HACKER.start + " " + TURN.draw);
+    G.speakLine(["hacker-start", "guide-draw"], DV.HACKER.start + " " + TV.draw);
     show("game");
   });
 
@@ -312,6 +317,8 @@
     var n = parseInt(typed, 10);
     var card = n ? G.findCard(n) : null;
     if (!card) { padMessage(t("pad.invalid")); return; }
+    var lvl = G.get().level;
+    if (!G.inDeck(n, lvl)) { padMessage(t(lvl === "expert" ? "pad.expertDeck" : "pad.standardDeck")); return; }
     if (G.cardPlayed(n)) { padMessage(t("pad.played", { n: n })); return; }
     if (card.qr) {
       shownCard = card;
@@ -331,7 +338,10 @@
      ========================================================= */
   function showCardPanel(card, level) {
     shownCard = card;
+    currentQ = null;
     picks = [];
+    $("cpRead").textContent = t("card.read");
+    $("cpBack").hidden = false;
     $("pad").hidden = true;
     $("qrPanel").hidden = true;
     $("gameLinks").hidden = cardPractice;   // pas de "Abandonner la partie" pendant un entraînement
@@ -341,6 +351,8 @@
     $("cpSev").setAttribute("aria-label", t("card.sev", { n: card.sev }));
     $("cpTitle").textContent = card.title || "";
     $("cpText").textContent = card.text;
+    $("cpText").hidden = true;          // l'équipe lit la carte papier à voix haute
+    $("cpShowText").hidden = false;
 
     // Indice : seulement au niveau Junior et en entraînement
     var hintAllowed = level === "junior" || cardPractice;
@@ -356,12 +368,20 @@
     buildGreenPad(need);
     $("cardPanel").hidden = false;
     // ... et le dit à voix haute : "Choose your defence: card 9, card 3 or card 0"
-    var intro = need === 2 ? TURN.choose2 : TURN.choose;
-    var said = offered.map(function (num) {
-      return TURN.card.replace("{n}", num).replace("{d}", D.defenceVoice(greenName(num)));
+    speakChoices(need, [], []);
+  }
+
+  /* La voix dit les numéros proposés (jamais les noms des cartes vertes) */
+  function speakChoices(need, keys, texts) {
+    keys.push(need === 2 ? "guide-choose2" : "guide-choose");
+    var said = [];
+    offered.forEach(function (num, k) {
+      if (k === offered.length - 1 && k > 0) { keys.push("guide-or"); said.push(TV.or); }
+      keys.push("guide-card-" + num);
+      said.push(TV.card.replace("{n}", num));
     });
-    G.speakLine([need === 2 ? "guide-choose2" : "guide-choose"].concat(offered.map(function (num) { return "guide-card-" + num; })),
-      intro + " " + said.join(" "));
+    texts.push((need === 2 ? TV.choose2 : TV.choose) + " " + said.join(" ").replace(/(\d) (card|carte)/g, "$1, $2") + ".");
+    G.speakLine(keys, texts.join(" "));
   }
 
   /* "card 9, card 3 or card 0" */
@@ -376,10 +396,14 @@
     offered.forEach(function (num) {
       var li = makeEl("li", "choice" + (num === 0 ? " choice--safe" : ""));
       li.appendChild(makeEl("span", "choice__num", String(num)));
-      li.appendChild(makeEl("span", "choice__name", D.defence(greenName(num))));
       ul.appendChild(li);
     });
   }
+
+  $("cpShowText").addEventListener("click", function () {
+    $("cpText").hidden = false;
+    this.hidden = true;
+  });
 
   $("cpHintBtn").addEventListener("click", function () {
     $("cpHint").hidden = false;
@@ -411,8 +435,8 @@
   function slotError(v, idx) {
     if (v === "") return "";
     var num = parseInt(v, 10);
-    if (isNaN(num) || num > 12) return t("gp.invalid");
-    if (!cardPractice && G.greenUsed(greenName(num))) return t("gp.used", { n: num });
+    if (isNaN(num) || num > G.greensFor(shownCard)) return t("gp.invalid", { max: G.greensFor(shownCard) });
+    if (!cardPractice && !currentQ && G.greenUsed(greenName(num))) return t("gp.used", { n: num });
     if (offered.indexOf(num) < 0) return t("gp.notOffered", { n: num });
     for (var j = 0; j < slots.length; j++) {
       if (j !== idx && slots[j] !== "" && parseInt(slots[j], 10) === num) return t("gp.twice");
@@ -478,7 +502,7 @@
     var nums = slots.map(function (v) { return parseInt(v, 10); });
     $("gpConfirmText").textContent = t(nums.length === 2 ? "pick.confirmQ2" : "pick.confirmQ", {
       c: nums.join(" + "),
-      d: nums.map(function (n) { return D.defence(greenName(n)); }).join(" + ")
+      d: ""
     });
     $("gpYes").focus();
   }
@@ -492,21 +516,29 @@
     renderSlots();
   });
 
+  /* "card 9 + card 12" : l'appli ne donne que les numéros des cartes vertes */
+  function cardsText(names) {
+    return names.map(function (name) { return t("pick.card", { n: G.greenNumber(name) }); }).join(" + ");
+  }
+
   /* ---------- L'appli juge ---------- */
   function judge() {
+    if (currentQ) return judgeQuestion();
     var card = shownCard;
-    var level = cardPractice ? "pro" : G.get().level;
+    var level = cardPractice ? practiceLevel : G.get().level;
     var nums = slots.map(function (v) { return parseInt(v, 10); });
     picks = nums.map(greenName);
     var res = G.judgeCard(card, level, picks);
     var played = picks.slice();
     var info = {
       verdict: res.verdict, falseAlarm: res.falseAlarm, sev: card.sev, fam: card.fam,
-      played: nums.map(function (n) { return t("pick.card", { n: n }) + " · " + D.defence(greenName(n)); }).join(" + "),
+      played: nums.map(function (n) { return t("pick.card", { n: n }); }).join(" + "),
       flip: level !== "junior" ? nums.filter(function (n) { return n !== 0; }).length : 0,   // cartes à retourner
-      best: G.bestFor(card, level),
-      acceptable: card.ok && !(level === "expert" && card.expert) ? D.defence(card.ok) : null,
-      why: card.why
+      best: cardsText(level === "expert" && card.expert ? card.expert : [card.best]),
+      acceptable: card.ok && !(level === "expert" && card.expert) ? cardsText([card.ok]) : null,
+      why: card.why,
+      rule: card.rule || null,
+      greenRule: D.EXPERT_GREENS[card.best] ? cardsText([card.best]) + (I.lang === "fr" ? " : " : ": ") + D.EXPERT_GREENS[card.best].rule : null
     };
 
     if (cardPractice || !G.isPlaying()) {
@@ -516,12 +548,16 @@
       return;
     }
     mgContext = null;
+    // Pro et Expert : une question de suivi après chaque carte rouge à texte
+    pendingQ = level !== "junior" ? G.pickQuestion(card, level) : null;
     var out = G.applyAttack({
       card: card.n,
-      label: "#" + card.n + " " + D.FAMILIES[card.fam],
+      label: "#" + card.n + " " + (card.title || D.FAMILIES[card.fam]),
       fam: card.fam, sev: card.sev, verdict: res.verdict, falseAlarm: res.falseAlarm,
-      played: played, best: info.best, lesson: card.why   // gardés pour le débrief de fin
+      played: played, best: info.best, lesson: card.why,   // gardés pour le débrief de fin
+      followUp: !!pendingQ
     });
+    if (!G.isPlaying()) pendingQ = null;   // jauge à 10 : la partie est perdue, pas de question
     // Le verso des cartes rouges n'a pas de réponse : c'est l'appli qui l'affiche
     showResult(info, out, true);
   }
@@ -561,12 +597,16 @@
     var info = { verdict: r.verdict, falseAlarm: r.falseAlarm, sev: r.sev, fam: r.fam,
       summary: r.summary, best: null, why: r.why };
     if (mgContext.inGame && G.isPlaying()) {
+      var lvl = G.get().level;
+      pendingQ = lvl !== "junior" && mgContext.card ? G.pickQuestion({ n: mgContext.card }, lvl) : null;
       var out = G.applyAttack({
         card: mgContext.card,
         label: (mgContext.card ? "#" + mgContext.card + " " : "") + meta.name,
         fam: r.fam, sev: r.sev, verdict: r.verdict, falseAlarm: r.falseAlarm,
-        lesson: r.why
+        lesson: r.why,
+        followUp: !!pendingQ
       });
+      if (!G.isPlaying()) pendingQ = null;
       showResult(info, out, true);
     } else {
       // Entraînement, ou mini-jeu ouvert par son adresse sans partie en cours sur ce téléphone
@@ -591,7 +631,7 @@
     var v = r.falseAlarm ? VERDICTS.falseAlarm : VERDICTS[r.verdict];
     $("resBox").className = "result__box " + v.cls;
     $("resIcon").textContent = v.icon;
-    $("resTitle").textContent = t(v.key);
+    $("resTitle").textContent = r.question ? t("q." + r.verdict) : t(v.key);
     var summary = r.summary || (r.played ? t("res.played", { c: r.played }) : "");
     $("resSummary").textContent = summary;
     $("resSummary").hidden = !summary;
@@ -600,7 +640,17 @@
     calc.innerHTML = "";
     function line(text, cls) { calc.appendChild(makeEl("li", cls || "", text)); }
 
-    if (inGame && out) {
+    if (inGame && out && r.question) {
+      var qp = out.penalty;
+      if (r.level !== "expert") line(t("calc.qPro"));
+      else if (r.verdict === "right") line(t("calc.right"));
+      else if (r.verdict === "almost") line(t("calc.qAlmost"));
+      else line(t("calc.qWrong"));
+      if (qp.alertBonus) line(t("calc.alert"), "is-bonus");
+      line(t("calc.total", { n: qp.total }), "is-total");
+      $("resGauge").textContent = t("calc.gauge", { a: out.before, b: out.after });
+      $("resGauge").hidden = false;
+    } else if (inGame && out) {
       var p = out.penalty;
       if (r.verdict === "right") line(t("calc.right"));
       else if (r.falseAlarm) line(t("calc.false"));
@@ -632,44 +682,116 @@
     $("resBest").hidden = !best;
     $("resWhy").textContent = r.why || "";
     var info = D.FAMILY_INFO[r.fam];
-    $("resRule").textContent = info ? info.rule : "";
+    $("resRule").textContent = r.rule || (info ? info.rule : "");
     $("resRuleBox").hidden = !info;
+    $("resRule2").textContent = r.greenRule ? "🟩 " + r.greenRule : "";
+    $("resRule2").hidden = !r.greenRule;
     $("resNote").textContent = r.note || "";
     $("resNote").hidden = !r.note;
 
     lastResultEnded = inGame && !G.isPlaying();
+    resultInGame = inGame;
+    if (!inGame) pendingQ = null;
     var next = $("resNext");
     if (!inGame) next.textContent = t((mgContext && mgContext.practice) || cardPractice ? "res.backPractice" : "res.backHome");
-    else next.textContent = t(lastResultEnded ? "res.toEnd" : "res.next");
+    else next.textContent = t(lastResultEnded ? "res.toEnd" : pendingQ ? "res.toQuestion" : "res.next");
     show("result");
     next.focus();
 
     // Le téléphone le dit à voix haute
     if (inGame && out) {
       var keys = [moved ? "guide-pawn-" + out.after : "guide-blocked"];
-      var texts = [pawnText];
+      var texts = [moved ? TV.pawn.replace("{n}", out.after) : TV.blocked];
       if (out.crossedAlert && G.markAlertSpoken()) {
-        keys.push("hacker-alert"); texts.push(D.HACKER.alert);
+        keys.push("hacker-alert"); texts.push(DV.HACKER.alert);
         flashAlert();
       }
-      if (flipText) { keys.push(r.flip > 1 ? "guide-flip2" : "guide-flip"); texts.push(flipText); }
-      if (!lastResultEnded) { keys.push("guide-next"); texts.push(TURN.next); }
+      if (flipText) { keys.push(r.flip > 1 ? "guide-flip2" : "guide-flip"); texts.push(r.flip > 1 ? TV.flip2 : TV.flip); }
+      if (!lastResultEnded && !pendingQ) { keys.push("guide-next"); texts.push(TV.next); }
       G.speakLine(keys, texts.join(" "));
     }
   }
 
   $("resNext").addEventListener("click", function () {
     if (lastResultEnded) return goToEnd();
+    if (resultInGame && pendingQ) return showQuestion(pendingQ);
     if (cardPractice) { cardPractice = false; show("practice"); return; }
     if (mgContext && !mgContext.inGame) {
       mgContext = null;
       if (practiceMode) show("practice"); else showHome();
       return;
     }
+    nextAttack();
+  });
+
+  function nextAttack() {
     resetPad();
     show(G.isPlaying() ? "game" : "home");
-    if (G.isPlaying()) G.speakLine("guide-draw", TURN.draw);   // "Attack incoming! Draw a red card."
-  });
+    if (G.isPlaying()) G.speakLine("guide-draw", TV.draw);   // "Attack incoming! Draw a red card."
+  }
+
+  /* =========================================================
+     QUESTION DE SUIVI (Pro et Expert)
+     La question est imprimée au dos de la carte rouge. La voix ne la lit
+     JAMAIS : elle dit "Turn the card over. Read the question aloud.",
+     puis propose des cartes vertes par leur numéro. On répond avec une
+     carte verte, comme pour une attaque. La carte verte n'est pas usée.
+     ========================================================= */
+  var currentQ = null;
+
+  /* La question jouée comme une carte : bonne réponse, acceptable, pièges */
+  function questionCard(q) {
+    return { n: q.card, fam: q.family, sev: 1, best: q.best, ok: q.ok, traps: q.traps,
+             deck: q.level === "expert" ? "expert" : "standard" };
+  }
+
+  function showQuestion(q) {
+    pendingQ = null;
+    cardPractice = false;
+    resetPad();
+    show("game");
+    currentQ = q;
+    shownCard = questionCard(q);
+    picks = [];
+    var lvl = G.get().level;
+    $("pad").hidden = true;
+    $("qrPanel").hidden = true;
+    $("cpNum").textContent = "#" + q.card;
+    $("cpFam").textContent = t(lvl === "expert" ? "q.tagExpert" : "q.tagPro");
+    $("cpSev").textContent = "🔄";
+    $("cpSev").removeAttribute("aria-label");
+    $("cpTitle").textContent = t("q.title");
+    $("cpRead").textContent = t("q.read", { n: q.card });
+    $("cpText").hidden = true;
+    $("cpShowText").hidden = true;
+    $("cpHintBtn").hidden = true;
+    $("cpHint").hidden = true;
+    $("cpBack").hidden = true;          // on ne peut pas revenir en arrière
+    offered = G.proposeDefences(shownCard, lvl, true);   // une question n'use pas les cartes vertes
+    renderChoices();
+    $("pickTitle").textContent = t("pick.title", { list: choiceList() });
+    buildGreenPad(1);
+    $("cardPanel").hidden = false;
+    // "Turn the card over. Read the question aloud. Choose your defence: card 9, card 3 or card 0."
+    speakChoices(1, ["guide-question"], [TV.question]);
+  }
+
+  function judgeQuestion() {
+    var q = currentQ;
+    var nums = slots.map(function (v) { return parseInt(v, 10); });
+    var res = G.judgeCard(shownCard, "pro", nums.map(greenName));
+    var out = G.answerQuestion(q, res.verdict);
+    var info = {
+      question: true, level: G.get().level, verdict: res.verdict, falseAlarm: false, fam: q.family,
+      played: nums.map(function (n) { return t("pick.card", { n: n }); }).join(" + "),
+      best: cardsText([q.best]),
+      acceptable: q.ok ? cardsText([q.ok]) : null,
+      why: I.lang === "fr" ? q.explain.fr : q.explain.en,
+      note: t("q.source") + " " + q.source.replace(/^https?:\/\//, "").split("/")[0]
+    };
+    currentQ = null;
+    showResult(info, out, true);
+  }
 
   function flashAlert() {
     document.body.classList.remove("flash");
@@ -687,7 +809,7 @@
     if (!st.endSpoken) {
       st.endSpoken = true;
       G.save();
-      G.speakLine(won ? "hacker-win" : "hacker-lose", won ? D.HACKER.win : D.HACKER.lose);
+      G.speakLine(won ? "hacker-win" : "hacker-lose", won ? DV.HACKER.win : DV.HACKER.lose);
     }
     document.body.classList.remove("is-alert", "is-final");
     NovaAudio.setMusicMood("calm");
@@ -702,6 +824,7 @@
     // --- Point faible : la famille qui a coûté le plus ---
     var costByFam = {};
     st.attacks.forEach(function (a) { costByFam[a.fam] = (costByFam[a.fam] || 0) + a.cost; });
+    (st.questions || []).forEach(function (q) { costByFam[q.fam] = (costByFam[q.fam] || 0) + q.cost; });
     var weak = null;
     Object.keys(costByFam).forEach(function (f) {
       if (costByFam[f] > 0 && (!weak || costByFam[f] > costByFam[weak])) weak = f;
@@ -730,6 +853,16 @@
       }
       recap.appendChild(li);
     });
+
+    if ((st.questions || []).length) {
+      var good = st.questions.filter(function (q) { return q.right; }).length;
+      var qCost = st.questions.reduce(function (sum, q) { return sum + q.cost; }, 0);
+      var qli = makeEl("li", "end__row end__row--" + (good === st.questions.length ? "right" : "almost"));
+      qli.appendChild(makeEl("span", "end__name", t("end.questions")));
+      qli.appendChild(makeEl("span", "end__verdict", good + "/" + st.questions.length));
+      qli.appendChild(makeEl("span", "end__cost", "+" + qCost));
+      recap.appendChild(qli);
+    }
 
     // --- Règles d'or des familles rencontrées ---
     var rules = $("dbRules");
@@ -779,8 +912,9 @@
     var card = textCards[Math.floor(Math.random() * textCards.length)];
     mgContext = null;
     cardPractice = true;
+    practiceLevel = card.deck === "expert" ? "expert" : "junior";
     show("game");
-    showCardPanel(card, "junior");
+    showCardPanel(card, practiceLevel);
   }, "practice__item--cards");
 
   QR_KEYS.forEach(function (key) {

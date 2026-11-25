@@ -9,18 +9,22 @@ function guide(D) {
   g["guide-draw"] = T.draw;
   g["guide-choose"] = T.choose;
   g["guide-choose2"] = T.choose2;
-  for (let n = 0; n <= 12; n++) {
+  for (let n = 0; n <= D.DEFENCES.length; n++) {
     const name = n === 0 ? "It's safe!" : D.DEFENCES[n - 1];
-    g["guide-card-" + n] = T.card.replace("{n}", n).replace("{d}", D.defenceVoice(name));
+    g["guide-card-" + n] = T.card.replace("{n}", n);   // seulement le numéro : le nom est sur la carte papier
   }
   g["guide-blocked"] = T.blocked;
   for (let n = 1; n <= 10; n++) g["guide-pawn-" + n] = T.pawn.replace("{n}", n);
   g["guide-flip"] = T.flip;
   g["guide-flip2"] = T.flip2;
   g["guide-next"] = T.next;
+  g["guide-or"] = T.or;
+  g["guide-question"] = T.question;
+  g["guide-correct"] = T.correct;
+  g["guide-wrong"] = T.wrong;
   return g;
 }
-for (const lang of ["fr", "en"]) {
+for (const lang of ["en"]) {   // la voix parle toujours anglais (English Game)
   const ctx = { window: {}, console };
   ctx.window.NovaI18n = { lang };
   const run = (file) => new Function("window", fs.readFileSync(path.join(root, "js", file), "utf8"))(ctx.window);

@@ -1,0 +1,177 @@
+/* =========================================================
+   HACKER ALERT — QUESTIONS DE SUIVI (Pro et Expert)
+   ---------------------------------------------------------
+   Chaque question est IMPRIMÉE AU DOS de sa carte rouge (39 cartes, 39 questions).
+   L'appli ne montre jamais la question : elle dit
+   "Turn the card over. Read the question aloud." puis propose des cartes
+   vertes par leur numéro, comme pour une attaque. L'équipe pose une carte
+   verte et tape son numéro. La carte verte n'est pas usée.
+   - Pro (cartes #1 à #30)     : pas de pénalité.
+   - Expert (cartes #31 à #39) : mauvaise réponse = +1 (et bonus alerte rouge).
+   Champs : card, level, family, q (texte imprimé, pour les listes),
+            best, ok (acceptable), traps (pièges proposés), explain {en, fr}, source.
+   ========================================================= */
+window.NOVA_QUESTIONS = (function () {
+  "use strict";
+
+  var S = {
+    phish: "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/hameconnage-phishing",
+    padlock: "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/comment-securiser-ses-achats-sur-internet",
+    quishing: "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/quishing-hameconnage-qr-code",
+    pwd: "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/bonnes-pratiques/mots-de-passe",
+    hacked: "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/piratage-de-compte",
+    twofa: "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/double-authentification",
+    backup: "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/bonnes-pratiques/sauvegardes",
+    updates: "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/bonnes-pratiques/mises-a-jour",
+    ransom: "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/rancongiciels-ransomwares",
+    support: "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/arnaques-au-faux-support-technique",
+    bank: "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/fraude-faux-conseiller-bancaire",
+    fovi: "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/escroquerie-faux-ordres-virement-fovi",
+    hygiene: "https://cyber.gouv.fr/publications/guide-dhygiene-informatique",
+    nomad: "https://cyber.gouv.fr/publications/recommandations-sur-le-nomadisme-numerique",
+    cisaNumber: "https://www.cisa.gov/sites/default/files/publications/fact-sheet-implement-number-matching-in-mfa-applications-508c.pdf",
+    cisaRansom: "https://www.cisa.gov/stopransomware/ransomware-guide",
+    cisaKev: "https://www.cisa.gov/known-exploited-vulnerabilities-catalog",
+    cisaMail: "https://www.cisa.gov/news-events/directives/bod-18-01-enhance-email-and-web-security",
+    cisaBackup: "https://www.cisa.gov/audiences/small-and-medium-businesses/secure-your-business/back-up-business-data",
+    cisaDeepfake: "https://www.cisa.gov/news-events/alerts/2023/09/12/nsa-fbi-and-cisa-release-cybersecurity-information-sheet-deepfake-threats",
+    mitreBrute: "https://attack.mitre.org/techniques/T1110/",
+    mitreDomains: "https://attack.mitre.org/techniques/T1583/001/",
+    mitreRemote: "https://attack.mitre.org/techniques/T1133/"
+  };
+
+  /* Noms des cartes vertes (numéro imprimé = place dans la liste) */
+  var G = [null, "Check the sender", "Don't click", "Strong password", "Password manager", "Two-factor (2FA)", "Update",
+           "Backup", "Lock your screen", "Call back to check", "Avoid public Wi-Fi", "Antivirus scan", "Alert IT",
+           "Isolate the machine", "Patch the server", "Block the access", "Reset & revoke"];
+  function g(n) { return n === 0 ? "It's safe!" : G[n]; }
+
+  function Q(card, family, q, best, ok, traps, en, fr, source) {
+    return { id: "C" + card, card: card, level: card >= 31 ? "expert" : "pro", family: family, q: q,
+             best: g(best), ok: ok == null ? null : g(ok), traps: traps.map(g),
+             explain: { en: en, fr: fr }, source: source };
+  }
+
+  return [
+    /* ===================== PRO : cartes #1 à #30 ===================== */
+    Q(1, "phishing", "A text says your parcel is on hold: pay €1.99 by a link. What do you do?", 2, 1, [9, 11],
+      "Small fees and a link in a text are a classic fake delivery scam. Check on the carrier's real app or website.",
+      "Des petits frais et un lien dans un SMS : c'est l'arnaque classique au faux colis. Vérifie sur l'appli ou le site officiel du transporteur.", S.phish),
+    Q(2, "humans", "Your \"boss\" writes from a free email address and asks you to buy gift cards secretly. What do you do?", 9, 1, [2, 12],
+      "Secret, urgent and gift cards: it's the fake boss scam. Call your boss back on a number you already know.",
+      "Secret, urgent et cartes cadeaux : c'est l'arnaque au faux patron. Rappelle ton patron sur un numéro que tu connais.", S.fovi),
+    Q(3, "phishing", "You already clicked the link and typed your password. What now?", 12, 3, [11, 6],
+      "Tell IT at once so they can lock the account, then change the password everywhere you used it.",
+      "Préviens tout de suite l'informatique pour bloquer le compte, puis change le mot de passe partout où il servait.", S.hacked),
+    Q(4, "phishing", "A colleague already opened invoice.pdf.exe. What do you do first?", 12, 11, [6, 7],
+      "A program may already be running. Alert IT first: they can isolate the computer before it spreads.",
+      "Un programme tourne peut-être déjà. Préviens d'abord l'informatique : elle peut isoler l'ordinateur avant que ça se propage.", S.hygiene),
+    Q(5, "phishing", "The same email now asks for your password to open the intranet. What do you do?", 2, 12, [3, 1],
+      "A real HR email never asks for your password. Don't click: open the intranet yourself.",
+      "Un vrai mail des RH ne demande jamais ton mot de passe. Ne clique pas : ouvre l'intranet toi-même.", S.phish),
+    Q(6, "phishing", "The text gives a phone number. Which number do you call?", 9, null, [2, 1],
+      "Never the number in the message: call the one on the back of your card or in your bank's app.",
+      "Jamais le numéro du message : appelle celui au dos de ta carte ou dans l'appli de ta banque.", S.bank),
+    Q(7, "passwords", "An email asks you to reply with your password to keep your mailbox. What do you do?", 2, 12, [3, 4],
+      "Nobody serious asks for your password by email. Don't answer, and report it.",
+      "Personne de sérieux ne demande ton mot de passe par mail. Ne réponds pas, et signale-le.", S.phish),
+    Q(8, "passwords", "IT asks you to choose a new password. Which card helps you most?", 3, 4, [5, 6],
+      "Long beats complicated: 12 characters or more, or 4 random words.",
+      "Long vaut mieux que compliqué : 12 caractères ou plus, ou 4 mots au hasard.", S.pwd),
+    Q(9, "passwords", "The accountant can't remember long passwords. Which card helps him?", 4, 3, [5, 8],
+      "A password manager remembers long, different passwords for him. He only needs one strong master password.",
+      "Un gestionnaire retient pour lui des mots de passe longs et différents. Il n'a qu'un mot de passe maître à retenir.", S.pwd),
+    Q(10, "passwords", "Netflix leaked his password. What still protects his bank account?", 5, 3, [6, 11],
+      "With two-factor authentication, a stolen password alone is not enough to get in.",
+      "Avec la double authentification, un mot de passe volé ne suffit pas pour entrer.", S.twofa),
+    Q(11, "passwords", "The hacker also needs a code sent to the boss's phone. Which card made that happen?", 5, 3, [4, 12],
+      "That second code is two-factor authentication: the second lock.",
+      "Ce deuxième code, c'est la double authentification : le deuxième verrou.", S.twofa),
+    Q(12, "passwords", "The intern leaves his desk with his session open. What should he do?", 8, null, [4, 3],
+      "Windows + L locks the session in one second. Anyone passing could read or send things in his name.",
+      "Windows + L verrouille la session en une seconde. N'importe qui pourrait lire ou envoyer des choses en son nom.", S.hygiene),
+    Q(13, "devices", "A 2FA code is visible on a phone left on the desk. What should the owner do?", 8, null, [5, 12],
+      "Lock the phone too: a code on screen can be read by anyone passing.",
+      "Verrouille aussi le téléphone : un code affiché peut être lu par n'importe qui.", S.hygiene),
+    Q(14, "devices", "Your files are locked and a ransom is asked. Which card gets them back without paying?", 7, 12, [11, 6],
+      "A backup kept offline lets you restore the files. Never pay the ransom.",
+      "Une sauvegarde déconnectée permet de restaurer les fichiers. Ne paie jamais la rançon.", S.ransom),
+    Q(15, "devices", "Your colleague already plugged the key in. What now?", 12, 11, [7, 6],
+      "Alert IT at once: they will check the computer and isolate it if needed.",
+      "Préviens tout de suite l'informatique : elle vérifiera l'ordinateur et l'isolera si besoin.", S.hygiene),
+    Q(16, "devices", "How do you get a real update for your video player?", 6, null, [2, 11],
+      "Real updates come from your system settings or the official app store, never from a pop-up.",
+      "Les vraies mises à jour viennent des réglages ou du store officiel, jamais d'une fenêtre sur un site.", S.updates),
+    Q(17, "devices", "You come back and see someone at your computer. What do you do?", 12, null, [8, 7],
+      "Someone may have copied files or used your session. Alert IT so they can check what happened.",
+      "Quelqu'un a peut-être copié des fichiers ou utilisé ta session. Préviens l'informatique pour qu'elle vérifie.", S.hygiene),
+    Q(18, "devices", "Hackers used the flaw and your files are gone. What saves you?", 7, 11, [6, 12],
+      "Only a backup brings lost files back. Then install the update so it can't happen again.",
+      "Seule une sauvegarde ramène les fichiers perdus. Ensuite, installe la mise à jour pour que ça ne recommence pas.", S.backup),
+    Q(19, "humans", "A caller from \"IT\" asks for the code you just received. What do you do?", 9, 12, [5, 1],
+      "Nobody needs your code, not even IT. Hang up and call IT back on the number you know.",
+      "Personne n'a besoin de ton code, même pas l'informatique. Raccroche et rappelle-la sur le numéro que tu connais.", S.support),
+    Q(20, "humans", "Your \"bank\" calls and asks you to confirm a payment in your app. What do you do?", 9, null, [5, 1],
+      "A real bank never asks you to approve operations on the phone. Hang up and call your bank yourself.",
+      "Une vraie banque ne demande jamais de valider des opérations au téléphone. Raccroche et appelle ta banque toi-même.", S.bank),
+    Q(21, "humans", "The invoice was already paid. What do you do at once?", 12, 9, [7, 1],
+      "Alert IT and management at once: the bank can sometimes stop the transfer if it is told quickly.",
+      "Préviens tout de suite l'informatique et la direction : la banque peut parfois bloquer le virement si elle est prévenue vite.", S.fovi),
+    Q(22, "humans", "He says he forgot his badge and shows a delivery note. What do you do?", 12, 9, [8, 1],
+      "A delivery note is not a badge. Don't let him in: call IT or security.",
+      "Un bon de livraison n'est pas un badge. Ne le laisse pas entrer : appelle l'informatique ou la sécurité.", S.hygiene),
+    Q(23, "humans", "The same manager now calls from an unknown number and asks for a bank transfer. What do you do?", 9, 12, [1, 2],
+      "Unknown number + money = check. Call her back on her usual number before doing anything.",
+      "Numéro inconnu + argent = on vérifie. Rappelle-la sur son numéro habituel avant de faire quoi que ce soit.", S.fovi),
+    Q(24, "humans", "He now sends an email with a \"list to complete\" attached. What do you do?", 2, 12, [11, 1],
+      "Don't open an attachment from someone you can't check. Pass it to IT.",
+      "N'ouvre pas une pièce jointe de quelqu'un que tu ne peux pas vérifier. Transmets-la à l'informatique.", S.phish),
+    Q(25, "network", "A QR code on a poster opens a login page. What do you do before typing?", 1, 2, [10, 11],
+      "Read the address the QR code opened: a fake sticker can send you to a copy of the real site.",
+      "Lis l'adresse ouverte par le QR code : un faux autocollant peut t'envoyer sur une copie du vrai site.", S.quishing),
+    Q(26, "network", "At a café, two Wi-Fi networks have almost the same name. What do you do?", 10, null, [11, 1],
+      "One of them may be a fake twin network. Use your phone's connection instead.",
+      "L'un des deux est peut-être un faux réseau jumeau. Utilise plutôt la connexion de ton téléphone.", S.nomad),
+    Q(27, "network", "You really must send the file now. What is the safe way?", 10, null, [5, 3],
+      "Use your phone's connection (hotspot), not the free Wi-Fi.",
+      "Utilise la connexion de ton téléphone (partage de connexion), pas le Wi-Fi gratuit.", S.nomad),
+    Q(28, "network", "Now the site has a padlock, but the address is bluestonebank.com.secure-check.net. What do you do?", 2, 1, [11, 10],
+      "The padlock only means the connection is encrypted. The real site here is secure-check.net: a fake.",
+      "Le cadenas veut seulement dire que la connexion est chiffrée. Le vrai site ici, c'est secure-check.net : un faux.", S.padlock),
+    Q(29, "network", "After the update, a pop-up asks you to \"confirm your password\" on an outside website. What do you do?", 2, 12, [6, 1],
+      "IT said there was nothing to do. A request for your password on an outside site is phishing.",
+      "L'informatique a dit qu'il n'y avait rien à faire. Une demande de mot de passe sur un site extérieur, c'est du phishing.", S.phish),
+    Q(30, "network", "How do you make sure this can't stop the company again next month?", 7, 6, [11, 3],
+      "Regular backups kept offline (3 copies, 2 media, 1 elsewhere) let you restart without paying.",
+      "Des sauvegardes régulières et déconnectées (3 copies, 2 supports, 1 ailleurs) permettent de redémarrer sans payer.", S.cisaBackup),
+
+    /* ===================== EXPERT : cartes #31 à #39 ===================== */
+    Q(31, "phishing", "The same fake email reached 50 people. Which card protects everyone?", 12, 1, [2, 11],
+      "IT can block the sender and remove the email from every mailbox at once.",
+      "L'informatique peut bloquer l'expéditeur et retirer le mail de toutes les boîtes d'un coup.", S.cisaMail),
+    Q(32, "phishing", "A colleague already typed his password on that page. What do you do first?", 16, 12, [3, 5],
+      "The attacker may already be logged in: change the password AND close every open session.",
+      "L'attaquant est peut-être déjà connecté : change le mot de passe ET ferme toutes les sessions ouvertes.", S.hacked),
+    Q(33, "phishing", "The link now goes to novacorp-passwords.com instead of intranet.novacorp.com. What do you do?", 2, 12, [4, 1],
+      "novacorp-passwords.com is not a NovaCorp address. Don't click, and report it.",
+      "novacorp-passwords.com n'est pas une adresse de NovaCorp. Ne clique pas, et signale-le.", S.mitreDomains),
+    Q(34, "passwords", "The CFO already approved one request by mistake. What do you do first?", 16, 12, [5, 3],
+      "The attacker is in: reset the password and revoke all sessions, then turn on number matching.",
+      "L'attaquant est entré : réinitialise le mot de passe et révoque toutes les sessions, puis active la correspondance de nombres.", S.cisaNumber),
+    Q(35, "passwords", "The attacker's IP keeps trying on other accounts. What do you do?", 15, 12, [3, 5],
+      "Block the address on the firewall to stop the brute force on every account.",
+      "Bloque l'adresse sur le pare-feu pour arrêter la force brute sur tous les comptes.", S.mitreBrute),
+    Q(36, "devices", "The laptop is isolated. The shared files are encrypted. How do you get them back?", 7, 12, [11, 14],
+      "Restore from a clean, offline backup, once you are sure the attacker is out.",
+      "Restaure une sauvegarde saine et hors ligne, une fois sûr que l'attaquant est parti.", S.cisaRansom),
+    Q(37, "humans", "The CEO's real number doesn't answer and the \"CEO\" says it's urgent. What do you do?", 12, 9, [1, 5],
+      "No check, no transfer. Follow the payment procedure and alert IT: urgency is the scammer's weapon.",
+      "Pas de vérification, pas de virement. Suis la procédure de paiement et préviens l'informatique : l'urgence est l'arme de l'escroc.", S.cisaDeepfake),
+    Q(38, "network", "The ports are closed, but staff still need remote access from home. What protects the VPN login?", 5, 14, [15, 3],
+      "Remote access goes through a VPN protected by two-factor authentication.",
+      "L'accès à distance passe par un VPN protégé par la double authentification.", S.mitreRemote),
+    Q(39, "network", "The patch is installed, but logs show a VPN login from an unknown IP last night. What do you do?", 16, 15, [13, 6],
+      "The patch came too late: an account may be stolen. Reset it and revoke its sessions, then block the IP.",
+      "Le correctif est arrivé trop tard : un compte est peut-être volé. Réinitialise-le et révoque ses sessions, puis bloque l'IP.", S.cisaKev)
+  ];
+})();

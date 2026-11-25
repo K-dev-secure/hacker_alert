@@ -123,17 +123,25 @@
     <section class="section reveal" id="materiel" aria-labelledby="t-materiel">
       <div class="section__head">
         <span class="section__num">02</span><h2 class="section__title" id="t-materiel">Le matériel</h2>
-        <p class="section__sub">44 cartes, une piste, un pion, ni dé ni plateau</p>
+        <p class="section__sub">57 cartes, une piste, un pion, ni dé ni plateau</p>
       </div>
 
       <ul class="kit">
         <li class="kit__item kit__item--red">
           <span class="kit__count">30</span>
-          <div><h3 class="kit__name">Cartes rouges (Attaque)</h3><p class="kit__text">Les attaques du hacker, 5 familles de 6. On en pioche 6 au hasard par partie. 10 sont des cartes mini-jeu. Verso identique pour toutes : aucune réponse imprimée.</p></div>
+          <div><h3 class="kit__name">Cartes rouges (Attaque)</h3><p class="kit__text">Les attaques du hacker, 5 familles de 6. On en pioche 6 au hasard par partie. 10 sont des cartes mini-jeu. Au verso : une question de suivi, jamais la réponse.</p></div>
+        </li>
+        <li class="kit__item kit__item--red">
+          <span class="kit__count">9</span>
+          <div><h3 class="kit__name">Cartes rouges Expert (#31 à #39)</h3><p class="kit__text">Bandeau « EXPERT ». Seulement au niveau Expert (<a href="#gagner">section 8</a>).</p></div>
         </li>
         <li class="kit__item kit__item--green">
           <span class="kit__count">12</span>
           <div><h3 class="kit__name">Cartes vertes (Défense)</h3><p class="kit__text">Les bons réflexes, numérotées de 1 à 12, toujours posées face visible au milieu. Verso « USED ».</p></div>
+        </li>
+        <li class="kit__item kit__item--green">
+          <span class="kit__count">4</span>
+          <div><h3 class="kit__name">Cartes vertes Expert (13 à 16)</h3><p class="kit__text">Bandeau « EXPERT ». Ajoutées au milieu seulement au niveau Expert.</p></div>
         </li>
         <li class="kit__item kit__item--green">
           <span class="kit__count">1</span>
@@ -186,7 +194,7 @@
         </article>
         <article class="block block--red">
           <h3 class="block__title">Verso</h3>
-          <p>Identique pour toutes (logo + « ATTACK ») : <strong>aucune réponse imprimée</strong>, et rien n'indique qu'une carte est un vrai message. C'est le téléphone qui donne la bonne réponse et l'explication.</p>
+          <p>Logo + « ATTACK » et <strong>une question de suivi</strong>, à laquelle on répond avec une carte verte. <strong>Aucune bonne réponse imprimée</strong>, et rien n'indique qu'une carte est un vrai message : c'est le téléphone qui juge.</p>
         </article>
       </div>
 
@@ -321,6 +329,16 @@
         </li>
       </ul>
 
+      <div class="callout callout--green">
+        <p class="callout__title">Niveau Expert : 4 cartes vertes en plus</p>
+        <ul class="checklist">
+          <li><b>13</b> <span lang="en">Isolate the machine</span> : couper du réseau, sans éteindre</li>
+          <li><b>14</b> <span lang="en">Patch the server</span> : installer le correctif tout de suite</li>
+          <li><b>15</b> <span lang="en">Block the access</span> : fermer le port ou bloquer l'adresse</li>
+          <li><b>16</b> <span lang="en">Reset &amp; revoke</span> : changer le mot de passe et fermer toutes les sessions</li>
+        </ul>
+      </div>
+
       <h3 class="subhead">Deux règles</h3>
       <ol class="rules">
         <li>
@@ -387,21 +405,21 @@
       <ol class="timeline" id="timeline">
         <li class="timeline__step reveal">
           <h3 class="timeline__title">Piocher</h3>
-          <p>Le téléphone dit <strong lang="en">"Attack incoming! Draw a red card."</strong> L'équipe pioche une carte rouge, la lit à voix haute et tape son numéro.</p>
+          <p>Le téléphone dit <strong lang="en">"Attack incoming! Draw a red card."</strong> L'équipe pioche une carte rouge, <strong>un joueur la lit à voix haute, en anglais</strong>, et on tape son numéro. La voix de l'appli ne lit jamais les cartes ni les questions.</p>
         </li>
         <li class="timeline__step reveal">
           <h3 class="timeline__title">Lire</h3>
-          <p>La situation s'affiche, <strong>sans la réponse</strong>.</p>
+          <p>L'appli affiche seulement <strong lang="en">"#22 · Delivery man · 💀💀💀"</strong> pour vérifier le numéro. Le texte complet est caché derrière <span lang="en">"Show the text"</span> (carte abîmée).</p>
           <p class="timeline__aside">Carte mini-jeu : le mini-jeu s'ouvre, voir <a href="#application">section 9</a>.</p>
         </li>
         <li class="timeline__step reveal">
           <h3 class="timeline__title">Choisir</h3>
-          <p>Le téléphone propose des cartes vertes : <strong lang="en">"Choose your defence: card 9, card 3 or card 0"</strong> (numéro + nom à l'écran).</p>
+          <p>Le téléphone propose des cartes vertes : <strong lang="en">"Choose your defence: card 9, card 3 or card 0"</strong>. <strong>Seulement les numéros</strong> : les noms se lisent sur les cartes papier.</p>
           <ul class="checklist">
-            <li>Junior : 2 choix · Pro : 3 · Expert : 4 (et 2 cartes à choisir pour #11, #21, #30)</li>
+            <li>Junior : 2 choix · Pro : 3 · Expert : 4 (et 2 cartes à choisir pour #34, #36, #37)</li>
             <li>Toujours la meilleure défense si elle n'est pas encore utilisée, sinon la défense acceptable</li>
             <li>Toujours "It's safe!" (n°0) en plus</li>
-            <li>Les autres : des pièges tirés au hasard parmi les cartes encore disponibles, dans un ordre mélangé</li>
+            <li>Les autres : des pièges crédibles (logiques, mais faux) encore disponibles, dans un ordre mélangé</li>
           </ul>
         </li>
         <li class="timeline__step reveal">
@@ -419,11 +437,16 @@
         </li>
         <li class="timeline__step reveal">
           <h3 class="timeline__title">Pion et réponse</h3>
-          <p><strong lang="en">"Hacker blocked! Don't move the pawn."</strong> ou <strong lang="en">"Move the pawn to space 7."</strong> Puis la bonne réponse, l'explication et la règle d'or à retenir.</p>
+          <p><strong lang="en">"Hacker blocked! Don't move the pawn."</strong> ou <strong lang="en">"Move the pawn to space 7."</strong> Puis le numéro de la bonne carte, l'explication et la règle d'or à retenir.</p>
         </li>
         <li class="timeline__step reveal">
           <h3 class="timeline__title">Ranger</h3>
           <p><strong lang="en">"Turn the green card face down."</strong> (sauf au niveau Junior et sauf "It's safe!"), puis <strong lang="en">"Next attack!"</strong></p>
+        </li>
+        <li class="timeline__step reveal">
+          <h3 class="timeline__title">Question (Pro et Expert)</h3>
+          <p>Après chaque carte rouge, l'appli dit <strong lang="en">"Turn the card over. Read the question aloud."</strong> Un joueur lit la question du dos, l'équipe discute en anglais puis répond <strong>avec une carte verte</strong> (numéro proposé par l'appli). La carte verte n'est pas usée.</p>
+          <p class="timeline__aside">Pro : aucune pénalité. Expert : une erreur coûte +1. Pas de question en Junior.</p>
         </li>
       </ol>
 
@@ -534,22 +557,23 @@
           <span class="level__dot" aria-hidden="true">🟢</span>
           <h3 class="level__name">Junior</h3>
           <p class="level__tag">Pour une première partie.</p>
-          <p>Cartes vertes réutilisables (on ne les retourne pas).</p>
+          <p>Cartes #1 à #30, cartes vertes 0 à 12, réutilisables (on ne les retourne pas). Pas de question.</p>
         </li>
         <li class="level level--pro">
           <span class="level__dot" aria-hidden="true">🟠</span>
           <h3 class="level__name">Pro</h3>
           <p class="level__tag">Partie normale.</p>
-          <p>Chaque carte verte ne sert qu'une fois.</p>
+          <p>Cartes #1 à #30, cartes vertes 0 à 12. Chaque carte verte ne sert qu'une fois. Une question après chaque carte, sans pénalité.</p>
         </li>
         <li class="level level--expert">
           <span class="level__dot" aria-hidden="true">🔴</span>
           <h3 class="level__name">Expert</h3>
-          <p>Une seule utilisation, <strong>ET</strong> certaines attaques demandent 2 cartes vertes :</p>
+          <p>Le <strong>paquet Expert</strong> : 12 cartes (#31 à #39 + #14, #19, #25) et les cartes vertes 0 à 16. Une seule utilisation. Une question après chaque carte : une erreur coûte +1.</p>
+          <p>Les cartes ×2 demandent 2 cartes vertes :</p>
           <ul class="level__combos">
-            <li><b>#11</b><span lang="en">2FA + Strong password</span></li>
-            <li><b>#21</b><span lang="en">Call back to check + Alert IT</span></li>
-            <li><b>#30</b><span lang="en">Backup + Alert IT</span></li>
+            <li><b>#34</b><span lang="en">Reset &amp; revoke + Alert IT</span></li>
+            <li><b>#36</b><span lang="en">Isolate the machine + Alert IT</span></li>
+            <li><b>#37</b><span lang="en">Call back to check + Alert IT</span></li>
           </ul>
           <ul class="level__rules">
             <li>Les deux bonnes = <strong lang="en">Right</strong></li>
@@ -562,11 +586,11 @@
 
       <h3 class="subhead">Pourquoi on peut rejouer</h3>
       <ul class="checklist">
-        <li>6 attaques tirées parmi 30</li>
+        <li>6 attaques tirées parmi 30 (ou parmi les 12 du paquet Expert)</li>
         <li>Les cartes vertes s'usent donc la stratégie change</li>
         <li>Les cartes mini-jeu tirent une situation différente à chaque fois</li>
         <li>Les vrais messages sont mélangés aux arnaques</li>
-        <li>3 niveaux</li>
+        <li>3 niveaux, et une question de suivi au dos de chaque carte rouge</li>
       </ul>
     </section>
 
@@ -599,9 +623,9 @@
               <p class="phone__card" lang="en">Card <b>#11</b> · 💀💀💀💀</p>
               <p class="phone__answer" lang="en">Choose your defence:</p>
               <div class="phone__buttons" lang="en">
-                <span class="phone__btn phone__btn--right">5 · 2FA</span>
-                <span class="phone__btn phone__btn--almost">3 · Strong password</span>
-                <span class="phone__btn phone__btn--wrong">0 · It's safe!</span>
+                <span class="phone__btn phone__btn--right">5</span>
+                <span class="phone__btn phone__btn--almost">3</span>
+                <span class="phone__btn phone__btn--wrong">0</span>
               </div>
             </div>
           </div>
@@ -613,10 +637,11 @@
             <li>Le chrono de 10 minutes</li>
             <li>Le pion, toujours affiché : <span lang="en">"Pawn: X/10"</span></li>
             <li>Le compteur d'attaques (x/6)</li>
-            <li>Le pavé : on tape le numéro de la carte rouge, la situation s'affiche <strong>sans la réponse</strong></li>
-            <li>Les défenses proposées (numéro + nom), puis on tape le numéro de la carte verte posée et on confirme ; le téléphone refuse une carte déjà jouée ou non proposée</li>
+            <li>Le pavé : on tape le numéro de la carte rouge ; l'appli affiche le numéro, la famille, la gravité et le titre, <strong>jamais la réponse</strong></li>
+            <li>Les défenses proposées, <strong>seulement par leur numéro</strong>, puis on tape le numéro de la carte verte posée et on confirme ; le téléphone refuse une carte déjà jouée ou non proposée</li>
             <li>Le jugement en très gros, avec la case du pion, puis la bonne réponse, l'explication et une règle d'or à retenir</li>
-            <li>La voix du hacker qui mène chaque tour, parle toutes les 2 minutes, et les voix des appels, enregistrées (en anglais ou en français), avec sous-titres et bouton « Réécouter »</li>
+            <li>En Pro et Expert, la question au dos de la carte rouge ; l'équipe répond avec une carte verte, l'appli corrige et donne la source officielle (cybermalveillance.gouv.fr, ANSSI, CNIL, NIST, CISA...)</li>
+            <li>La voix du hacker, <strong>toujours en anglais</strong>, qui mène chaque tour et parle toutes les 2 minutes, et les voix des appels, avec sous-titres et bouton « Réécouter ». Elle ne lit jamais les cartes ni les questions</li>
             <li>L'écran rouge à 5/10 et qui clignote dans les 30 dernières secondes</li>
             <li>L'écran de fin avec le score et un débrief : le point faible de l'équipe, les règles d'or, des questions pour en parler et où signaler une arnaque en France</li>
             <li>Un glossaire anglais / français, une fiche des règles et un mode entraînement</li>
@@ -760,6 +785,7 @@
         <li>Les cartes mini-jeu ne se jouent pas : on les remplace par la carte suivante de la pioche.</li>
         <li>L'équipe choisit une carte verte parmi toutes celles encore disponibles et la pose.</li>
         <li>Un joueur cherche le numéro de la carte rouge dans le livret réponses et lit à voix haute la meilleure défense, la défense acceptable et l'explication.</li>
+        <li>Niveau Expert : le livret contient aussi les cartes #31 à #39 et les cartes vertes 13 à 16. Les questions de suivi ne se jouent qu'avec le téléphone.</li>
         <li>L'équipe applique le tableau de la jauge et les bonus du hacker (<a href="#jauge">section 7</a>), puis avance le pion sur la piste.</li>
       </ol>
 

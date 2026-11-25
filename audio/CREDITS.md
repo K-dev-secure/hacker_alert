@@ -4,7 +4,7 @@ Voix générées avec [Piper](https://github.com/OHF-Voice/piper1-gpl) (synthès
 
 | Voix | Utilisée pour | Données | Licence |
 |---|---|---|---|
-| fr_FR-mls (locuteurs 8582, 10065, 13177, 5525, 1474) | hacker et appels (FR) | Multilingual LibriSpeech, openslr.org/94 | CC BY 4.0 |
-| fr_FR-siwis | appels (FR) | SIWIS French Speech Synthesis Database | CC BY 4.0 |
-| en_GB-vctk (p254, p226, p232, p360, p228) | hacker et appels (EN) | CSTR VCTK Corpus, University of Edinburgh | CC BY 4.0 |
-| en_GB-jenny_dioco | appels (EN) | "Jenny (Dioco)", github.com/dioco-group/jenny-tts-dataset | Attribution, usage commercial autorisé |
+| en_GB-vctk (p254, p226, p232, p360, p228) | hacker, maître du jeu et appels | CSTR VCTK Corpus, University of Edinburgh | CC BY 4.0 |
+| en_GB-jenny_dioco | appels | "Jenny (Dioco)", github.com/dioco-group/jenny-tts-dataset | Attribution, usage commercial autorisé |
+
+La voix parle toujours anglais (English Game), même quand l'écran est en français.

@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="css/app/hud.css">
 <link rel="stylesheet" href="css/app/pad.css">
 <link rel="stylesheet" href="css/app/result.css">
+<link rel="stylesheet" href="css/app/question.css">
 <link rel="stylesheet" href="css/app/end.css">
 <link rel="stylesheet" href="css/app/minigames.css">
 <link rel="stylesheet" href="css/app/mg-trap.css">
@@ -151,7 +152,10 @@
         <span class="card-panel__sev" id="cpSev"></span>
       </header>
       <h2 class="card-panel__title" id="cpTitle"></h2>
-      <p class="card-panel__text" id="cpText"></p>
+      <!-- La situation se lit sur la carte papier, à voix haute : le texte est caché -->
+      <p class="card-panel__read" id="cpRead"></p>
+      <button class="btn btn--ghost btn--small card-panel__show" id="cpShowText" type="button" data-i18n="card.showText"></button>
+      <p class="card-panel__text" id="cpText" hidden></p>
       <button class="hint-btn" id="cpHintBtn" type="button" hidden data-i18n="card.hintBtn"></button>
       <p class="card-panel__hint" id="cpHint" hidden></p>
       <p class="picker__title" id="pickTitle"></p>
@@ -221,6 +225,7 @@
       <div class="result__rule" id="resRuleBox" hidden>
         <p class="result__rule-label" data-i18n="res.ruleLabel"></p>
         <p class="result__rule-text" id="resRule"></p>
+        <p class="result__rule-text result__rule-text--green" id="resRule2" hidden></p>
       </div>
       <p class="result__note" id="resNote" hidden></p>
       <button class="btn btn--primary" id="resNext" type="button"></button>
@@ -273,6 +278,7 @@
 <script src="js/i18n.js"></script>
 <script src="js/cards.js"></script>
 <script src="js/cards-fr.js"></script>
+<script src="js/questions.js"></script>
 <script src="js/audio.js"></script>
 <script src="js/game.js"></script>
 <script src="js/minigames/common.js"></script>

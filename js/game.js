@@ -6,6 +6,7 @@ window.NovaGame = (function () {
   "use strict";
 
   var D = window.NOVA_DATA;
+  var DV = window.NOVA_DATA_EN || D;   // la voix parle toujours anglais (English Game)
   var STORAGE_KEY = "novacorp-game";
   var VOICE_KEY = "novacorp-voice";
   var GAME_SECONDS = 600;
@@ -34,6 +35,8 @@ window.NovaGame = (function () {
       // Une ancienne sauvegarde d'un autre format est ignorée
       if (!s || s.v !== 2 || LEVELS.indexOf(s.level) < 0 || typeof s.endsAt !== "number") { state = null; return null; }
       state = s;
+      // Une question de suivi perdue au rechargement ne bloque pas la fin de la partie
+      if (state.pendingQuestion) state.pendingQuestion = false;
     } catch (e) {
       state = null;
     }
@@ -55,6 +58,9 @@ window.NovaGame = (function () {
       attacks: [],          // { card, label, fam, verdict, falseAlarm, cost, detail }
       missedFamilies: [],   // familles déjà ratées (bonus "même erreur")
       usedGreen: [],        // cartes vertes déjà jouées (Pro et Expert)
+      askedQ: [],           // questions de suivi déjà posées
+      questions: [],        // réponses aux questions : { id, fam, right, cost }
+      pendingQuestion: false,
       voiceDone: [],        // phrases chronométrées déjà dites
       alertDone: false,
       status: "playing",    // playing | won | lost
@@ -103,11 +109,12 @@ window.NovaGame = (function () {
     var res = { base: 0, familyBonus: 0, alertBonus: 0, total: 0 };
     if (opts.verdict === "right") return res;
 
-    if (opts.falseAlarm) res.base = 1;
+    if (opts.question) res.base = 1;   // question de suivi ratée (Expert) : +1, jamais de bonus famille
+    else if (opts.falseAlarm) res.base = 1;
     else if (opts.verdict === "almost") res.base = 1;
     else res.base = opts.sev;
 
-    if (opts.verdict === "wrong" && !opts.falseAlarm && missedFamilies.indexOf(opts.fam) >= 0) {
+    if (opts.verdict === "wrong" && !opts.falseAlarm && !opts.question && missedFamilies.indexOf(opts.fam) >= 0) {
       res.familyBonus = 1;
     }
     if (gaugeBefore >= 5) res.alertBonus = 1;
@@ -147,10 +154,49 @@ window.NovaGame = (function () {
       });
     }
 
+    // Une question de suivi va être posée : la partie n'est gagnée qu'après la réponse
+    state.pendingQuestion = !!attack.followUp;
     var crossedAlert = before < 5 && state.gauge >= 5;
     checkEnd();
     save();
     return { penalty: p, before: before, after: state.gauge, crossedAlert: crossedAlert };
+  }
+
+  /* ---------- Questions de suivi (Pro et Expert, après chaque carte rouge) ----------
+     La question est imprimée au dos de la carte rouge : une seule par carte */
+  function pickQuestion(card) {
+    var list = (window.NOVA_QUESTIONS || []).filter(function (q) {
+      return q.card === card.n && (state.askedQ || []).indexOf(q.id) < 0;
+    });
+    return list.length ? list[0] : null;
+  }
+
+  /* Réponse à une question : Pro = pas de pénalité ; Expert = mauvaise réponse +1 (+ alerte rouge).
+     verdict : "right" | "almost" | "wrong" (on répond avec une carte verte) */
+  function answerQuestion(q, verdict) {
+    var right = verdict === "right";
+    if (!state) return null;
+    var before = state.gauge;
+    var p = { base: 0, familyBonus: 0, alertBonus: 0, total: 0 };
+    if (state.status === "playing" && state.level === "expert" && verdict === "wrong") {
+      p = penalty({ verdict: "wrong", question: true, fam: q.family }, before, state.missedFamilies);
+      state.gauge = Math.min(10, before + p.total);
+    }
+    if (!state.askedQ) state.askedQ = [];
+    if (!state.questions) state.questions = [];
+    state.askedQ.push(q.id);
+    state.questions.push({ id: q.id, fam: q.family, right: !!right, cost: p.total });
+    state.pendingQuestion = false;
+    var crossedAlert = before < 5 && state.gauge >= 5;
+    checkEnd();
+    save();
+    return { penalty: p, before: before, after: state.gauge, crossedAlert: crossedAlert };
+  }
+
+  /* Le numéro tapé fait-il partie du paquet du niveau ? (Expert : #31-#39, #14, #19, #25 ; sinon #1-#30) */
+  function inDeck(n, level) {
+    if (level === "expert") return D.EXPERT_DECK.indexOf(n) >= 0;
+    return n >= 1 && n <= 30;
   }
 
   /* Fin de partie : jauge à 10, chrono à zéro, ou 6 attaques jouées */
@@ -158,7 +204,7 @@ window.NovaGame = (function () {
     if (!isPlaying()) return state ? state.status : null;
     if (state.gauge >= 10 || remainingSeconds() <= 0) {
       state.status = "lost";
-    } else if (state.attacks.length >= ATTACKS_PER_GAME) {
+    } else if (state.attacks.length >= ATTACKS_PER_GAME && !state.pendingQuestion) {
       state.status = "won";
     }
     if (state.status !== "playing") {
@@ -229,17 +275,23 @@ window.NovaGame = (function () {
     return num === 0 ? "It's safe!" : D.DEFENCES[num - 1] || null;
   }
 
+  /* Combien de cartes vertes dans le jeu : 12 (Junior, Pro), 16 (Expert) */
+  function greensFor(card) {
+    return card && card.deck === "expert" ? D.DEFENCES.length : D.STANDARD_GREENS;
+  }
+
   /* ---------- Le téléphone propose les défenses ----------
      Junior : 2 choix · Pro : 3 · Expert : 4, et toujours "It's safe!" (n°0) en plus.
      - la meilleure défense si elle est encore disponible, sinon la défense acceptable ;
-       Expert #11, #21, #30 : les 2 bonnes cartes ;
-     - les autres choix : des pièges tirés au hasard parmi les cartes encore disponibles ;
+       Expert #34, #36, #37 : les 2 bonnes cartes ;
+     - les autres choix : les pièges crédibles de la carte (card.traps) encore disponibles,
+       complétés au hasard s'il en manque ;
      - ordre mélangé. Renvoie les numéros des cartes vertes. */
   var CHOICES = { junior: 2, pro: 3, expert: 4 };
   function proposeDefences(card, level, practice) {
     var count = CHOICES[level] || 3;
     var free = function (name) { return practice || !greenUsed(name); };
-    var pool = D.DEFENCES.slice(0, 12).filter(free);
+    var pool = D.DEFENCES.slice(0, greensFor(card)).filter(free);
     var chosen = [];
     var add = function (name) {
       if (name && name !== "It's safe!" && pool.indexOf(name) >= 0 && chosen.indexOf(name) < 0) chosen.push(name);
@@ -249,8 +301,10 @@ window.NovaGame = (function () {
       if (free(card.best)) add(card.best);
       else if (card.ok) add(card.ok);
     }
-    var traps = shuffle(pool.filter(function (name) { return chosen.indexOf(name) < 0; }));
-    while (chosen.length < count && traps.length) chosen.push(traps.shift());
+    var good = shuffle((card.traps || []).filter(function (name) { return pool.indexOf(name) >= 0 && chosen.indexOf(name) < 0; }));
+    while (chosen.length < count && good.length) chosen.push(good.shift());
+    var others = shuffle(pool.filter(function (name) { return chosen.indexOf(name) < 0; }));
+    while (chosen.length < count && others.length) chosen.push(others.shift());
     chosen.push("It's safe!");
     return shuffle(chosen).map(greenNumber);
   }
@@ -277,8 +331,8 @@ window.NovaGame = (function () {
     if (!on) window.NovaAudio.stop();
   }
 
-  /* Voix dans la langue de l'appli : fr-FR en français, en-GB en anglais */
-  var SPEECH_LANG = window.NovaI18n && window.NovaI18n.lang === "fr" ? "fr-FR" : "en-GB";
+  /* La voix parle toujours anglais, même quand l'écran est en français (English Game) */
+  var SPEECH_LANG = "en-GB";
 
   /* Choisit la voix la plus naturelle du téléphone :
      les voix "Natural", "Neural", "Online", "Google", "Premium", "Enhanced" sont bien plus claires. */
@@ -366,7 +420,7 @@ window.NovaGame = (function () {
   /* ---------- Fichiers de voix enregistrés (audio/fr ou audio/en) ----------
      Générés gratuitement avec Piper (voir tools/). Clés : hacker-start,
      hacker-timed-0..3, hacker-alert, hacker-win, hacker-lose, call-0..7 */
-  var AUDIO_LANG = window.NovaI18n && window.NovaI18n.lang === "en" ? "en" : "fr";
+  var AUDIO_LANG = "en";
   function audioFile(key) {
     return "audio/" + AUDIO_LANG + "/" + key + ".mp3";
   }
@@ -382,13 +436,13 @@ window.NovaGame = (function () {
   function dueHackerLine() {
     if (!isPlaying()) return null;
     var elapsed = elapsedSeconds();
-    for (var i = 0; i < D.HACKER.timed.length; i++) {
+    for (var i = 0; i < DV.HACKER.timed.length; i++) {
       var at = (i + 1) * 120;
       if (elapsed >= at && state.voiceDone.indexOf(i) < 0) {
         state.voiceDone.push(i);
         save();
         // Après un rechargement tardif, on ne rejoue pas une vieille phrase
-        if (elapsed - at <= 15) return { key: "hacker-timed-" + i, text: D.HACKER.timed[i] };
+        if (elapsed - at <= 15) return { key: "hacker-timed-" + i, text: DV.HACKER.timed[i] };
       }
     }
     return null;
@@ -409,7 +463,8 @@ window.NovaGame = (function () {
     isPlaying: isPlaying, cardPlayed: cardPlayed,
     penalty: penalty, applyAttack: applyAttack, checkEnd: checkEnd, score: score,
     findCard: findCard, bestFor: bestFor, picksNeeded: picksNeeded, judgeCard: judgeCard, greenUsed: greenUsed,
-    greenNumber: greenNumber, greenName: greenName, proposeDefences: proposeDefences,
+    greenNumber: greenNumber, greenName: greenName, proposeDefences: proposeDefences, greensFor: greensFor,
+    inDeck: inDeck, pickQuestion: pickQuestion, answerQuestion: answerQuestion,
     voiceOn: voiceOn, setVoice: setVoice, speak: speak, stopSpeaking: stopSpeaking, replay: replay,
     audioFile: audioFile, speakLine: speakLine,
     showSubtitle: showSubtitle, hideSubtitle: hideSubtitle,

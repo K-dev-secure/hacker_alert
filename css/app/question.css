@@ -1,0 +1,35 @@
+/* =========================================================
+   APPLI — CARTE ROUGE (texte caché) ET RÈGLE D'OR EXPERT
+   La question de suivi est au dos de la carte : on y répond avec une
+   carte verte, sur le même écran que les attaques.
+   ========================================================= */
+
+/* ---------- Carte rouge : texte caché, lu sur le papier ---------- */
+.card-panel__read {
+  margin: 10px 0;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.card-panel__show {
+  margin: 0 0 12px;
+}
+
+.card-panel__text[hidden],
+.card-panel__show[hidden] {
+  display: none;
+}
+
+.result__rule-text--green {
+  margin-top: 8px;
+  color: var(--green);
+}
+
+.result__rule-text--green[hidden] {
+  display: none;
+}
+
+/* Un bouton caché reste caché (ex : "Wrong number? Back" pendant une question) */
+.btn[hidden] {
+  display: none;
+}

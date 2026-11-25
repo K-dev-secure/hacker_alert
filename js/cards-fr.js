@@ -38,6 +38,10 @@
     "Avoid public Wi-Fi": "Éviter le Wi-Fi public",
     "Antivirus scan": "Analyse antivirus",
     "Alert IT": "Prévenir l'informatique",
+    "Isolate the machine": "Isoler la machine",
+    "Patch the server": "Corriger le serveur",
+    "Block the access": "Bloquer l'accès",
+    "Reset & revoke": "Réinitialiser et révoquer",
     "It's safe!": "C'est un vrai message"
   };
   FR.defence = function (name) {
@@ -125,6 +129,66 @@
     29: "Mise à jour ce soir",
     30: "Ransomware !"
   };
+  /* ---------- Paquet Expert (#31 à #39) : titre, situation, explication, règle d'or ---------- */
+  var EXPERT_FR = {
+    31: ["Contrôles en échec",
+         "Un mail de facture de billing@novacorp.com. Les en-têtes indiquent : SPF fail, DKIM none, DMARC fail. Le Reply-To est pay@novacorp-billing.example.",
+         "SPF et DMARC échouent : le mail ne vient pas des serveurs de NovaCorp. Signale-le pour que l'informatique le bloque pour tout le monde.",
+         "Lis les résultats d'authentification : un SPF ou un DMARC en échec sur ton propre domaine, c'est une usurpation. Signale, ne réponds jamais."],
+    32: ["Domaine sosie",
+         "Une page de connexion demande ton mot de passe NovaCorp. La barre d'adresse affiche xn--nvacorp-9ig.com : le « o » de « nоvacorp » est une lettre cyrillique.",
+         "« xn-- » veut dire que le nom utilise des lettres étrangères qui ressemblent aux nôtres (punycode). N'y tape jamais de mot de passe.",
+         "Fie-toi à l'adresse, pas à l'apparence de la page : « xn-- » veut dire lettres sosies."],
+    33: ["Arrivée du gestionnaire de mots de passe",
+         "Un mail de it@novacorp.com (SPF, DKIM et DMARC : pass) annonce le nouveau gestionnaire de mots de passe de l'entreprise. Le lien mène à intranet.novacorp.com.",
+         "Tous les contrôles passent, l'expéditeur et le lien sont ceux de NovaCorp. Tous les mails de sécurité ne sont pas des pièges.",
+         "Vérifie les faits (expéditeur, contrôles, lien) avant de signaler : une fausse alerte fait perdre du temps à tout le monde."],
+    34: ["Fatigue MFA",
+         "À 2 h du matin, la directrice financière reçoit 15 notifications « Approuver la connexion ? » sur son téléphone. Elle n'a pas essayé de se connecter.",
+         "Quelqu'un a son mot de passe et la bombarde de demandes de double authentification. Ne jamais approuver : réinitialise le mot de passe, révoque les sessions et préviens l'informatique.",
+         "Une demande de connexion que tu n'as pas lancée est une attaque : refuse-la, puis change le mot de passe."],
+    35: ["Force brute",
+         "Les journaux montrent 400 connexions ratées sur le compte « admin », puis une connexion réussie depuis une IP inconnue à l'étranger (203.0.113.45).",
+         "Une réussite après 400 échecs veut dire que le compte est compromis. Réinitialise-le, coupe les sessions, puis bloque l'IP.",
+         "Beaucoup d'échecs puis une réussite = un compte volé. D'abord réinitialiser et révoquer, ensuite bloquer."],
+    36: ["Chiffrement en cours",
+         "Alerte de sécurité : un ordinateur portable est en train de chiffrer les fichiers du lecteur partagé.",
+         "Coupe le réseau pour stopper la propagation, mais laisse le portable allumé pour l'enquête. Les sauvegardes viennent après.",
+         "Isoler, pas éteindre : la mémoire contient des preuves."],
+    37: ["Faux PDG en vidéo",
+         "La directrice financière reçoit un appel vidéo du « PDG ». Le visage et la voix ont l'air vrais. Il demande un virement urgent et secret de 80 000 €.",
+         "La vidéo et la voix peuvent être imitées par l'IA. Rappelle le PDG sur son numéro connu et suis la procédure de paiement.",
+         "Urgent + secret + argent = vérifier par un autre canal, même si tu vois un visage."],
+    38: ["Porte ouverte",
+         "Un scan Nmap de l'IP publique de NovaCorp affiche : 3389/tcp open ms-wbt-server (Bureau à distance) et 445/tcp open microsoft-ds (partage de fichiers).",
+         "Le Bureau à distance et le partage de fichiers ouverts sur Internet sont les portes principales des ransomwares. Ferme-les ; utilise un VPN avec double authentification.",
+         "Montre le moins possible sur Internet : pas de Bureau à distance, pas de partage de fichiers, un VPN avec double authentification."],
+    39: ["Faille VPN",
+         "Le CERT-FR alerte : une faille critique dans la marque de VPN utilisée par NovaCorp est activement exploitée. Un correctif est disponible.",
+         "Une faille activement exploitée se corrige en premier. Si tu ne peux pas installer le correctif tout de suite, restreins l'accès au VPN.",
+         "Faille activement exploitée = corriger tout de suite ; sinon, réduire l'accès en attendant."]
+  };
+  FR.CARDS.forEach(function (c) {
+    var x = EXPERT_FR[c.n];
+    if (x) { c.title = x[0]; c.text = x[1]; c.why = x[2]; c.rule = x[3]; }
+  });
+
+  /* ---------- Cartes vertes Expert (13 à 16) ---------- */
+  var GREENS_FR = {
+    "Isolate the machine": ["Coupe-la du réseau (câble et Wi-Fi), mais ne l'éteins pas.",
+      "D'abord isoler, ensuite enquêter : n'éteins jamais une machine attaquée, sa mémoire contient des preuves."],
+    "Patch the server": ["Installe le correctif de sécurité maintenant, avant que les hackers utilisent la faille.",
+      "Une faille connue et déjà utilisée par les hackers se corrige en premier. Si tu ne peux pas corriger tout de suite, réduis l'accès en attendant."],
+    "Block the access": ["Ferme le port ou bloque l'adresse sur le pare-feu.",
+      "Ferme ce qui n'a pas besoin d'être ouvert sur Internet, et bloque ce qui t'attaque."],
+    "Reset & revoke": ["Change le mot de passe et déconnecte toutes les sessions ouvertes.",
+      "Un compte volé n'est de nouveau sûr que si le mot de passe est changé ET toutes les sessions ouvertes sont fermées."]
+  };
+  Object.keys(GREENS_FR).forEach(function (k) {
+    FR.EXPERT_GREENS[k].text = GREENS_FR[k][0];
+    FR.EXPERT_GREENS[k].rule = GREENS_FR[k][1];
+  });
+
   FR.CARDS.forEach(function (c) {
     if (c.qr) { c.title = FR.MINIGAMES[c.qr].name; c.text = "Message entrant ! Tapez le numéro de cette carte dans l'appli."; }
     else if (TITLES[c.n]) c.title = TITLES[c.n];
@@ -253,12 +317,16 @@
       draw: "Attaque en approche ! Piochez une carte rouge.",
       choose: "Choisissez votre défense :",
       choose2: "Choisissez deux défenses :",
-      card: "Carte {n} : {d}.",
+      card: "carte {n}",
+      or: "ou",
+      question: "Retournez la carte. Lisez la question à voix haute.",
       blocked: "Hacker bloqué ! Ne bougez pas le pion.",
       pawn: "Avancez le pion sur la case {n}.",
       flip: "Retournez la carte verte face cachée.",
       flip2: "Retournez les cartes vertes face cachée.",
-      next: "Attaque suivante !"
+      next: "Attaque suivante !",
+      correct: "Bonne réponse !",
+      wrong: "Mauvaise réponse."
     }
   };
 
@@ -402,7 +470,23 @@
     "Fermer sa session quand on part : Windows + L.",
     "Quelqu'un qui entre dans des systèmes sans autorisation.",
     "Prévenir l'informatique ou un site officiel d'une arnaque.",
-    "La grande question de tout le jeu !"
+    "La grande question de tout le jeu !",
+    "La liste des serveurs autorisés à envoyer des mails pour un domaine. « SPF fail » = envoyé par un serveur non autorisé.",
+    "Une signature numérique ajoutée au mail, pour voir s'il a été modifié en chemin.",
+    "Vérifie que SPF ou DKIM correspondent à l'expéditeur visible, et dit quoi faire des faux mails (p=reject).",
+    "La façon d'écrire les adresses avec des lettres étrangères (xn--...). Utilisé pour les faux domaines sosies.",
+    "Bombarder de demandes de connexion jusqu'à ce que la victime en approuve une. N'approuve jamais une demande que tu n'as pas lancée.",
+    "Essayer des milliers de mots de passe jusqu'à ce qu'un marche.",
+    "Un outil gratuit qui liste les ports ouverts d'une machine. Les défenseurs l'utilisent pour trouver les portes restées ouvertes.",
+    "Une porte numérotée d'un ordinateur pour un service (443 = web, 3389 = Bureau à distance).",
+    "Contrôler un ordinateur à distance. Ne jamais l'ouvrir directement sur Internet.",
+    "Un numéro unique pour une faille de sécurité connue (ex : CVE-2024-1234).",
+    "Une mise à jour qui corrige une faille de sécurité.",
+    "Une fausse vidéo ou voix créée par l'IA, qui a l'air vraie.",
+    "Déconnecter toutes les sessions ouvertes, pour mettre dehors un voleur déjà connecté.",
+    "Chaque compte n'a que les droits dont il a vraiment besoin.",
+    "Un escroc fait transférer ton numéro sur sa carte SIM pour recevoir tes codes SMS.",
+    "3 copies de tes fichiers, sur 2 types de supports, dont 1 gardée ailleurs."
   ];
   FR.GLOSSARY.forEach(function (g, i) { if (GLOSS_FR[i]) g.def = GLOSS_FR[i]; });
 
